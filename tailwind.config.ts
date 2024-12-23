@@ -8,9 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        'aeonik-bold': ['var(--font-aeonik-bold)'],
+        'aeonik-bold-italic': ['var(--font-aeonik-bold-italic)'],
+        'aeonik-light': ['var(--font-aeonik-light)'],
+        'aeonik-light-italic': ['var(--font-aeonik-light-italic)'],
+        'aeonik-regular': ['var(--font-aeonik-regular)'],
+        'aeonik-regular-italic': ['var(--font-aeonik-regular-italic)'],
       },
     },
   },
