@@ -29,4 +29,3 @@ export const aeonikRegularItalic = localFont({
   src: '../public/fonts/Aeonik-RegularItalic.otf',
   variable: '--font-aeonik-regular-italic',
 })
-

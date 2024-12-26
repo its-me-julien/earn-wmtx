@@ -1,12 +1,13 @@
-import type { NextConfig } from 'next'
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  basePath: '/earn-wmtx',
+  output: 'export', // For static export
   images: {
-    unoptimized: true,
+    unoptimized: true, // Static hosting
   },
-}
+  trailingSlash: true, // Ensures compatibility with GitHub Pages
+  basePath: '', // No basePath since it's a single repository
+  assetPrefix: '', // No custom domain or asset prefix
+};
 
-export default nextConfig
-
+export default nextConfig;
