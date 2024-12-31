@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faBullhorn, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faBullhorn, faCheckCircle, faExclamationCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
+import RatingField from './review/RatingField';
 
 const ReviewForm = () => {
   const [formData, setFormData] = useState({
@@ -86,7 +87,7 @@ const ReviewForm = () => {
         {/* Column 1 */}
         <div className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-8 rounded-lg shadow-lg">
           <h2 className="text-3xl font-aeonik-bold text-white mb-6">
-            Review World Mobile Broadband
+            Review <span className="text-[#FFFFFF]">World Mobile Broadband</span>
           </h2>
           <p className="text-lg font-aeonik-regular text-white mb-4">
             Help people make smarter choices with their internet provider service. Your honest
@@ -117,79 +118,34 @@ const ReviewForm = () => {
         {/* Column 2 */}
         <div className="bg-gray-900 bg-opacity-90 p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-aeonik-bold text-white mb-4">Post a Review</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Ratings Section */}
-            <div className="grid grid-cols-2 gap-y-6">
-        {/* First Row */}
-        <div className="grid grid-cols-2 items-center gap-x-4">
-            <span className="text-sm text-white w-32 text-right">Overall Rating</span>
-            <div className="rating flex">
-            {[1, 2, 3, 4, 5].map((star) => (
-                <input
-                key={`overall-${star}`}
-                type="radio"
+            <div className="space-y-4">
+              <RatingField
+                label="Overall Rating"
                 name="overallRating"
-                className="mask mask-star-2 bg-[#F6642D]"
-                value={star}
-                checked={formData.overallRating === star}
-                onChange={() => handleRatingChange('overallRating', star)}
-                />
-            ))}
-            </div>
-        </div>
-
-        <div className="grid grid-cols-2 items-center gap-x-4">
-            <span className="text-sm text-white w-32 text-right">Pricing</span>
-            <div className="rating flex">
-            {[1, 2, 3, 4, 5].map((star) => (
-                <input
-                key={`pricing-${star}`}
-                type="radio"
+                value={formData.overallRating}
+                onChange={handleRatingChange}
+              />
+              <RatingField
+                label="Pricing"
                 name="pricingRating"
-                className="mask mask-star-2 bg-[#F6642D]"
-                value={star}
-                checked={formData.pricingRating === star}
-                onChange={() => handleRatingChange('pricingRating', star)}
-                />
-            ))}
-            </div>
-        </div>
-
-        {/* Second Row */}
-        <div className="grid grid-cols-2 items-center gap-x-4">
-            <span className="text-sm text-white w-32 text-right">Service</span>
-            <div className="rating flex">
-            {[1, 2, 3, 4, 5].map((star) => (
-                <input
-                key={`service-${star}`}
-                type="radio"
+                value={formData.pricingRating}
+                onChange={handleRatingChange}
+              />
+              <RatingField
+                label="Service"
                 name="serviceRating"
-                className="mask mask-star-2 bg-[#F6642D]"
-                value={star}
-                checked={formData.serviceRating === star}
-                onChange={() => handleRatingChange('serviceRating', star)}
-                />
-            ))}
-            </div>
-        </div>
-
-        <div className="grid grid-cols-2 items-center gap-x-4">
-            <span className="text-sm text-white w-32 text-right">Speed</span>
-            <div className="rating flex">
-            {[1, 2, 3, 4, 5].map((star) => (
-                <input
-                key={`speed-${star}`}
-                type="radio"
+                value={formData.serviceRating}
+                onChange={handleRatingChange}
+              />
+              <RatingField
+                label="Speed"
                 name="speedRating"
-                className="mask mask-star-2 bg-[#F6642D]"
-                value={star}
-                checked={formData.speedRating === star}
-                onChange={() => handleRatingChange('speedRating', star)}
-                />
-            ))}
+                value={formData.speedRating}
+                onChange={handleRatingChange}
+              />
             </div>
-        </div>
-        </div>
 
             {/* Feedback Section */}
             <textarea
@@ -230,7 +186,7 @@ const ReviewForm = () => {
             </div>
 
             {/* Name, City, Zipcode */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-3">
               <input
                 type="text"
                 id="name"
@@ -249,18 +205,16 @@ const ReviewForm = () => {
                 onChange={handleInputChange}
                 className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
               />
+              <input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="City"
+                value={formData.city}
+                onChange={handleInputChange}
+                className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
+              />
             </div>
-
-            {/* City */}
-            <input
-              type="text"
-              id="city"
-              name="city"
-              placeholder="City"
-              value={formData.city}
-              onChange={handleInputChange}
-              className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
-            />
 
             {/* Email */}
             <div className="relative">
@@ -300,13 +254,20 @@ const ReviewForm = () => {
 
       {/* Status Message */}
       {status && (
-        <p className="mt-4 text-center text-sm font-semibold">
+        <div
+          className={`mt-4 text-center text-sm font-semibold p-4 rounded-lg ${
+            status.startsWith('Error')
+              ? 'bg-[#D42E58] text-white'
+              : 'bg-green-500 text-white'
+          }`}
+        >
           {status.startsWith('Error') ? (
-            <span className="text-[#D42E58]">{status}</span>
+            <FontAwesomeIcon icon={faExclamationCircle} className="mr-2" />
           ) : (
-            <span className="text-green-500">{status}</span>
+            <FontAwesomeIcon icon={faCheck} className="mr-2" />
           )}
-        </p>
+          {status}
+        </div>
       )}
     </div>
   );

@@ -32,7 +32,7 @@ exports.handler = async (event) => {
     }
 
     // Determine collection based on reviewType
-    const { reviewType, ...reviewData } = data;
+    const { reviewType, captchaToken: _, ...reviewData } = data; // Exclude captchaToken
     const collectionName =
       reviewType === 'broadband' ? 'broadband_review' : 'mobileplan_review';
 
