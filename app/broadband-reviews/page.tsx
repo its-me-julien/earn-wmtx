@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import JoinDiscussion from "../../components/pages/broadband-reviews/discussions";
@@ -10,6 +10,48 @@ import Latestreviews from "../../components/pages/broadband-reviews/latestreview
 import ReviewSummary from "../../components/pages/broadband-reviews/ReviewSummary";
 
 const BroadbandReviewsPage = () => {
+  const [summaryData, setSummaryData] = useState({
+    totalReviews: 1,
+    averageRating: 5,
+    ratingsBreakdown: {
+      overall: 5,
+      service: 5,
+      pricing: 5,
+      speed: 5,
+    },
+  });
+  const [loadingSummary, setLoadingSummary] = useState(true);
+
+  useEffect(() => {
+    const fetchSummary = async () => {
+      setLoadingSummary(true);
+      try {
+        const response = await fetch("/.netlify/functions/getReviewSummary", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ collection: "broadband_review" }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setSummaryData({
+            totalReviews: data.totalReviews,
+            averageRating: data.averageOverallRating,
+            ratingsBreakdown: data.ratingsBreakdown,
+          });
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error("Error fetching review summary:", error);
+      } finally {
+        setLoadingSummary(false);
+      }
+    };
+
+    fetchSummary();
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-black via-[#150a2c] to-[#000000] text-white">
       {/* Header */}
@@ -42,7 +84,15 @@ const BroadbandReviewsPage = () => {
             <h2 id="review-summary-title" className="sr-only">
               Customer Review Summary
             </h2>
-            <ReviewSummary />
+            {loadingSummary ? (
+              <p className="text-center text-white">Loading summary...</p>
+            ) : (
+              <ReviewSummary
+                totalReviews={summaryData.totalReviews}
+                averageRating={summaryData.averageRating}
+                ratingsBreakdown={summaryData.ratingsBreakdown}
+              />
+            )}
           </section>
 
           {/* Latest Reviews */}

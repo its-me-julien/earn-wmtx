@@ -7,15 +7,15 @@ const JoinDiscussion: React.FC = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "Join the AirNode Operator Community",
-    description: "Connect with AirNode Operators to share insights, discuss operations, and explore the marketplace within the decentralized World Mobile network.",
+    name: "Join the World Mobile Community",
+    description: "Join the World Mobile Club community to share your experience, review World Mobile, connect with other customers, and stay informed about the latest developments.",
     mainEntity: [
       {
         "@type": "DiscussionForumPosting",
-        name: "Meet other Hosts & Operators",
-        headline: "Connect with fellow AirNode Operators and Hosts",
-        url: "https://worldmobile.club/c/airnode/host-and-operators-introductions/17",
-        description: "Join the World Mobile community to share experiences, exchange ideas, and grow as part of the decentralized network.",
+        name: "The Club Testimonials",
+        headline: "Share and read genuine World Mobile customer reviews",
+        url: "https://worldmobile.club/c/world-mobile-customers/world-mobile-customer-reviews/68",
+        description: "Explore authentic testimonials about World Mobile services. Learn from customer experiences to make informed decisions.",
         author: {
           "@type": "Person",
           name: "World Mobile Club",
@@ -24,22 +24,10 @@ const JoinDiscussion: React.FC = () => {
       },
       {
         "@type": "DiscussionForumPosting",
-        name: "Discuss AirNode Operations & Rewards",
-        headline: "Optimize AirNode performance and maximize rewards",
-        url: "https://worldmobile.club/c/airnode/operate-an-airnode/15",
-        description: "Learn about tracking AirNode performance, optimizing operations, and maximizing rewards while contributing to the network.",
-        author: {
-          "@type": "Person",
-          name: "World Mobile Club",
-        },
-        datePublished: "2025-01-01",
-      },
-      {
-        "@type": "DiscussionForumPosting",
-        name: "AirNode Marketplace",
-        headline: "Explore AirNode trading opportunities",
-        url: "https://worldmobile.club/t/about-the-airnode-marketplace-category/20",
-        description: "Join discussions to buy, sell, and explore trading opportunities for AirNodes within the World Mobile network.",
+        name: "Visit the Club",
+        headline: "Connect and collaborate within the World Mobile ecosystem",
+        url: "https://worldmobile.club/c/world-mobile-club/23",
+        description: "Stay updated on the latest news, celebrate milestones, and collaborate with the World Mobile community.",
         author: {
           "@type": "Person",
           name: "World Mobile Club",
@@ -56,84 +44,64 @@ const JoinDiscussion: React.FC = () => {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
+
       <section className="mt-16 max-w-7xl mx-auto px-4 space-y-16">
+        {/* Header Section */}
         <div className="grid grid-cols-1 gap-6 max-w-3xl mx-auto px-4 text-center">
           <h2 className="mb-8 text-4xl font-extrabold text-white">
             Engage with the{' '}
             <span className="bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] bg-clip-text text-transparent">
-              AirNode Operator Community
+              World Mobile Community
             </span>
           </h2>
           <p className="mb-6 leading-relaxed text-lg text-gray-300">
-            Join the World Mobile AirNode operator community to share insights, learn, and grow as part of the decentralized telecommunications network.
+            Join the World Mobile Club community to share your experience, review World Mobile, connect with other customers, and stay informed about the latest developments.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {/* Card 1: Meet other Hosts & Operators */}
+        {/* Cards Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Card 1: The Club Testimonials */}
           <div className="card bg-[rgba(55,10,81,0.19)] text-neutral-content rounded-lg shadow-lg border border-[rgba(255,255,255,0.1)] hover:scale-105 transition-transform">
             <div className="card-body">
               <h3 className="card-title text-2xl font-extrabold text-white">
-                Meet other Hosts & Operators
+                World Mobile Customer Testimonials
               </h3>
               <p className="text-gray-300 leading-relaxed mt-4">
-                Connect with fellow hosts and operators to share experiences, exchange ideas, and grow within the World Mobile network.
+                Explore genuine reviews and experiences from World Mobile customers.
               </p>
               <div className="mt-6">
                 <a
-                  href="https://worldmobile.club/c/airnode/host-and-operators-introductions/17"
+                  href="https://worldmobile.club/c/world-mobile-customers/world-mobile-customer-reviews/68"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Join the discussion forum for Hosts and Operators"
+                  aria-label="Read more testimonials from the World Mobile community"
+                  className="btn bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] text-white hover:brightness-125 border-none px-6 py-3 rounded-full"
+                >
+                  Read Testimonials
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Visit the Club */}
+          <div className="card bg-[rgba(55,10,81,0.19)] text-neutral-content rounded-lg shadow-lg border border-[rgba(255,255,255,0.1)] hover:scale-105 transition-transform">
+            <div className="card-body">
+              <h3 className="card-title text-2xl font-extrabold text-white">
+                Visit the Club
+              </h3>
+              <p className="text-gray-300 leading-relaxed mt-4">
+                The hub for World Mobile customers. Stay updated, share milestones, and connect.
+              </p>
+              <div className="mt-6">
+                <a
+                  href="https://worldmobile.club/c/world-mobile-club/23"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Join the World Mobile Club for updates and discussions"
                   className="btn bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] text-white hover:brightness-125 border-none px-6 py-3 rounded-full"
                 >
                   Join the Club
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2: Discuss AirNode Operations & Rewards */}
-          <div className="card bg-[rgba(55,10,81,0.19)] text-neutral-content rounded-lg shadow-lg border border-[rgba(255,255,255,0.1)] hover:scale-105 transition-transform">
-            <div className="card-body">
-              <h3 className="card-title text-2xl font-extrabold text-white">
-                Discuss AirNode Operations & Rewards
-              </h3>
-              <p className="text-gray-300 leading-relaxed mt-4">
-                Learn how to optimize performance, track metrics, and maximize rewards for your AirNode operations.
-              </p>
-              <div className="mt-6">
-                <a
-                  href="https://worldmobile.club/c/airnode/operate-an-airnode/15"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Explore AirNode Operations discussion forum"
-                  className="btn bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] text-white hover:brightness-125 border-none px-6 py-3 rounded-full"
-                >
-                  Explore Operations
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 3: AirNode Marketplace */}
-          <div className="card bg-[rgba(55,10,81,0.19)] text-neutral-content rounded-lg shadow-lg border border-[rgba(255,255,255,0.1)] hover:scale-105 transition-transform">
-            <div className="card-body">
-              <h3 className="card-title text-2xl font-extrabold text-white">
-                AirNode Marketplace
-              </h3>
-              <p className="text-gray-300 leading-relaxed mt-4">
-                Discover opportunities to buy, sell, and trade AirNodes in the decentralized marketplace.
-              </p>
-              <div className="mt-6">
-                <a
-                  href="https://worldmobile.club/t/about-the-airnode-marketplace-category/20"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Explore the AirNode Marketplace discussion forum"
-                  className="btn bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] text-white hover:brightness-125 border-none px-6 py-3 rounded-full"
-                >
-                  Visit Marketplace
                 </a>
               </div>
             </div>

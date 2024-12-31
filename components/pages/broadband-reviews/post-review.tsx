@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
-import sanitizeHtml from 'sanitize-html';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faBullhorn, faCheckCircle, faExclamationCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
-import RatingField from './review/RatingField';
+import React, { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import sanitizeHtml from "sanitize-html";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle, faBullhorn, faCheckCircle, faExclamationCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
+import RatingField from "./review/RatingField";
 
 const ReviewForm = () => {
   const [formData, setFormData] = useState({
@@ -13,14 +13,14 @@ const ReviewForm = () => {
     serviceRating: 5,
     pricingRating: 5,
     speedRating: 5,
-    feedback: '',
-    recommend: 'Yes',
-    name: '',
-    city: '',
-    zipcode: '',
-    email: '',
+    feedback: "",
+    recommend: "Yes",
+    name: "",
+    city: "",
+    zipcode: "",
+    email: "",
   });
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -38,51 +38,103 @@ const ReviewForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus('Submitting...');
+    setStatus("Submitting...");
 
     if (!captchaToken) {
-      setStatus('Please complete the CAPTCHA');
+      setStatus("Please complete the CAPTCHA");
       return;
     }
 
     try {
-      const response = await fetch('/.netlify/functions/submitReview', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/.netlify/functions/submitReview", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
           captchaToken,
-          reviewType: 'broadband', // Specify the type of review
+          reviewType: "broadband", // Specify the type of review
         }),
       });
 
       const result = await response.json();
       if (response.ok) {
-        setStatus('Review submitted successfully!');
+        setStatus("Review submitted successfully!");
         setFormData({
           overallRating: 1,
           serviceRating: 1,
           pricingRating: 1,
           speedRating: 1,
-          feedback: '',
-          recommend: 'Yes',
-          name: '',
-          city: '',
-          zipcode: '',
-          email: '',
+          feedback: "",
+          recommend: "Yes",
+          name: "",
+          city: "",
+          zipcode: "",
+          email: "",
         });
         setCaptchaToken(null);
       } else {
         setStatus(`Error: ${result.error}`);
       }
     } catch (error) {
-      console.error('Submission error:', error);
-      setStatus('An unexpected error occurred.');
+      console.error("Submission error:", error);
+      setStatus("An unexpected error occurred.");
     }
+  };
+
+  // Generate structured data
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": {
+      "@type": "Service",
+      "name": "World Mobile Broadband",
+    },
+    "author": {
+      "@type": "Person",
+      "name": formData.name || "Anonymous",
+    },
+    "reviewBody": formData.feedback,
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": formData.overallRating,
+      "bestRating": 5,
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "Service",
+        "value": formData.serviceRating,
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Pricing",
+        "value": formData.pricingRating,
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Speed",
+        "value": formData.speedRating,
+      },
+    ],
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": formData.city || "Unknown",
+        "postalCode": formData.zipcode || "Unknown",
+      },
+    },
+    "recommendation": formData.recommend,
   };
 
   return (
     <div className="container mx-auto py-10 px-6">
+      {/* Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       {/* Two-Column Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
         {/* Column 1 */}
@@ -117,7 +169,7 @@ const ReviewForm = () => {
         </div>
 
         {/* Column 2 */}
-        <div className="bg-gray-900 bg-opacity-90 p-6 rounded-lg shadow-lg">
+        <div className="bg-[rgba(68,61,72,0.19)] bg-opacity-90 p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-aeonik-bold text-white mb-4">Post a Review</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Ratings Section */}
@@ -168,18 +220,18 @@ const ReviewForm = () => {
                 <button
                   type="button"
                   className={`btn ${
-                    formData.recommend === 'Yes' ? 'bg-[#F6642D] text-white' : 'btn-outline'
+                    formData.recommend === "Yes" ? "bg-[#F6642D] text-white" : "btn-outline"
                   } hover:bg-[#F6642D] w-32`}
-                  onClick={() => setFormData({ ...formData, recommend: 'Yes' })}
+                  onClick={() => setFormData({ ...formData, recommend: "Yes" })}
                 >
                   Yes
                 </button>
                 <button
                   type="button"
                   className={`btn ${
-                    formData.recommend === 'No' ? 'bg-[#F6642D] text-white' : 'btn-outline'
+                    formData.recommend === "No" ? "bg-[#F6642D] text-white" : "btn-outline"
                   } hover:bg-[#F6642D] w-32`}
-                  onClick={() => setFormData({ ...formData, recommend: 'No' })}
+                  onClick={() => setFormData({ ...formData, recommend: "No" })}
                 >
                   No
                 </button>
@@ -257,12 +309,12 @@ const ReviewForm = () => {
       {status && (
         <div
           className={`mt-4 text-center text-sm font-semibold p-4 rounded-lg ${
-            status.startsWith('Error')
-              ? 'bg-[#D42E58] text-white'
-              : 'bg-green-500 text-white'
+            status.startsWith("Error")
+              ? "bg-[#D42E58] text-white"
+              : "bg-green-500 text-white"
           }`}
         >
-          {status.startsWith('Error') ? (
+          {status.startsWith("Error") ? (
             <FontAwesomeIcon icon={faExclamationCircle} className="mr-2" />
           ) : (
             <FontAwesomeIcon icon={faCheck} className="mr-2" />

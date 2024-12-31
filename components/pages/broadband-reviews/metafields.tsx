@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 
 const MetaFields = () => {
   return (
     <>
-      <title>Operate an AirNode | World Mobile Club</title>
+      <title>World Mobile Broadband Customer Reviews | World Mobile Club</title>
       <meta 
         name="description" 
-        content="Discover how to operate an AirNode with World Mobile to provide internet connectivity, bridge the digital divide, empower communities, and earn rewards. Join the decentralized connectivity revolution today." 
+        content="Explore real customer reviews about World Mobile Broadband. Discover insights on reliability, speed, pricing, and overall service to make informed decisions." 
       />
       <meta 
         name="keywords" 
-        content="Operate AirNode, AirNode Operator, World Mobile, Decentralized Connectivity, Earn Rewards, WMTx, Bridge Digital Divide" 
+        content="World Mobile Reviews, Broadband Customer Feedback, Internet Provider Ratings, Broadband Reliability, Broadband Speed, Pricing Feedback" 
       />
       <meta name="author" content="World Mobile Club" />
 
@@ -19,19 +19,19 @@ const MetaFields = () => {
       <meta property="og:site_name" content="World Mobile Club" />
       <meta 
         property="og:title" 
-        content="Operate an AirNode | World Mobile Club" 
+        content="Broadband Customer Reviews | World Mobile Club" 
       />
       <meta 
         property="og:description" 
-        content="Discover how to operate an AirNode with World Mobile to provide internet connectivity, bridge the digital divide, empower communities, and earn rewards. Join the decentralized connectivity revolution today." 
+        content="Explore real customer reviews about World Mobile Broadband. Discover insights on reliability, speed, pricing, and overall service to make informed decisions." 
       />
       <meta 
         property="og:url" 
-        content="https://wmtx.worldmobile.club/airnode-operator/" 
+        content="https://wmtx.worldmobile.club/broadband-customer-reviews/" 
       />
       <meta 
         property="og:image" 
-        content="/images/operate_an_airnode.png" 
+        content="/images/world-mobile-review-testimonials.png" 
       />
       <meta property="og:logo" content="/images/club_logo.png" />
 
@@ -39,15 +39,15 @@ const MetaFields = () => {
       <meta name="twitter:card" content="summary_large_image" />
       <meta 
         name="twitter:title" 
-        content="Operate an AirNode | World Mobile Club" 
+        content="Broadband Customer Reviews | World Mobile Club" 
       />
       <meta 
         name="twitter:description" 
-        content="Discover how to operate an AirNode with World Mobile to provide internet connectivity, bridge the digital divide, empower communities, and earn rewards. Join the decentralized connectivity revolution today." 
+        content="Explore real customer reviews about World Mobile Broadband. Discover insights on reliability, speed, pricing, and overall service to make informed decisions." 
       />
       <meta 
         name="twitter:image" 
-        content="/images/operate_an_airnode.png" 
+        content="/images/world-mobile-review-testimonials.png" 
       />
     </>
   );

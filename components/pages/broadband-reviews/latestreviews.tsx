@@ -55,91 +55,99 @@ const LatestBroadbandReviews: React.FC = () => {
   const totalPages = Math.ceil(totalReviews / reviewsPerPage);
 
   return (
-    <div className="container mx-auto py-10 px-6">
-      <h2 className="text-2xl font-bold text-white mb-6">Latest Broadband Reviews</h2>
+    <div className="flex justify-center py-10 px-4">
+      <div className="w-full max-w-3xl space-y-8">
+        <h2 className="text-xl font-aeonik-bold text-white text-center">
+          Latest Broadband Reviews
+        </h2>
 
-      {loading ? (
-        <p className="text-center text-white">Loading reviews...</p>
-      ) : reviews.length === 0 ? (
-        <p className="text-center text-white">No reviews available yet.</p>
-      ) : (
-        <>
-          <div className="space-y-6">
-            {reviews.map((review) => (
-              <div
-                key={review.id}
-                className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-6 rounded-lg shadow-lg space-y-4 hover:shadow-xl transition-shadow"
-              >
-                {/* Overall Rating */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <div className="rating rating-sm">
+        {loading ? (
+          <p className="text-center text-white">Loading reviews...</p>
+        ) : reviews.length === 0 ? (
+          <p className="text-center text-white">No reviews available yet.</p>
+        ) : (
+          <>
+            {/* Reviews List */}
+            <div className="space-y-6">
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="p-6 rounded-lg shadow-lg"
+                  style={{ background: "rgba(55,10,81,.19)" }}
+                >
+                  {/* Star Rating and Name */}
+                  <div className="flex flex-col items-start space-y-2">
+                    <div className="flex items-center space-x-1">
                       {[...Array(5)].map((_, i) => (
-                        <input
+                        <span
                           key={i}
-                          type="radio"
-                          className={`mask mask-star-2 bg-[#F6642D]`}
-                          readOnly
-                          checked={i < review.overallRating}
-                        />
+                          className={`mask mask-star-2 ${
+                            i < review.overallRating ? "bg-[#F6642D]" : "bg-gray-500"
+                          }`}
+                        ></span>
                       ))}
                     </div>
-                    <span className="text-white text-sm font-semibold">{review.overallRating}/5</span>
+                    <p className="text-sm font-aeonik-bold text-white">
+                      {review.name || "Anonymous"}{" "}
+                      <span className="font-aeonik-regular text-gray-300">
+                        (City: {review.city || "Unknown"})
+                      </span>
+                    </p>
                   </div>
-                  <p className="text-gray-200 text-sm font-medium">
-                    {review.name || "Anonymous"} <span className="text-gray-400">({review.city || "Unknown City"})</span>
-                  </p>
+
+                  {/* Feedback */}
+                  <blockquote className="mt-4 text-sm font-aeonik-regular text-gray-300 italic border-l-4 pl-4 border-[#F6642D]">
+                    {review.feedback}
+                  </blockquote>
+
+                  {/* Ratings */}
+                  <div className="mt-6 space-y-2">
+                    <p className="text-sm font-aeonik-regular text-gray-300">
+                      <span className="font-aeonik-bold text-white">Service:</span>{" "}
+                      {review.serviceRating}/5
+                    </p>
+                    <p className="text-sm font-aeonik-regular text-gray-300">
+                      <span className="font-aeonik-bold text-white">Pricing:</span>{" "}
+                      {review.pricingRating}/5
+                    </p>
+                    <p className="text-sm font-aeonik-regular text-gray-300">
+                      <span className="font-aeonik-bold text-white">Speed:</span>{" "}
+                      {review.speedRating}/5
+                    </p>
+                  </div>
                 </div>
+              ))}
+            </div>
 
-                {/* Feedback */}
-                <blockquote className="text-white text-sm italic border-l-4 border-[#F6642D] pl-4">
-                  {review.feedback}
-                </blockquote>
-
-                {/* Ratings Breakdown */}
-                <div className="flex flex-wrap items-center space-x-4 text-xs font-semibold text-white">
-                  <div className="badge badge-outline bg-gray-800 text-white px-4 py-2">
-                    Service: {review.serviceRating}/5
-                  </div>
-                  <div className="badge badge-outline bg-gray-800 text-white px-4 py-2">
-                    Pricing: {review.pricingRating}/5
-                  </div>
-                  <div className="badge badge-outline bg-gray-800 text-white px-4 py-2">
-                    Speed: {review.speedRating}/5
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Pagination Controls */}
-          <div className="flex justify-center mt-6 space-x-2">
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-              disabled={page === 1}
-            >
-              Previous
-            </button>
-            {Array.from({ length: totalPages }, (_, i) => (
+            {/* Pagination Controls */}
+            <div className="flex justify-center mt-6 space-x-2">
               <button
-                key={i + 1}
-                className={`btn btn-sm ${page === i + 1 ? "btn-active" : ""}`}
-                onClick={() => setPage(i + 1)}
+                className="btn btn-primary btn-sm"
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                disabled={page === 1}
               >
-                {i + 1}
+                Previous
               </button>
-            ))}
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={page === totalPages}
-            >
-              Next
-            </button>
-          </div>
-        </>
-      )}
+              {Array.from({ length: totalPages }, (_, i) => (
+                <button
+                  key={i + 1}
+                  className={`btn btn-sm ${page === i + 1 ? "btn-active" : ""}`}
+                  onClick={() => setPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={page === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
