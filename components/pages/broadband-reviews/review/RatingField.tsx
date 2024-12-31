@@ -25,7 +25,7 @@ const RatingField: React.FC<RatingFieldProps> = ({ label, name, value, onChange 
             key={star}
             type="radio"
             name={name}
-            className="mask mask-star-2 bg-orange-400"
+            className="mask mask-star-2 bg-[#F6642D]"
             checked={value === star}
             onChange={() => handleRatingChange(star)}
             aria-label={`${star} star${star > 1 ? 's' : ''}`}

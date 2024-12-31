@@ -6,14 +6,15 @@ import RatingField from './review/RatingField';
 
 const ReviewForm = () => {
   const [formData, setFormData] = useState({
-    overallRating: 0,
-    serviceRating: 0,
-    pricingRating: 0,
-    speedRating: 0,
+    overallRating: 1,
+    serviceRating: 1,
+    pricingRating: 1,
+    speedRating: 1,
     feedback: '',
     recommend: '',
     name: '',
     city: '',
+    email: '',
   });
   const [status, setStatus] = useState('');
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -44,21 +45,22 @@ const ReviewForm = () => {
       const response = await fetch('/.netlify/functions/submitReview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, captchaToken }),
+        body: JSON.stringify({ ...formData }),
       });
 
       const result = await response.json();
       if (response.ok) {
         setStatus('Review submitted successfully!');
         setFormData({
-          overallRating: 0,
-          serviceRating: 0,
-          pricingRating: 0,
-          speedRating: 0,
+          overallRating: 1,
+          serviceRating: 1,
+          pricingRating: 1,
+          speedRating: 1,
           feedback: '',
           recommend: '',
           name: '',
           city: '',
+          email: '',
         });
         setCaptchaToken(null);
       } else {
@@ -77,7 +79,6 @@ const ReviewForm = () => {
         onSubmit={handleSubmit}
         className="bg-[rgba(255,255,255,0.1)] rounded-lg shadow-lg p-8 max-w-xl mx-auto space-y-6"
       >
-        {/* Rating Fields */}
         <RatingField
           label="Your Overall Rating"
           name="overallRating"
@@ -103,7 +104,6 @@ const ReviewForm = () => {
           onChange={handleRatingChange}
         />
 
-        {/* Feedback */}
         <div>
           <label htmlFor="feedback" className="block text-lg font-semibold mb-2">
             Feedback <span className="text-red-500">*</span>
@@ -119,65 +119,53 @@ const ReviewForm = () => {
           />
         </div>
 
-        {/* Recommendation */}
         <div>
           <label className="block text-lg font-semibold mb-2">
             Would you recommend World Mobile? <span className="text-red-500">*</span>
           </label>
           <div className="flex space-x-4">
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="recommend"
-                value="Yes"
-                checked={formData.recommend === 'Yes'}
-                onChange={handleInputChange}
-                required
-                className="radio radio-primary"
-              />
-              <span>Yes</span>
-            </label>
-            <label className="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="recommend"
-                value="No"
-                checked={formData.recommend === 'No'}
-                onChange={handleInputChange}
-                required
-                className="radio radio-primary"
-              />
-              <span>No</span>
-            </label>
+            <button
+              type="button"
+              className={`btn ${
+                formData.recommend === 'Yes' ? 'bg-[#F6642D]' : 'btn-outline'
+              }`}
+              onClick={() => setFormData({ ...formData, recommend: 'Yes' })}
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              className={`btn ${
+                formData.recommend === 'No' ? 'bg-[#F6642D]' : 'btn-outline'
+              }`}
+              onClick={() => setFormData({ ...formData, recommend: 'No' })}
+            >
+              No
+            </button>
           </div>
         </div>
 
-        {/* Name and City */}
-        {['name', 'city'].map((field) => (
+        {['name', 'city', 'email'].map((field) => (
           <div key={field}>
             <label htmlFor={field} className="block text-lg font-semibold mb-2">
-              {field.charAt(0).toUpperCase() + field.slice(1)} <span className="text-red-500">*</span>
+              {field.charAt(0).toUpperCase() + field.slice(1)}{' '}
+              {field !== 'email' && <span className="text-red-500">*</span>}
             </label>
             <input
-              type="text"
+              type={field === 'email' ? 'email' : 'text'}
               id={field}
               name={field}
               placeholder={`Enter your ${field}`}
               value={formData[field as keyof typeof formData]}
               onChange={handleInputChange}
-              required
               className="input input-bordered w-full text-black"
+              required={field !== 'email'}
             />
           </div>
         ))}
 
-        {/* reCAPTCHA */}
-        <ReCAPTCHA
-          sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi"
-          onChange={handleCaptchaChange}
-        />
+        <ReCAPTCHA sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi" onChange={handleCaptchaChange} />
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="btn btn-primary w-full bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] hover:brightness-125 text-white"
@@ -186,11 +174,10 @@ const ReviewForm = () => {
         </button>
       </form>
 
-      {/* Status Message */}
       {status && (
         <p className="mt-4 text-center font-semibold">
           {status.startsWith('Error') ? (
-            <span className="text-red-500">{status}</span>
+            <span className="text-[#D42E58]">{status}</span>
           ) : (
             <span className="text-green-500">{status}</span>
           )}
