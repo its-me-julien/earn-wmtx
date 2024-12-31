@@ -10,9 +10,9 @@ interface RatingsBreakdown {
 }
 
 interface ReviewSummaryProps {
-  totalReviews: number | undefined;
-  averageRating: number | undefined;
-  ratingsBreakdown: RatingsBreakdown | undefined;
+  totalReviews?: number;
+  averageRating?: number;
+  ratingsBreakdown?: RatingsBreakdown;
 }
 
 const ReviewSummary: React.FC<ReviewSummaryProps> = ({
@@ -20,6 +20,14 @@ const ReviewSummary: React.FC<ReviewSummaryProps> = ({
   averageRating = 0,
   ratingsBreakdown = { overall: 0, service: 0, pricing: 0, speed: 0 },
 }) => {
+  // Ensure safe values for ratings breakdown
+  const safeRatingsBreakdown = {
+    overall: ratingsBreakdown?.overall ?? 0,
+    service: ratingsBreakdown?.service ?? 0,
+    pricing: ratingsBreakdown?.pricing ?? 0,
+    speed: ratingsBreakdown?.speed ?? 0,
+  };
+
   // Structured Data for SEO
   const structuredData = {
     "@context": "https://schema.org",
@@ -28,27 +36,34 @@ const ReviewSummary: React.FC<ReviewSummaryProps> = ({
       "@type": "Service",
       "name": "World Mobile Broadband",
     },
-    "ratingValue": averageRating.toFixed(1),
-    "reviewCount": totalReviews,
+    "ratingValue": (averageRating ?? 0).toFixed(1),
+    "reviewCount": totalReviews ?? 0,
     "ratingBreakdown": [
       {
         "name": "Overall",
-        "rating": ratingsBreakdown.overall.toFixed(1),
+        "rating": safeRatingsBreakdown.overall.toFixed(1),
       },
       {
         "name": "Service",
-        "rating": ratingsBreakdown.service.toFixed(1),
+        "rating": safeRatingsBreakdown.service.toFixed(1),
       },
       {
         "name": "Pricing",
-        "rating": ratingsBreakdown.pricing.toFixed(1),
+        "rating": safeRatingsBreakdown.pricing.toFixed(1),
       },
       {
         "name": "Speed",
-        "rating": ratingsBreakdown.speed.toFixed(1),
+        "rating": safeRatingsBreakdown.speed.toFixed(1),
       },
     ],
   };
+
+  const metrics = [
+    { name: "Overall", value: safeRatingsBreakdown.overall },
+    { name: "Service", value: safeRatingsBreakdown.service },
+    { name: "Pricing", value: safeRatingsBreakdown.pricing },
+    { name: "Speed", value: safeRatingsBreakdown.speed },
+  ];
 
   return (
     <div className="flex justify-center py-10">
@@ -71,10 +86,10 @@ const ReviewSummary: React.FC<ReviewSummaryProps> = ({
 
         {/* Metrics */}
         <div className="space-y-6">
-          {Object.entries(ratingsBreakdown).map(([metric, rating]) => (
-            <div key={metric}>
+          {metrics.map(({ name, value }) => (
+            <div key={name}>
               <p className="text-sm font-aeonik-regular text-gray-300 capitalize">
-                {metric}
+                {name}
               </p>
               <div className="flex items-center space-x-3">
                 <div className="w-full h-2 rounded bg-gray-800 overflow-hidden">
@@ -82,11 +97,11 @@ const ReviewSummary: React.FC<ReviewSummaryProps> = ({
                     className="h-2"
                     style={{
                       background: "linear-gradient(to right, #F6642D, #D42E58, #5A2FBA)",
-                      width: `${(rating / 5) * 100}%`,
+                      width: `${(value / 5) * 100}%`,
                     }}
                   ></div>
                 </div>
-                <span className="text-sm font-aeonik-bold text-white">{rating.toFixed(1)}/5</span>
+                <span className="text-sm font-aeonik-bold text-white">{value.toFixed(1)}/5</span>
               </div>
             </div>
           ))}

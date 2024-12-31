@@ -1,8 +1,15 @@
 const admin = require("firebase-admin");
 
 // Initialize Firebase Admin SDK
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
+  ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+  : null;
+
 if (!admin.apps.length) {
+  if (!serviceAccount) {
+    console.error("FIREBASE_SERVICE_ACCOUNT environment variable is missing or invalid.");
+    process.exit(1);
+  }
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
   });
@@ -23,9 +30,8 @@ exports.handler = async (event) => {
 
     // Fetch all reviews
     const snapshot = await db.collection(collection).get();
-    const reviews = snapshot.docs.map((doc) => doc.data());
 
-    if (reviews.length === 0) {
+    if (snapshot.empty) {
       return {
         statusCode: 200,
         body: JSON.stringify({
@@ -40,19 +46,50 @@ exports.handler = async (event) => {
       };
     }
 
-    // Calculate total and averages
-    const totalReviews = reviews.length;
-    const averageOverallRating =
-      reviews.reduce((sum, review) => sum + review.overallRating, 0) / totalReviews;
+    // Initialize accumulators
+    let totalReviews = 0;
+    let sumOverallRating = 0;
+    let sumServiceRating = 0;
+    let sumPricingRating = 0;
+    let sumSpeedRating = 0;
 
-    const averageService =
-      reviews.reduce((sum, review) => sum + review.serviceRating, 0) / totalReviews;
+    // Aggregate data
+    snapshot.forEach((doc) => {
+      const review = doc.data();
+      if (
+        typeof review.overallRating === "number" &&
+        typeof review.serviceRating === "number" &&
+        typeof review.pricingRating === "number" &&
+        typeof review.speedRating === "number"
+      ) {
+        totalReviews++;
+        sumOverallRating += review.overallRating;
+        sumServiceRating += review.serviceRating;
+        sumPricingRating += review.pricingRating;
+        sumSpeedRating += review.speedRating;
+      }
+    });
 
-    const averagePricing =
-      reviews.reduce((sum, review) => sum + review.pricingRating, 0) / totalReviews;
+    if (totalReviews === 0) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          totalReviews: 0,
+          averageOverallRating: 0,
+          ratingsBreakdown: {
+            service: 0,
+            pricing: 0,
+            speed: 0,
+          },
+        }),
+      };
+    }
 
-    const averageSpeed =
-      reviews.reduce((sum, review) => sum + review.speedRating, 0) / totalReviews;
+    // Calculate averages
+    const averageOverallRating = sumOverallRating / totalReviews;
+    const averageService = sumServiceRating / totalReviews;
+    const averagePricing = sumPricingRating / totalReviews;
+    const averageSpeed = sumSpeedRating / totalReviews;
 
     // Return aggregated data
     return {

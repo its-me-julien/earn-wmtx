@@ -5,8 +5,6 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import JoinDiscussion from "../../components/pages/broadband-reviews/discussions";
 import MetaFields from "../../components/pages/broadband-reviews/metafields";
-  {/*import PostReview from "../../components/pages/broadband-reviews/post-review";*/}
-import Latestreviews from "../../components/pages/broadband-reviews/latestreviews";
 import ReviewSummary from "../../components/pages/broadband-reviews/ReviewSummary";
 
 const BroadbandReviewsPage = () => {
@@ -33,11 +31,17 @@ const BroadbandReviewsPage = () => {
         });
 
         const data = await response.json();
+        console.log("API Response:", data); // Debugging log
         if (response.ok) {
           setSummaryData({
-            totalReviews: data.totalReviews,
-            averageRating: data.averageOverallRating,
-            ratingsBreakdown: data.ratingsBreakdown,
+            totalReviews: data.totalReviews ?? 0,
+            averageRating: data.averageOverallRating ?? 0,
+            ratingsBreakdown: {
+              overall: data.ratingsBreakdown?.overall ?? 0,
+              service: data.ratingsBreakdown?.service ?? 0,
+              pricing: data.ratingsBreakdown?.pricing ?? 0,
+              speed: data.ratingsBreakdown?.speed ?? 0,
+            },
           });
         } else {
           console.error(data.error);
@@ -95,24 +99,12 @@ const BroadbandReviewsPage = () => {
             )}
           </section>
 
-          {/* Latest Reviews */}
-          <section id="latest-reviews" aria-labelledby="latest-reviews-title">
-            <h2 id="latest-reviews-title" className="sr-only">
-              Latest Customer Reviews
-            </h2>
-            <Latestreviews />
-          </section>
-
-          {/* Post New Review 
-          <section id="post-review" aria-labelledby="post-review-title">
-            <h2 id="post-review-title" className="sr-only">
-              Post a New Review
-            </h2>
-            <PostReview />
-          </section>*/}
-
           {/* Join Discussion Section */}
-          <section id="join-discussion" aria-labelledby="join-discussion-title" className="space-y-8">
+          <section
+            id="join-discussion"
+            aria-labelledby="join-discussion-title"
+            className="space-y-8"
+          >
             <h2 id="join-discussion-title" className="sr-only">
               Join the Discussion
             </h2>
