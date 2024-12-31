@@ -103,7 +103,7 @@ const ReviewForm = () => {
               />
               <div>
                 <h3 className="text-lg font-semibold text-white">Facts</h3>
-                <p className="text-gray-300">Slanderous rants aren't helpful.</p>
+                <p className="text-gray-300">Slanderous rants aren&#39;t helpful.</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
