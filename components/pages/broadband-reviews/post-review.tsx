@@ -29,7 +29,7 @@ const ReviewForm = () => {
   };
 
   const handleCaptchaChange = (token: string | null) => {
-    setCaptchaToken(token);
+    setCaptchaToken(token); // Capture the CAPTCHA token
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +45,7 @@ const ReviewForm = () => {
       const response = await fetch('/.netlify/functions/submitReview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData }),
+        body: JSON.stringify({ ...formData, captchaToken }), // Include captchaToken in payload
       });
 
       const result = await response.json();
@@ -62,7 +62,7 @@ const ReviewForm = () => {
           city: '',
           email: '',
         });
-        setCaptchaToken(null);
+        setCaptchaToken(null); // Reset the CAPTCHA token
       } else {
         setStatus(`Error: ${result.error}`);
       }
@@ -79,6 +79,7 @@ const ReviewForm = () => {
         onSubmit={handleSubmit}
         className="bg-[rgba(255,255,255,0.1)] rounded-lg shadow-lg p-8 max-w-xl mx-auto space-y-6"
       >
+        {/* Rating Fields */}
         <RatingField
           label="Your Overall Rating"
           name="overallRating"
@@ -104,6 +105,7 @@ const ReviewForm = () => {
           onChange={handleRatingChange}
         />
 
+        {/* Feedback */}
         <div>
           <label htmlFor="feedback" className="block text-lg font-semibold mb-2">
             Feedback <span className="text-red-500">*</span>
@@ -119,6 +121,7 @@ const ReviewForm = () => {
           />
         </div>
 
+        {/* Recommendation */}
         <div>
           <label className="block text-lg font-semibold mb-2">
             Would you recommend World Mobile? <span className="text-red-500">*</span>
@@ -145,6 +148,7 @@ const ReviewForm = () => {
           </div>
         </div>
 
+        {/* Name, City, and Email */}
         {['name', 'city', 'email'].map((field) => (
           <div key={field}>
             <label htmlFor={field} className="block text-lg font-semibold mb-2">
@@ -164,8 +168,10 @@ const ReviewForm = () => {
           </div>
         ))}
 
+        {/* reCAPTCHA */}
         <ReCAPTCHA sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi" onChange={handleCaptchaChange} />
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="btn btn-primary w-full bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] hover:brightness-125 text-white"
