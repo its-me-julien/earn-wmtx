@@ -105,14 +105,19 @@ const LatestBroadbandReviews: React.FC = () => {
                   style={{ background: "rgba(55,10,81,.19)" }}
                 >
                   <div className="flex flex-col items-start space-y-2">
-                    <div className="flex items-center space-x-1" aria-label={`Rating: ${review.overallRating} out of 5`}>
+                    {/* DaisyUI Rating Component */}
+                    <div className="rating">
                       {[...Array(5)].map((_, i) => (
-                        <span
+                        <input
                           key={i}
+                          type="radio"
+                          name={`rating-${review.id}`}
                           className={`mask mask-star-2 ${
                             i < review.overallRating ? "bg-[#F6642D]" : "bg-gray-500"
                           }`}
-                        ></span>
+                          checked={i === Math.floor(review.overallRating) - 1}
+                          readOnly
+                        />
                       ))}
                     </div>
                     <p className="text-sm font-aeonik-bold text-white">
