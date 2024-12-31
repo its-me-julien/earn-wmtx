@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle, faBullhorn, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import RatingField from './review/RatingField';
 
 const ReviewForm = () => {
@@ -29,7 +31,7 @@ const ReviewForm = () => {
   };
 
   const handleCaptchaChange = (token: string | null) => {
-    setCaptchaToken(token); // Capture the CAPTCHA token
+    setCaptchaToken(token);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +47,7 @@ const ReviewForm = () => {
       const response = await fetch('/.netlify/functions/submitReview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, captchaToken }), // Include captchaToken in payload
+        body: JSON.stringify({ ...formData, captchaToken }),
       });
 
       const result = await response.json();
@@ -62,7 +64,7 @@ const ReviewForm = () => {
           city: '',
           email: '',
         });
-        setCaptchaToken(null); // Reset the CAPTCHA token
+        setCaptchaToken(null);
       } else {
         setStatus(`Error: ${result.error}`);
       }
@@ -73,115 +75,163 @@ const ReviewForm = () => {
   };
 
   return (
-    <div className="container mx-auto py-12 px-6 text-white">
-      <h1 className="text-4xl font-bold text-center mb-8">Post a Review</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="bg-[rgba(255,255,255,0.1)] rounded-lg shadow-lg p-8 max-w-xl mx-auto space-y-6"
-      >
-        {/* Rating Fields */}
-        <RatingField
-          label="Your Overall Rating"
-          name="overallRating"
-          value={formData.overallRating}
-          onChange={handleRatingChange}
-        />
-        <RatingField
-          label="Service"
-          name="serviceRating"
-          value={formData.serviceRating}
-          onChange={handleRatingChange}
-        />
-        <RatingField
-          label="Pricing"
-          name="pricingRating"
-          value={formData.pricingRating}
-          onChange={handleRatingChange}
-        />
-        <RatingField
-          label="Speed"
-          name="speedRating"
-          value={formData.speedRating}
-          onChange={handleRatingChange}
-        />
-
-        {/* Feedback */}
-        <div>
-          <label htmlFor="feedback" className="block text-lg font-semibold mb-2">
-            Feedback <span className="text-red-500">*</span>
-          </label>
-          <textarea
-            id="feedback"
-            name="feedback"
-            placeholder="Write your feedback here"
-            value={formData.feedback}
-            onChange={handleInputChange}
-            required
-            className="textarea textarea-bordered w-full text-black h-32"
-          />
-        </div>
-
-        {/* Recommendation */}
-        <div>
-          <label className="block text-lg font-semibold mb-2">
-            Would you recommend World Mobile? <span className="text-red-500">*</span>
-          </label>
-          <div className="flex space-x-4">
-            <button
-              type="button"
-              className={`btn ${
-                formData.recommend === 'Yes' ? 'bg-[#F6642D]' : 'btn-outline'
-              }`}
-              onClick={() => setFormData({ ...formData, recommend: 'Yes' })}
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              className={`btn ${
-                formData.recommend === 'No' ? 'bg-[#F6642D]' : 'btn-outline'
-              }`}
-              onClick={() => setFormData({ ...formData, recommend: 'No' })}
-            >
-              No
-            </button>
+    <div className="container mx-auto py-12 px-6">
+      {/* Two-Column Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        {/* Column 1 */}
+        <div className="bg-gray-900 bg-opacity-90 p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold text-white mb-4">Review World Mobile Broadband</h2>
+          <p className="text-white mb-6">
+            Help people make smarter choices with their internet provider service. Your honest
+            feedback can guide others to make informed decisions.
+          </p>
+          <div className="space-y-4">
+            <div className="flex items-center space-x-3">
+              <FontAwesomeIcon
+                icon={faInfoCircle}
+                className="text-[#F6642D] text-xl"
+              />
+              <div>
+                <h3 className="text-lg font-semibold text-white">Information</h3>
+                <p className="text-gray-300">State your claim and give an example.</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <FontAwesomeIcon
+                icon={faBullhorn}
+                className="text-[#F6642D] text-xl"
+              />
+              <div>
+                <h3 className="text-lg font-semibold text-white">Facts</h3>
+                <p className="text-gray-300">Slanderous rants aren't helpful.</p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-3">
+              <FontAwesomeIcon
+                icon={faCheckCircle}
+                className="text-[#F6642D] text-xl"
+              />
+              <div>
+                <h3 className="text-lg font-semibold text-white">Relevance</h3>
+                <p className="text-gray-300">Leave out prices; they vary by location.</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Name, City, and Email */}
-        {['name', 'city', 'email'].map((field) => (
-          <div key={field}>
-            <label htmlFor={field} className="block text-lg font-semibold mb-2">
-              {field.charAt(0).toUpperCase() + field.slice(1)}{' '}
-              {field !== 'email' && <span className="text-red-500">*</span>}
-            </label>
-            <input
-              type={field === 'email' ? 'email' : 'text'}
-              id={field}
-              name={field}
-              placeholder={`Enter your ${field}`}
-              value={formData[field as keyof typeof formData]}
-              onChange={handleInputChange}
-              className="input input-bordered w-full text-black"
-              required={field !== 'email'}
+        {/* Column 2 */}
+        <div className="bg-gray-900 bg-opacity-90 p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold text-white mb-4">Post a Review</h2>
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+          >
+            <RatingField
+              label="Your Overall Rating"
+              name="overallRating"
+              value={formData.overallRating}
+              onChange={handleRatingChange}
             />
-          </div>
-        ))}
+            <RatingField
+              label="Service"
+              name="serviceRating"
+              value={formData.serviceRating}
+              onChange={handleRatingChange}
+            />
+            <RatingField
+              label="Pricing"
+              name="pricingRating"
+              value={formData.pricingRating}
+              onChange={handleRatingChange}
+            />
+            <RatingField
+              label="Speed"
+              name="speedRating"
+              value={formData.speedRating}
+              onChange={handleRatingChange}
+            />
 
-        {/* reCAPTCHA */}
-        <ReCAPTCHA sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi" onChange={handleCaptchaChange} />
+            <div>
+              <label htmlFor="feedback" className="block text-lg font-semibold text-white mb-2">
+                Feedback <span className="text-[#D42E58]">*</span>
+              </label>
+              <textarea
+                id="feedback"
+                name="feedback"
+                placeholder="Write your feedback here"
+                value={formData.feedback}
+                onChange={handleInputChange}
+                required
+                className="textarea textarea-bordered w-full bg-gray-800 text-white border-[#F6642D] focus:ring-[#F6642D]"
+              />
+            </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="btn btn-primary w-full bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] hover:brightness-125 text-white"
-        >
-          Post Review
-        </button>
-      </form>
+            <div>
+              <label className="block text-lg font-semibold text-white mb-2">
+                Would you recommend World Mobile? <span className="text-[#D42E58]">*</span>
+              </label>
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  className={`btn ${
+                    formData.recommend === 'Yes' ? 'bg-[#F6642D] text-white' : 'btn-outline'
+                  } hover:bg-[#F6642D]`}
+                  onClick={() => setFormData({ ...formData, recommend: 'Yes' })}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  className={`btn ${
+                    formData.recommend === 'No' ? 'bg-[#F6642D] text-white' : 'btn-outline'
+                  } hover:bg-[#F6642D]`}
+                  onClick={() => setFormData({ ...formData, recommend: 'No' })}
+                >
+                  No
+                </button>
+              </div>
+            </div>
 
+            {['name', 'city', 'email'].map((field) => (
+              <div key={field}>
+                <label
+                  htmlFor={field}
+                  className="block text-lg font-semibold text-white mb-2"
+                >
+                  {field.charAt(0).toUpperCase() + field.slice(1)}{' '}
+                  {field !== 'email' && <span className="text-[#D42E58]">*</span>}
+                </label>
+                <input
+                  type={field === 'email' ? 'email' : 'text'}
+                  id={field}
+                  name={field}
+                  placeholder={`Enter your ${field}`}
+                  value={formData[field as keyof typeof formData]}
+                  onChange={handleInputChange}
+                  className="input input-bordered w-full bg-gray-800 text-white border-[#F6642D] focus:ring-[#F6642D]"
+                  required={field !== 'email'}
+                />
+              </div>
+            ))}
+
+            <ReCAPTCHA
+              sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi"
+              onChange={handleCaptchaChange}
+            />
+
+            <button
+              type="submit"
+              className="btn btn-primary w-full bg-gradient-to-r from-[#F6642D] to-[#D42E58] hover:brightness-125 text-white"
+            >
+              Post Review
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Status Message */}
       {status && (
-        <p className="mt-4 text-center font-semibold">
+        <p className="mt-6 text-center text-lg font-semibold">
           {status.startsWith('Error') ? (
             <span className="text-[#D42E58]">{status}</span>
           ) : (

@@ -31,9 +31,12 @@ exports.handler = async (event) => {
       };
     }
 
+    // Remove captchaToken from the data object
+    const { captchaToken: _, ...reviewData } = data;
+
     // Save review to Firestore
     const docRef = await db.collection('reviews').add({
-      ...data,
+      ...reviewData,
       createdAt: new Date().toISOString(),
     });
 
