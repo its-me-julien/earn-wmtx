@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faBullhorn, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import RatingField from './review/RatingField';
 
 const ReviewForm = () => {
   const [formData, setFormData] = useState({
@@ -121,76 +120,76 @@ const ReviewForm = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Ratings Section */}
             <div className="grid grid-cols-2 gap-y-6">
-                {/* First Row */}
-                <div className="grid grid-cols-2 items-center gap-x-4">
-                    <span className="text-sm text-white w-32 text-right">Overall Rating</span>
-                    <div className="rating flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <input
-                        key={`overall-${star}`}
-                        type="radio"
-                        name="overallRating"
-                        className="mask mask-star-2 bg-[#F6642D]"
-                        value={star}
-                        checked={formData.overallRating === star}
-                        onChange={() => handleRatingChange('overallRating', star)}
-                        />
-                    ))}
-                    </div>
-                </div>
+        {/* First Row */}
+        <div className="grid grid-cols-2 items-center gap-x-4">
+            <span className="text-sm text-white w-32 text-right">Overall Rating</span>
+            <div className="rating flex">
+            {[1, 2, 3, 4, 5].map((star) => (
+                <input
+                key={`overall-${star}`}
+                type="radio"
+                name="overallRating"
+                className="mask mask-star-2 bg-[#F6642D]"
+                value={star}
+                checked={formData.overallRating === star}
+                onChange={() => handleRatingChange('overallRating', star)}
+                />
+            ))}
+            </div>
+        </div>
 
-                <div className="grid grid-cols-2 items-center gap-x-4">
-                    <span className="text-sm text-white w-32 text-right">Pricing</span>
-                    <div className="rating flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <input
-                        key={`pricing-${star}`}
-                        type="radio"
-                        name="pricingRating"
-                        className="mask mask-star-2 bg-[#F6642D]"
-                        value={star}
-                        checked={formData.pricingRating === star}
-                        onChange={() => handleRatingChange('pricingRating', star)}
-                        />
-                    ))}
-                    </div>
-                </div>
+        <div className="grid grid-cols-2 items-center gap-x-4">
+            <span className="text-sm text-white w-32 text-right">Pricing</span>
+            <div className="rating flex">
+            {[1, 2, 3, 4, 5].map((star) => (
+                <input
+                key={`pricing-${star}`}
+                type="radio"
+                name="pricingRating"
+                className="mask mask-star-2 bg-[#F6642D]"
+                value={star}
+                checked={formData.pricingRating === star}
+                onChange={() => handleRatingChange('pricingRating', star)}
+                />
+            ))}
+            </div>
+        </div>
 
-                {/* Second Row */}
-                <div className="grid grid-cols-2 items-center gap-x-4">
-                    <span className="text-sm text-white w-32 text-right">Service</span>
-                    <div className="rating flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <input
-                        key={`service-${star}`}
-                        type="radio"
-                        name="serviceRating"
-                        className="mask mask-star-2 bg-[#F6642D]"
-                        value={star}
-                        checked={formData.serviceRating === star}
-                        onChange={() => handleRatingChange('serviceRating', star)}
-                        />
-                    ))}
-                    </div>
-                </div>
+        {/* Second Row */}
+        <div className="grid grid-cols-2 items-center gap-x-4">
+            <span className="text-sm text-white w-32 text-right">Service</span>
+            <div className="rating flex">
+            {[1, 2, 3, 4, 5].map((star) => (
+                <input
+                key={`service-${star}`}
+                type="radio"
+                name="serviceRating"
+                className="mask mask-star-2 bg-[#F6642D]"
+                value={star}
+                checked={formData.serviceRating === star}
+                onChange={() => handleRatingChange('serviceRating', star)}
+                />
+            ))}
+            </div>
+        </div>
 
-                <div className="grid grid-cols-2 items-center gap-x-4">
-                    <span className="text-sm text-white w-32 text-right">Speed</span>
-                    <div className="rating flex">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <input
-                        key={`speed-${star}`}
-                        type="radio"
-                        name="speedRating"
-                        className="mask mask-star-2 bg-[#F6642D]"
-                        value={star}
-                        checked={formData.speedRating === star}
-                        onChange={() => handleRatingChange('speedRating', star)}
-                        />
-                    ))}
-                    </div>
-                </div>
-                </div>
+        <div className="grid grid-cols-2 items-center gap-x-4">
+            <span className="text-sm text-white w-32 text-right">Speed</span>
+            <div className="rating flex">
+            {[1, 2, 3, 4, 5].map((star) => (
+                <input
+                key={`speed-${star}`}
+                type="radio"
+                name="speedRating"
+                className="mask mask-star-2 bg-[#F6642D]"
+                value={star}
+                checked={formData.speedRating === star}
+                onChange={() => handleRatingChange('speedRating', star)}
+                />
+            ))}
+            </div>
+        </div>
+        </div>
 
             {/* Feedback Section */}
             <textarea
