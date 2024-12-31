@@ -1,4 +1,5 @@
 import React from 'react';
+import Head from 'next/head';
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import JoinDiscussion from '../../components/pages/broadband-reviews/discussions';
@@ -8,6 +9,11 @@ import PostReview from '../../components/pages/broadband-reviews/post-review';
 const BroadbandReviewsPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-black via-[#150a2c] to-[#000000]">
+      {/* Add Google reCAPTCHA Script */}
+      <Head>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+      </Head>
+
       {/* Header and Meta Fields */}
       <Header />
       <MetaFields />
@@ -15,7 +21,6 @@ const BroadbandReviewsPage = () => {
       {/* Main Content */}
       <main className="flex-grow w-full py-12 px-4">
         <div className="container mx-auto text-white space-y-16">
-
           {/* Page Header */}
           <header
             className="grid grid-cols-1 gap-6 max-w-3xl mx-auto px-4"
@@ -33,17 +38,12 @@ const BroadbandReviewsPage = () => {
             <p className="mb-6 leading-relaxed text-lg text-gray-300 text-center px-4 md:px-6">
               Wondering if World Mobile Broadband is right for you? Explore real customer reviews and read honest opinions about speeds, reliability, and value to make the best choice for your internet needs.
             </p>
-
           </header>
 
-
-
-           {/* Post New Review */}
-           <section id="post-review">
+          {/* Post New Review */}
+          <section id="post-review">
             <PostReview />
           </section>
-
-
 
           {/* Join Discussion Section */}
           <section

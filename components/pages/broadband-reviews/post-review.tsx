@@ -1,28 +1,58 @@
 'use client';
 
 import { useState } from 'react';
+declare const grecaptcha: any;
 
 const CreateReviewForm = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [formData, setFormData] = useState({
+    overallRating: '',
+    serviceRating: '',
+    pricingRating: '',
+    speedRating: '',
+    feedback: '',
+    recommend: '',
+    name: '',
+    city: '',
+  });
   const [status, setStatus] = useState('');
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('Submitting...');
-  
+
+    // Validate reCAPTCHA
+    const captchaToken = grecaptcha.getResponse();
+    if (!captchaToken) {
+      setStatus('Please complete the CAPTCHA');
+      return;
+    }
+
     try {
       const response = await fetch('/.netlify/functions/submitReview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content }),
+        body: JSON.stringify({ ...formData, captchaToken }),
       });
-  
+
       const result = await response.json();
       if (response.ok) {
         setStatus('Review submitted successfully!');
-        setTitle('');
-        setContent('');
+        setFormData({
+          overallRating: '',
+          serviceRating: '',
+          pricingRating: '',
+          speedRating: '',
+          feedback: '',
+          recommend: '',
+          name: '',
+          city: '',
+        });
+        grecaptcha.reset(); // Reset reCAPTCHA after submission
       } else {
         setStatus(`Error: ${result.error}`);
       }
@@ -31,51 +61,120 @@ const CreateReviewForm = () => {
       setStatus('An unexpected error occurred.');
     }
   };
-  
 
   return (
     <div className="container mx-auto py-12 px-6 text-white">
-      <h1 className="text-4xl font-bold text-center mb-8">Create a New Review</h1>
+      <h1 className="text-4xl font-bold text-center mb-8">Post a Review</h1>
       <form
         onSubmit={handleSubmit}
         className="bg-[rgba(255,255,255,0.1)] rounded-lg shadow-lg p-8 max-w-xl mx-auto space-y-6"
       >
+        {/* Rating Fields */}
+        {['overallRating', 'serviceRating', 'pricingRating', 'speedRating'].map((field) => (
+          <div key={field}>
+            <label htmlFor={field} className="block text-lg font-semibold mb-2">
+              {field.replace(/([A-Z])/g, ' $1')} (1 to 5 stars)
+            </label>
+            <select
+              id={field}
+              name={field}
+              value={formData[field as keyof typeof formData]}
+              onChange={handleInputChange}
+              required
+              className="select select-bordered w-full"
+            >
+              <option value="" disabled>
+                Select a rating
+              </option>
+              {[1, 2, 3, 4, 5].map((rating) => (
+                <option key={rating} value={rating}>
+                  {rating} Star{rating > 1 ? 's' : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+        ))}
+
+        {/* Feedback */}
         <div>
-          <label htmlFor="title" className="block text-lg font-semibold mb-2">
-            Title
+          <label htmlFor="feedback" className="block text-lg font-semibold mb-2">
+            Feedback
           </label>
-          <input
-            type="text"
-            id="title"
-            placeholder="Enter a title for your review"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+          <textarea
+            id="feedback"
+            name="feedback"
+            placeholder="Write your feedback here (max 500 characters)"
+            value={formData.feedback}
+            onChange={handleInputChange}
+            maxLength={500}
             required
-            className="input input-bordered w-full text-black"
+            className="textarea textarea-bordered w-full h-32"
           />
         </div>
 
+        {/* Recommend */}
         <div>
-          <label htmlFor="content" className="block text-lg font-semibold mb-2">
-            Content
-          </label>
-          <textarea
-            id="content"
-            placeholder="Write your review here"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            className="textarea textarea-bordered w-full text-black h-32"
-          ></textarea>
+          <label className="block text-lg font-semibold mb-2">Would you recommend World Mobile?</label>
+          <div className="flex space-x-4">
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="recommend"
+                value="Yes"
+                checked={formData.recommend === 'Yes'}
+                onChange={handleInputChange}
+                required
+                className="radio radio-primary"
+              />
+              <span>Yes</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="radio"
+                name="recommend"
+                value="No"
+                checked={formData.recommend === 'No'}
+                onChange={handleInputChange}
+                required
+                className="radio radio-primary"
+              />
+              <span>No</span>
+            </label>
+          </div>
         </div>
 
+        {/* Name and City */}
+        {['name', 'city'].map((field) => (
+          <div key={field}>
+            <label htmlFor={field} className="block text-lg font-semibold mb-2">
+              {field.charAt(0).toUpperCase() + field.slice(1)}
+            </label>
+            <input
+              type="text"
+              id={field}
+              name={field}
+              placeholder={`Enter your ${field}`}
+              value={formData[field as keyof typeof formData]}
+              onChange={handleInputChange}
+              required
+              className="input input-bordered w-full"
+            />
+          </div>
+        ))}
+
+        {/* reCAPTCHA */}
+        <div className="g-recaptcha" data-sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi"></div>
+
+        {/* Submit Button */}
         <button
           type="submit"
           className="btn btn-primary w-full bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] hover:brightness-125 text-white"
         >
-          Submit Review
+          Post Review
         </button>
       </form>
+
+      {/* Status Message */}
       {status && (
         <p className="mt-4 text-center font-semibold">
           {status.startsWith('Error') ? (

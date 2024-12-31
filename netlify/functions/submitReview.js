@@ -1,12 +1,12 @@
+const fetch = require('node-fetch');
 const admin = require('firebase-admin');
 
 // Initialize Firebase Admin SDK
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://worldmobilereviews.firebaseio.com', // Replace with your Firebase project ID
+    databaseURL: 'https://worldmobilereviews.firebaseio.com',
   });
 }
 
@@ -16,17 +16,24 @@ exports.handler = async (event) => {
   try {
     const data = JSON.parse(event.body);
 
-    if (!data.title || !data.content) {
+    // Validate reCAPTCHA
+    const captchaToken = data.captchaToken;
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+    const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`;
+
+    const captchaVerifyResponse = await fetch(verificationUrl, { method: 'POST' });
+    const captchaVerifyData = await captchaVerifyResponse.json();
+
+    if (!captchaVerifyData.success) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Title and content are required' }),
+        body: JSON.stringify({ error: 'CAPTCHA validation failed' }),
       };
     }
 
-    // Save to Firestore
+    // Save review to Firestore
     const docRef = await db.collection('reviews').add({
-      title: data.title,
-      content: data.content,
+      ...data,
       createdAt: new Date().toISOString(),
     });
 
@@ -35,10 +42,10 @@ exports.handler = async (event) => {
       body: JSON.stringify({ message: 'Review saved successfully', id: docRef.id }),
     };
   } catch (error) {
-    console.error('Error saving review:', error);
+    console.error('Error:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to save review' }),
+      body: JSON.stringify({ error: 'Internal Server Error' }),
     };
   }
 };
