@@ -14,6 +14,11 @@ interface Review {
   createdAt: string;
 }
 
+interface GetReviewsResponse {
+  reviews: Review[];
+  total: number;
+}
+
 const LatestBroadbandReviews: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,15 +40,33 @@ const LatestBroadbandReviews: React.FC = () => {
             offset: (page - 1) * reviewsPerPage,
           }),
         });
-        const data = await response.json();
-        if (response.ok) {
-          setReviews(data.reviews);
-          setTotalReviews(data.total || 0);
-        } else {
-          console.error(data.error);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch reviews");
         }
+
+        // Cast the API response to the expected type
+        const data: GetReviewsResponse = await response.json();
+
+        // Sanitize reviews
+        const sanitizedReviews = data.reviews.map((review) => ({
+          id: review.id || "",
+          overallRating: Number(review.overallRating) || 0,
+          serviceRating: Number(review.serviceRating) || 0,
+          pricingRating: Number(review.pricingRating) || 0,
+          speedRating: Number(review.speedRating) || 0,
+          feedback: review.feedback || "",
+          name: review.name || "Anonymous",
+          city: review.city || "Unknown",
+          createdAt: review.createdAt || "",
+        }));
+
+        setReviews(sanitizedReviews);
+        setTotalReviews(data.total || 0);
       } catch (error) {
         console.error("Error fetching reviews:", error);
+        setReviews([]);
+        setTotalReviews(0);
       } finally {
         setLoading(false);
       }
@@ -52,7 +75,7 @@ const LatestBroadbandReviews: React.FC = () => {
     fetchReviews();
   }, [page]);
 
-  const totalPages = Math.ceil(totalReviews / reviewsPerPage);
+  const totalPages = Math.ceil((totalReviews || 0) / reviewsPerPage);
 
   return (
     <div className="flex justify-center py-10 px-4">
@@ -82,7 +105,7 @@ const LatestBroadbandReviews: React.FC = () => {
                         <span
                           key={i}
                           className={`mask mask-star-2 ${
-                            i < review.overallRating ? "bg-[#F6642D]" : "bg-gray-500"
+                            i < (Number(review.overallRating) || 0) ? "bg-[#F6642D]" : "bg-gray-500"
                           }`}
                         ></span>
                       ))}
@@ -104,15 +127,15 @@ const LatestBroadbandReviews: React.FC = () => {
                   <div className="mt-6 space-y-2">
                     <p className="text-sm font-aeonik-regular text-gray-300">
                       <span className="font-aeonik-bold text-white">Service:</span>{" "}
-                      {review.serviceRating}/5
+                      {(Number(review.serviceRating) || 0).toFixed(1)}/5
                     </p>
                     <p className="text-sm font-aeonik-regular text-gray-300">
                       <span className="font-aeonik-bold text-white">Pricing:</span>{" "}
-                      {review.pricingRating}/5
+                      {(Number(review.pricingRating) || 0).toFixed(1)}/5
                     </p>
                     <p className="text-sm font-aeonik-regular text-gray-300">
                       <span className="font-aeonik-bold text-white">Speed:</span>{" "}
-                      {review.speedRating}/5
+                      {(Number(review.speedRating) || 0).toFixed(1)}/5
                     </p>
                   </div>
                 </div>
