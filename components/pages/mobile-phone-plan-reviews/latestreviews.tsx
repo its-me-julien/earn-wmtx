@@ -129,7 +129,7 @@ const LatestMobilePlanReviews: React.FC = () => {
                   </div>
                   <blockquote className="mt-4 text-sm font-aeonik-regular text-gray-300 italic border-l-4 pl-4 border-[#F6642D]">
                     {review.feedback.length > 200
-                      ? `${review.feedback.slice(0, 200)}...`
+                      ? `${review.feedback.slice(0, 2000)}...`
                       : review.feedback}
                   </blockquote>
                   <div className="mt-6 space-y-2">

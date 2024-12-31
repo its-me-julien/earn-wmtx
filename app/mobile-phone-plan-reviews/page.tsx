@@ -29,7 +29,7 @@ const MobilePlanReviewsPage = () => {
         const response = await fetch("/.netlify/functions/getReviewSummary", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ collection: "mobile_plan_review" }),
+          body: JSON.stringify({ collection: "mobileplan_review" }),
         });
 
         const data = await response.json();
