@@ -1,16 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-
-// TypeScript declaration for reCAPTCHA
-declare global {
-  interface Window {
-    grecaptcha: {
-      getResponse: () => string;
-      reset: () => void;
-    };
-  }
-}
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const CreateReviewForm = () => {
   const [formData, setFormData] = useState({
@@ -24,18 +15,21 @@ const CreateReviewForm = () => {
     city: '',
   });
   const [status, setStatus] = useState('');
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null); // Store the captcha token
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleCaptchaChange = (token: string | null) => {
+    setCaptchaToken(token); // Update the captcha token when it changes
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('Submitting...');
 
-    // Validate reCAPTCHA
-    const captchaToken = window.grecaptcha.getResponse();
     if (!captchaToken) {
       setStatus('Please complete the CAPTCHA');
       return;
@@ -61,7 +55,7 @@ const CreateReviewForm = () => {
           name: '',
           city: '',
         });
-        window.grecaptcha.reset(); // Reset reCAPTCHA after submission
+        setCaptchaToken(null); // Reset the token
       } else {
         setStatus(`Error: ${result.error}`);
       }
@@ -172,7 +166,10 @@ const CreateReviewForm = () => {
         ))}
 
         {/* reCAPTCHA */}
-        <div className="g-recaptcha" data-sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi"></div>
+        <ReCAPTCHA
+          sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi" // Replace with your actual site key
+          onChange={handleCaptchaChange}
+        />
 
         {/* Submit Button */}
         <button

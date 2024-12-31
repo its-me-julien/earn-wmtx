@@ -1,5 +1,4 @@
 import React from 'react';
-import Head from 'next/head';
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import JoinDiscussion from '../../components/pages/broadband-reviews/discussions';
@@ -9,11 +8,6 @@ import PostReview from '../../components/pages/broadband-reviews/post-review';
 const BroadbandReviewsPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-black via-[#150a2c] to-[#000000]">
-      {/* Add Google reCAPTCHA Script */}
-      <Head>
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-      </Head>
-
       {/* Header and Meta Fields */}
       <Header />
       <MetaFields />
