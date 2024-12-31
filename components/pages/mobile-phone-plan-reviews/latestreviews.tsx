@@ -37,7 +37,7 @@ const LatestMobilePlanReviews: React.FC = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            collection: "mobile_plan_review",
+            collection: "mobileplan_review",
             limit: reviewsPerPage,
             offset: (page - 1) * reviewsPerPage,
           }),
