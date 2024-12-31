@@ -13,7 +13,7 @@ const ReviewForm = () => {
     pricingRating: 1,
     speedRating: 1,
     feedback: '',
-    recommend: '',
+    recommend: 'Yes',
     name: '',
     city: '',
     email: '',
@@ -59,7 +59,7 @@ const ReviewForm = () => {
           pricingRating: 1,
           speedRating: 1,
           feedback: '',
-          recommend: '',
+          recommend: 'Yes',
           name: '',
           city: '',
           email: '',
@@ -79,7 +79,7 @@ const ReviewForm = () => {
       {/* Two-Column Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         {/* Column 1 */}
-        <div className="bg-gray-900 bg-opacity-90 p-6 rounded-lg shadow-lg">
+        <div className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-bold text-white mb-4">Review World Mobile Broadband</h2>
           <p className="text-white mb-6">
             Help people make smarter choices with their internet provider service. Your honest
@@ -89,31 +89,31 @@ const ReviewForm = () => {
             <div className="flex items-center space-x-3">
               <FontAwesomeIcon
                 icon={faInfoCircle}
-                className="text-[#F6642D] text-xl"
+                className="text-white text-xl bg-[#5A2FBA] rounded-full p-2"
               />
               <div>
                 <h3 className="text-lg font-semibold text-white">Information</h3>
-                <p className="text-gray-300">State your claim and give an example.</p>
+                <p className="text-gray-200">State your claim and give an example.</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               <FontAwesomeIcon
                 icon={faBullhorn}
-                className="text-[#F6642D] text-xl"
+                className="text-white text-xl bg-[#5A2FBA] rounded-full p-2"
               />
               <div>
                 <h3 className="text-lg font-semibold text-white">Facts</h3>
-                <p className="text-gray-300">Slanderous rants aren&#39;t helpful.</p>
+                <p className="text-gray-200">Slanderous rants aren&#39;t helpful.</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               <FontAwesomeIcon
                 icon={faCheckCircle}
-                className="text-[#F6642D] text-xl"
+                className="text-white text-xl bg-[#5A2FBA] rounded-full p-2"
               />
               <div>
                 <h3 className="text-lg font-semibold text-white">Relevance</h3>
-                <p className="text-gray-300">Leave out prices; they vary by location.</p>
+                <p className="text-gray-200">Leave out prices; they vary by location.</p>
               </div>
             </div>
           </div>
@@ -126,30 +126,33 @@ const ReviewForm = () => {
             onSubmit={handleSubmit}
             className="space-y-6"
           >
-            <RatingField
-              label="Your Overall Rating"
-              name="overallRating"
-              value={formData.overallRating}
-              onChange={handleRatingChange}
-            />
-            <RatingField
-              label="Service"
-              name="serviceRating"
-              value={formData.serviceRating}
-              onChange={handleRatingChange}
-            />
-            <RatingField
-              label="Pricing"
-              name="pricingRating"
-              value={formData.pricingRating}
-              onChange={handleRatingChange}
-            />
-            <RatingField
-              label="Speed"
-              name="speedRating"
-              value={formData.speedRating}
-              onChange={handleRatingChange}
-            />
+            {/* Ratings Section */}
+            <div className="grid grid-cols-2 gap-4">
+              <RatingField
+                label="Your Overall Rating"
+                name="overallRating"
+                value={formData.overallRating}
+                onChange={handleRatingChange}
+              />
+              <RatingField
+                label="Service"
+                name="serviceRating"
+                value={formData.serviceRating}
+                onChange={handleRatingChange}
+              />
+              <RatingField
+                label="Pricing"
+                name="pricingRating"
+                value={formData.pricingRating}
+                onChange={handleRatingChange}
+              />
+              <RatingField
+                label="Speed"
+                name="speedRating"
+                value={formData.speedRating}
+                onChange={handleRatingChange}
+              />
+            </div>
 
             <div>
               <label htmlFor="feedback" className="block text-lg font-semibold text-white mb-2">
@@ -162,7 +165,7 @@ const ReviewForm = () => {
                 value={formData.feedback}
                 onChange={handleInputChange}
                 required
-                className="textarea textarea-bordered w-full bg-gray-800 text-white border-[#F6642D] focus:ring-[#F6642D]"
+                className="textarea textarea-bordered w-full h-40 bg-gray-800 text-white border-[#5A2FBA] focus:ring-[#5A2FBA]"
               />
             </div>
 
@@ -208,7 +211,7 @@ const ReviewForm = () => {
                   placeholder={`Enter your ${field}`}
                   value={formData[field as keyof typeof formData]}
                   onChange={handleInputChange}
-                  className="input input-bordered w-full bg-gray-800 text-white border-[#F6642D] focus:ring-[#F6642D]"
+                  className="input input-bordered w-full bg-gray-800 text-white border-[#5A2FBA] focus:ring-[#5A2FBA]"
                   required={field !== 'email'}
                 />
               </div>
@@ -221,7 +224,7 @@ const ReviewForm = () => {
 
             <button
               type="submit"
-              className="btn btn-primary w-full bg-gradient-to-r from-[#F6642D] to-[#D42E58] hover:brightness-125 text-white"
+              className="btn w-full bg-gradient-to-r from-[#F6642D] to-[#D42E58] text-white hover:brightness-125"
             >
               Post Review
             </button>
