@@ -1,29 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import RatingField from '../../review/RatingField';
 
-const CreateReviewForm = () => {
+const ReviewForm = () => {
   const [formData, setFormData] = useState({
-    overallRating: '',
-    serviceRating: '',
-    pricingRating: '',
-    speedRating: '',
+    overallRating: 0,
+    serviceRating: 0,
+    pricingRating: 0,
+    speedRating: 0,
     feedback: '',
     recommend: '',
     name: '',
     city: '',
   });
   const [status, setStatus] = useState('');
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null); // Store the captcha token
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleRatingChange = (name: string, value: number) => {
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handleCaptchaChange = (token: string | null) => {
-    setCaptchaToken(token); // Update the captcha token when it changes
+    setCaptchaToken(token);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,16 +51,16 @@ const CreateReviewForm = () => {
       if (response.ok) {
         setStatus('Review submitted successfully!');
         setFormData({
-          overallRating: '',
-          serviceRating: '',
-          pricingRating: '',
-          speedRating: '',
+          overallRating: 0,
+          serviceRating: 0,
+          pricingRating: 0,
+          speedRating: 0,
           feedback: '',
           recommend: '',
           name: '',
           city: '',
         });
-        setCaptchaToken(null); // Reset the token
+        setCaptchaToken(null);
       } else {
         setStatus(`Error: ${result.error}`);
       }
@@ -73,51 +78,52 @@ const CreateReviewForm = () => {
         className="bg-[rgba(255,255,255,0.1)] rounded-lg shadow-lg p-8 max-w-xl mx-auto space-y-6"
       >
         {/* Rating Fields */}
-        {['overallRating', 'serviceRating', 'pricingRating', 'speedRating'].map((field) => (
-          <div key={field}>
-            <label htmlFor={field} className="block text-lg font-semibold mb-2">
-              {field.replace(/([A-Z])/g, ' $1')} (1 to 5 stars)
-            </label>
-            <select
-              id={field}
-              name={field}
-              value={formData[field as keyof typeof formData]}
-              onChange={handleInputChange}
-              required
-              className="select select-bordered w-full"
-            >
-              <option value="" disabled>
-                Select a rating
-              </option>
-              {[1, 2, 3, 4, 5].map((rating) => (
-                <option key={rating} value={rating}>
-                  {rating} Star{rating > 1 ? 's' : ''}
-                </option>
-              ))}
-            </select>
-          </div>
-        ))}
+        <RatingField
+          label="Your Overall Rating"
+          name="overallRating"
+          value={formData.overallRating}
+          onChange={handleRatingChange}
+        />
+        <RatingField
+          label="Service"
+          name="serviceRating"
+          value={formData.serviceRating}
+          onChange={handleRatingChange}
+        />
+        <RatingField
+          label="Pricing"
+          name="pricingRating"
+          value={formData.pricingRating}
+          onChange={handleRatingChange}
+        />
+        <RatingField
+          label="Speed"
+          name="speedRating"
+          value={formData.speedRating}
+          onChange={handleRatingChange}
+        />
 
         {/* Feedback */}
         <div>
           <label htmlFor="feedback" className="block text-lg font-semibold mb-2">
-            Feedback
+            Feedback <span className="text-red-500">*</span>
           </label>
           <textarea
             id="feedback"
             name="feedback"
-            placeholder="Write your feedback here (max 500 characters)"
+            placeholder="Write your feedback here"
             value={formData.feedback}
             onChange={handleInputChange}
-            maxLength={500}
             required
-            className="textarea textarea-bordered w-full h-32"
+            className="textarea textarea-bordered w-full text-black h-32"
           />
         </div>
 
-        {/* Recommend */}
+        {/* Recommendation */}
         <div>
-          <label className="block text-lg font-semibold mb-2">Would you recommend World Mobile?</label>
+          <label className="block text-lg font-semibold mb-2">
+            Would you recommend World Mobile? <span className="text-red-500">*</span>
+          </label>
           <div className="flex space-x-4">
             <label className="flex items-center space-x-2">
               <input
@@ -150,7 +156,7 @@ const CreateReviewForm = () => {
         {['name', 'city'].map((field) => (
           <div key={field}>
             <label htmlFor={field} className="block text-lg font-semibold mb-2">
-              {field.charAt(0).toUpperCase() + field.slice(1)}
+              {field.charAt(0).toUpperCase() + field.slice(1)} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -160,14 +166,14 @@ const CreateReviewForm = () => {
               value={formData[field as keyof typeof formData]}
               onChange={handleInputChange}
               required
-              className="input input-bordered w-full"
+              className="input input-bordered w-full text-black"
             />
           </div>
         ))}
 
         {/* reCAPTCHA */}
         <ReCAPTCHA
-          sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi" // Replace with your actual site key
+          sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi"
           onChange={handleCaptchaChange}
         />
 
@@ -194,4 +200,4 @@ const CreateReviewForm = () => {
   );
 };
 
-export default CreateReviewForm;
+export default ReviewForm;

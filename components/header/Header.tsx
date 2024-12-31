@@ -61,7 +61,7 @@ export default function Header() {
             </li>
             <li>
               <Link href="https://worldmobile.club/" className="hover:bg-white hover:bg-opacity-20">
-                Community
+                The Club
               </Link>
             </li>
             <li>
