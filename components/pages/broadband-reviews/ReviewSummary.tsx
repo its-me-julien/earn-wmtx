@@ -10,15 +10,15 @@ interface RatingsBreakdown {
 }
 
 interface ReviewSummaryProps {
-  totalReviews: number;
-  averageRating: number;
-  ratingsBreakdown: RatingsBreakdown;
+  totalReviews: number | undefined;
+  averageRating: number | undefined;
+  ratingsBreakdown: RatingsBreakdown | undefined;
 }
 
 const ReviewSummary: React.FC<ReviewSummaryProps> = ({
-  totalReviews,
-  averageRating,
-  ratingsBreakdown,
+  totalReviews = 0,
+  averageRating = 0,
+  ratingsBreakdown = { overall: 0, service: 0, pricing: 0, speed: 0 },
 }) => {
   // Structured Data for SEO
   const structuredData = {
@@ -52,7 +52,7 @@ const ReviewSummary: React.FC<ReviewSummaryProps> = ({
 
   return (
     <div className="flex justify-center py-10">
-      <div className="w-full max-w-lg p-6 rounded-lg shadow-lg ">
+      <div className="w-full max-w-lg p-6 rounded-lg shadow-lg border border-[#5A2FBA]">
         {/* Output Structured Data */}
         <script
           type="application/ld+json"
