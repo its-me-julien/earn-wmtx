@@ -1,7 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-declare const grecaptcha: any;
+
+// TypeScript declaration for reCAPTCHA
+declare global {
+  interface Window {
+    grecaptcha: {
+      getResponse: () => string;
+      reset: () => void;
+    };
+  }
+}
 
 const CreateReviewForm = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +35,7 @@ const CreateReviewForm = () => {
     setStatus('Submitting...');
 
     // Validate reCAPTCHA
-    const captchaToken = grecaptcha.getResponse();
+    const captchaToken = window.grecaptcha.getResponse();
     if (!captchaToken) {
       setStatus('Please complete the CAPTCHA');
       return;
@@ -52,7 +61,7 @@ const CreateReviewForm = () => {
           name: '',
           city: '',
         });
-        grecaptcha.reset(); // Reset reCAPTCHA after submission
+        window.grecaptcha.reset(); // Reset reCAPTCHA after submission
       } else {
         setStatus(`Error: ${result.error}`);
       }
