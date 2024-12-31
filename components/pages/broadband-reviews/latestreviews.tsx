@@ -45,16 +45,18 @@ const LatestBroadbandReviews: React.FC = () => {
           throw new Error("Failed to fetch reviews");
         }
 
-        // Cast the API response to the expected type
         const data: GetReviewsResponse = await response.json();
 
-        // Sanitize reviews
+        if (!Array.isArray(data.reviews)) {
+          throw new Error("Invalid API response: reviews should be an array");
+        }
+
         const sanitizedReviews = data.reviews.map((review) => ({
           id: review.id || "",
-          overallRating: Number(review.overallRating) || 0,
-          serviceRating: Number(review.serviceRating) || 0,
-          pricingRating: Number(review.pricingRating) || 0,
-          speedRating: Number(review.speedRating) || 0,
+          overallRating: review.overallRating || 0,
+          serviceRating: review.serviceRating || 0,
+          pricingRating: review.pricingRating || 0,
+          speedRating: review.speedRating || 0,
           feedback: review.feedback || "",
           name: review.name || "Anonymous",
           city: review.city || "Unknown",
@@ -90,7 +92,6 @@ const LatestBroadbandReviews: React.FC = () => {
           <p className="text-center text-white">No reviews available yet.</p>
         ) : (
           <>
-            {/* Reviews List */}
             <div className="space-y-6">
               {reviews.map((review) => (
                 <div
@@ -98,14 +99,13 @@ const LatestBroadbandReviews: React.FC = () => {
                   className="p-6 rounded-lg shadow-lg"
                   style={{ background: "rgba(55,10,81,.19)" }}
                 >
-                  {/* Star Rating and Name */}
                   <div className="flex flex-col items-start space-y-2">
                     <div className="flex items-center space-x-1">
                       {[...Array(5)].map((_, i) => (
                         <span
                           key={i}
                           className={`mask mask-star-2 ${
-                            i < (Number(review.overallRating) || 0) ? "bg-[#F6642D]" : "bg-gray-500"
+                            i < review.overallRating ? "bg-[#F6642D]" : "bg-gray-500"
                           }`}
                         ></span>
                       ))}
@@ -117,37 +117,32 @@ const LatestBroadbandReviews: React.FC = () => {
                       </span>
                     </p>
                   </div>
-
-                  {/* Feedback */}
                   <blockquote className="mt-4 text-sm font-aeonik-regular text-gray-300 italic border-l-4 pl-4 border-[#F6642D]">
-                    {review.feedback}
+                    {review.feedback.length > 200
+                      ? `${review.feedback.slice(0, 200)}...`
+                      : review.feedback}
                   </blockquote>
-
-                  {/* Ratings */}
                   <div className="mt-6 space-y-2">
                     <p className="text-sm font-aeonik-regular text-gray-300">
-                      <span className="font-aeonik-bold text-white">Service:</span>{" "}
-                      {(Number(review.serviceRating) || 0).toFixed(1)}/5
+                      <span className="font-aeonik-bold text-white">Service:</span> {review.serviceRating.toFixed(1)}/5
                     </p>
                     <p className="text-sm font-aeonik-regular text-gray-300">
-                      <span className="font-aeonik-bold text-white">Pricing:</span>{" "}
-                      {(Number(review.pricingRating) || 0).toFixed(1)}/5
+                      <span className="font-aeonik-bold text-white">Pricing:</span> {review.pricingRating.toFixed(1)}/5
                     </p>
                     <p className="text-sm font-aeonik-regular text-gray-300">
-                      <span className="font-aeonik-bold text-white">Speed:</span>{" "}
-                      {(Number(review.speedRating) || 0).toFixed(1)}/5
+                      <span className="font-aeonik-bold text-white">Speed:</span> {review.speedRating.toFixed(1)}/5
                     </p>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Pagination Controls */}
             <div className="flex justify-center mt-6 space-x-2">
               <button
                 className="btn btn-primary btn-sm"
                 onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                 disabled={page === 1}
+                aria-label="Previous Page"
               >
                 Previous
               </button>
@@ -156,6 +151,7 @@ const LatestBroadbandReviews: React.FC = () => {
                   key={i + 1}
                   className={`btn btn-sm ${page === i + 1 ? "btn-active" : ""}`}
                   onClick={() => setPage(i + 1)}
+                  aria-label={`Page ${i + 1}`}
                 >
                   {i + 1}
                 </button>
@@ -164,6 +160,7 @@ const LatestBroadbandReviews: React.FC = () => {
                 className="btn btn-primary btn-sm"
                 onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={page === totalPages}
+                aria-label="Next Page"
               >
                 Next
               </button>

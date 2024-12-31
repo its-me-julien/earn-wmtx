@@ -6,6 +6,8 @@ import Footer from "../../components/footer/Footer";
 import JoinDiscussion from "../../components/pages/broadband-reviews/discussions";
 import MetaFields from "../../components/pages/broadband-reviews/metafields";
 import ReviewSummary from "../../components/pages/broadband-reviews/ReviewSummary";
+import PostReview from "../../components/pages/broadband-reviews/post-review";
+import Latestreviews from "../../components/pages/broadband-reviews/latestreviews";
 
 const BroadbandReviewsPage = () => {
   const [summaryData, setSummaryData] = useState({
@@ -97,6 +99,22 @@ const BroadbandReviewsPage = () => {
                 ratingsBreakdown={summaryData.ratingsBreakdown}
               />
             )}
+          </section>
+
+          {/* Latest Reviews */}
+          <section id="latest-reviews" aria-labelledby="latest-reviews-title">
+            <h2 id="latest-reviews-title" className="sr-only">
+              Latest Customer Reviews
+            </h2>
+            <Latestreviews />
+          </section>
+
+           {/* Post New Review */}
+          <section id="post-review" aria-labelledby="post-review-title">
+            <h2 id="post-review-title" className="sr-only">
+              Post a New Review
+            </h2>
+            <PostReview />
           </section>
 
           {/* Join Discussion Section */}
