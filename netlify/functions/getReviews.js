@@ -19,34 +19,39 @@ exports.handler = async (event) => {
     if (
       !collection ||
       typeof collection !== 'string' ||
-      !/^[a-zA-Z0-9_-]+$/.test(collection) || // Collection name validation
-      typeof limit !== 'number' ||
-      limit <= 0 ||
-      limit > 100 || // Enforce a reasonable limit
-      typeof offset !== 'number' ||
-      offset < 0
+      !/^[a-zA-Z0-9_-]+$/.test(collection) // Collection name validation
     ) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid input parameters.' }),
+        body: JSON.stringify({ error: 'Invalid collection name.' }),
+      };
+    }
+
+    if (
+      typeof limit !== 'number' ||
+      limit <= 0 ||
+      limit > 100 // Enforce a reasonable limit
+    ) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Invalid limit value. Must be between 1 and 100.' }),
+      };
+    }
+
+    if (typeof offset !== 'number' || offset < 0) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Invalid offset value. Must be zero or greater.' }),
       };
     }
 
     // Query Firestore with pagination
-    let query = db.collection(collection).orderBy('createdAt', 'desc').limit(limit);
-    if (offset > 0) {
-      const lastDoc = await db
-        .collection(collection)
-        .orderBy('createdAt', 'desc')
-        .offset(offset - 1)
-        .limit(1)
-        .get();
-      if (!lastDoc.empty) {
-        query = query.startAfter(lastDoc.docs[0]);
-      }
-    }
-
-    const snapshot = await query.get();
+    const snapshot = await db
+      .collection(collection)
+      .orderBy('createdAt', 'desc')
+      .offset(offset) // Firestore handles offsets here
+      .limit(limit)
+      .get();
 
     // Map the reviews from the snapshot
     const reviews = snapshot.docs.map((doc) => ({
@@ -54,7 +59,7 @@ exports.handler = async (event) => {
       ...doc.data(),
     }));
 
-    // Fetch total count using Firestore count() aggregation if available
+    // Fetch total count using Firestore count() aggregation
     const total = (await db.collection(collection).count().get()).data().count;
 
     return {
@@ -62,7 +67,11 @@ exports.handler = async (event) => {
       body: JSON.stringify({ reviews, total }),
     };
   } catch (error) {
-    console.error('Error fetching reviews:', { body: event.body, error: error.message, stack: error.stack });
+    console.error('Error fetching reviews:', {
+      body: event.body,
+      error: error.message,
+      stack: error.stack,
+    });
     return {
       statusCode: 500,
       body: JSON.stringify({ error: 'Internal Server Error' }),

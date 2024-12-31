@@ -21,10 +21,11 @@ exports.handler = async (event) => {
   try {
     const { collection } = JSON.parse(event.body);
 
-    if (!collection) {
+    // Validate input
+    if (!collection || typeof collection !== "string" || !/^[a-zA-Z0-9_-]+$/.test(collection)) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "Collection is required." }),
+        body: JSON.stringify({ error: "Invalid collection name." }),
       };
     }
 
@@ -32,12 +33,14 @@ exports.handler = async (event) => {
     const snapshot = await db.collection(collection).get();
 
     if (snapshot.empty) {
+      // Return a consistent empty response
       return {
         statusCode: 200,
         body: JSON.stringify({
           totalReviews: 0,
           averageOverallRating: 0,
           ratingsBreakdown: {
+            overall: 0,
             service: 0,
             pricing: 0,
             speed: 0,
@@ -71,12 +74,14 @@ exports.handler = async (event) => {
     });
 
     if (totalReviews === 0) {
+      // Safeguard in case all reviews are invalid
       return {
         statusCode: 200,
         body: JSON.stringify({
           totalReviews: 0,
           averageOverallRating: 0,
           ratingsBreakdown: {
+            overall: 0,
             service: 0,
             pricing: 0,
             speed: 0,
@@ -98,6 +103,7 @@ exports.handler = async (event) => {
         totalReviews,
         averageOverallRating,
         ratingsBreakdown: {
+          overall: averageOverallRating,
           service: averageService,
           pricing: averagePricing,
           speed: averageSpeed,
@@ -105,7 +111,10 @@ exports.handler = async (event) => {
       }),
     };
   } catch (error) {
-    console.error("Error fetching review summary:", error);
+    console.error("Error fetching review summary:", {
+      message: error.message,
+      stack: error.stack,
+    });
     return {
       statusCode: 500,
       body: JSON.stringify({ error: "Internal Server Error" }),

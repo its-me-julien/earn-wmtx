@@ -28,35 +28,41 @@ const ReviewSummary: React.FC<ReviewSummaryProps> = ({
     speed: ratingsBreakdown?.speed ?? 0,
   };
 
+  // Clamp averageRating for safety
+  const clampedAverageRating = Math.min(Math.max(averageRating, 0), 5);
+
   // Structured Data for SEO
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "AggregateRating",
-    "itemReviewed": {
-      "@type": "Service",
-      "name": "World Mobile Broadband",
-    },
-    "ratingValue": (averageRating ?? 0).toFixed(1),
-    "reviewCount": totalReviews ?? 0,
-    "ratingBreakdown": [
-      {
-        "name": "Overall",
-        "rating": safeRatingsBreakdown.overall.toFixed(1),
-      },
-      {
-        "name": "Service",
-        "rating": safeRatingsBreakdown.service.toFixed(1),
-      },
-      {
-        "name": "Pricing",
-        "rating": safeRatingsBreakdown.pricing.toFixed(1),
-      },
-      {
-        "name": "Speed",
-        "rating": safeRatingsBreakdown.speed.toFixed(1),
-      },
-    ],
-  };
+  const structuredData =
+    totalReviews > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "AggregateRating",
+          "itemReviewed": {
+            "@type": "Service",
+            "name": "World Mobile Broadband",
+          },
+          "ratingValue": clampedAverageRating.toFixed(1),
+          "reviewCount": totalReviews,
+          "ratingBreakdown": [
+            {
+              "name": "Overall",
+              "rating": safeRatingsBreakdown.overall.toFixed(1),
+            },
+            {
+              "name": "Service",
+              "rating": safeRatingsBreakdown.service.toFixed(1),
+            },
+            {
+              "name": "Pricing",
+              "rating": safeRatingsBreakdown.pricing.toFixed(1),
+            },
+            {
+              "name": "Speed",
+              "rating": safeRatingsBreakdown.speed.toFixed(1),
+            },
+          ],
+        }
+      : null;
 
   const metrics = [
     { name: "Overall", value: safeRatingsBreakdown.overall },
@@ -67,12 +73,14 @@ const ReviewSummary: React.FC<ReviewSummaryProps> = ({
 
   return (
     <div className="flex justify-center py-10">
-      <div className="w-full max-w-lg p-6 rounded-lg shadow-lg border border-[#5A2FBA]">
+      <div className="w-full max-w-lg p-6 rounded-lg shadow-lg ">
         {/* Output Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-        />
+        {structuredData && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          />
+        )}
 
         {/* Header Section */}
         <div className="mb-8">
@@ -80,7 +88,7 @@ const ReviewSummary: React.FC<ReviewSummaryProps> = ({
             {totalReviews} Reviews - Excellent
           </h2>
           <p className="text-sm font-aeonik-regular text-gray-300 text-center mt-2">
-            {"★".repeat(Math.round(averageRating))} - {averageRating.toFixed(1)}
+            {"★".repeat(Math.round(clampedAverageRating))} - {clampedAverageRating.toFixed(1)}
           </p>
         </div>
 
@@ -92,7 +100,7 @@ const ReviewSummary: React.FC<ReviewSummaryProps> = ({
                 {name}
               </p>
               <div className="flex items-center space-x-3">
-                <div className="w-full h-2 rounded bg-gray-800 overflow-hidden">
+                <div className="w-full h-2 rounded bg-gray-800 overflow-hidden" aria-label={`${name} rating: ${value.toFixed(1)}`}>
                   <div
                     className="h-2"
                     style={{

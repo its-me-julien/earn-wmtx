@@ -22,6 +22,7 @@ interface GetReviewsResponse {
 const LatestBroadbandReviews: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalReviews, setTotalReviews] = useState(0);
 
@@ -30,6 +31,7 @@ const LatestBroadbandReviews: React.FC = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       setLoading(true);
+      setError(null); // Reset error state
       try {
         const response = await fetch("/.netlify/functions/getReviews", {
           method: "POST",
@@ -67,6 +69,7 @@ const LatestBroadbandReviews: React.FC = () => {
         setTotalReviews(data.total || 0);
       } catch (error) {
         console.error("Error fetching reviews:", error);
+        setError("Failed to load reviews. Please try again later.");
         setReviews([]);
         setTotalReviews(0);
       } finally {
@@ -88,6 +91,8 @@ const LatestBroadbandReviews: React.FC = () => {
 
         {loading ? (
           <p className="text-center text-white">Loading reviews...</p>
+        ) : error ? (
+          <p className="text-center text-red-500">{error}</p>
         ) : reviews.length === 0 ? (
           <p className="text-center text-white">No reviews available yet.</p>
         ) : (
@@ -100,7 +105,7 @@ const LatestBroadbandReviews: React.FC = () => {
                   style={{ background: "rgba(55,10,81,.19)" }}
                 >
                   <div className="flex flex-col items-start space-y-2">
-                    <div className="flex items-center space-x-1">
+                    <div className="flex items-center space-x-1" aria-label={`Rating: ${review.overallRating} out of 5`}>
                       {[...Array(5)].map((_, i) => (
                         <span
                           key={i}
@@ -111,9 +116,9 @@ const LatestBroadbandReviews: React.FC = () => {
                       ))}
                     </div>
                     <p className="text-sm font-aeonik-bold text-white">
-                      {review.name || "Anonymous"}{" "}
+                      {review.name}{" "}
                       <span className="font-aeonik-regular text-gray-300">
-                        (City: {review.city || "Unknown"})
+                        (City: {review.city})
                       </span>
                     </p>
                   </div>
