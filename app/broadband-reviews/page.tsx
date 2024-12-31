@@ -4,6 +4,7 @@ import Footer from '../../components/footer/Footer';
 import JoinDiscussion from '../../components/pages/broadband-reviews/discussions';
 import MetaFields from '../../components/pages/broadband-reviews/metafields';
 import PostReview from '../../components/pages/broadband-reviews/post-review';
+import Latestreviews from '../../components/pages/broadband-reviews/latestreviews';
 
 const BroadbandReviewsPage = () => {
   return (
@@ -33,6 +34,9 @@ const BroadbandReviewsPage = () => {
               Wondering if World Mobile Broadband is right for you? Explore real customer reviews and read honest opinions about speeds, reliability, and value to make the best choice for your internet needs.
             </p>
           </header>
+
+
+          <Latestreviews />
 
           {/* Post New Review */}
           <section id="post-review">

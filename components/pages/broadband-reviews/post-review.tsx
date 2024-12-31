@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import sanitizeHtml from 'sanitize-html';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faBullhorn, faCheckCircle, faExclamationCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
 import RatingField from './review/RatingField';
@@ -24,7 +25,7 @@ const ReviewForm = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: sanitizeHtml(value) });
   };
 
   const handleRatingChange = (name: string, value: number) => {

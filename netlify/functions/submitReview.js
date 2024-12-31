@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const admin = require('firebase-admin');
+const sanitizeHtml = require('sanitize-html'); // Add this for sanitization.
 
 // Initialize Firebase Admin SDK
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
@@ -36,11 +37,54 @@ exports.handler = async (event) => {
     const collectionName =
       reviewType === 'broadband' ? 'broadband_review' : 'mobileplan_review';
 
-    // Save review to Firestore
-    const docRef = await db.collection(collectionName).add({
-      ...reviewData,
-      createdAt: new Date().toISOString(),
+    // Sanitize and validate input
+    const sanitizedFeedback = sanitizeHtml(reviewData.feedback, {
+      allowedTags: [], // Strip all HTML tags
+      allowedAttributes: {},
     });
+
+    const sanitizedData = {
+      ...reviewData,
+      feedback: sanitizedFeedback,
+      name: sanitizeHtml(reviewData.name || '', { allowedTags: [] }),
+      city: sanitizeHtml(reviewData.city || '', { allowedTags: [] }),
+      zipcode: sanitizeHtml(reviewData.zipcode || '', { allowedTags: [] }),
+      email: sanitizeHtml(reviewData.email || '', { allowedTags: [] }),
+      createdAt: new Date().toISOString(),
+    };
+
+    // Additional validations (e.g., rating bounds, email format, zipcode format)
+    if (!/^[a-zA-Z0-9\s-]{3,10}$/.test(sanitizedData.zipcode)) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Invalid zipcode format' }),
+      };
+    }
+
+    if (
+      sanitizedData.email &&
+      !/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(sanitizedData.email)
+    ) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Invalid email format' }),
+      };
+    }
+
+    if (
+      sanitizedData.overallRating < 1 ||
+      sanitizedData.overallRating > 5 ||
+      sanitizedData.serviceRating < 1 ||
+      sanitizedData.serviceRating > 5
+    ) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Invalid rating value' }),
+      };
+    }
+
+    // Save review to Firestore
+    const docRef = await db.collection(collectionName).add(sanitizedData);
 
     return {
       statusCode: 200,
