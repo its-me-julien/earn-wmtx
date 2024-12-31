@@ -2,8 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/header/Header";
+import Footer from "../components/footer/Footer";
 
 const NotFoundPage: React.FC = () => {
   return (

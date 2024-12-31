@@ -9,12 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        'aeonik-bold': ['var(--font-aeonik-bold)'],
-        'aeonik-bold-italic': ['var(--font-aeonik-bold-italic)'],
-        'aeonik-light': ['var(--font-aeonik-light)'],
-        'aeonik-light-italic': ['var(--font-aeonik-light-italic)'],
-        'aeonik-regular': ['var(--font-aeonik-regular)'],
-        'aeonik-regular-italic': ['var(--font-aeonik-regular-italic)'],
+        sans: ['var(--font-aeonik-regular)', 'sans-serif'], // Default sans for regular text
+        'aeonik-bold': ['var(--font-aeonik-bold)', 'sans-serif'], // Bold weight
+        'aeonik-bold-italic': ['var(--font-aeonik-bold-italic)', 'sans-serif'], // Bold italic
+        'aeonik-light': ['var(--font-aeonik-light)', 'sans-serif'], // Light weight
+        'aeonik-light-italic': ['var(--font-aeonik-light-italic)', 'sans-serif'], // Light italic
+        'aeonik-regular': ['var(--font-aeonik-regular)', 'sans-serif'], // Regular weight
+        'aeonik-regular-italic': ['var(--font-aeonik-regular-italic)', 'sans-serif'], // Regular italic
       },
     },
   },

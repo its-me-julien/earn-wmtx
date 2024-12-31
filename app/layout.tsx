@@ -1,11 +1,6 @@
-import type { Metadata } from 'next'
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { aeonikBold, aeonikBoldItalic, aeonikLight, aeonikLightItalic, aeonikRegular, aeonikRegularItalic } from './fonts'
 import './globals.css'
-
-export const metadata: Metadata = {
-  title: 'Earn WMTx',
-  description: 'Learn how to earn WMTx tokens with World Mobile',
-}
 
 export default function RootLayout({
   children,
@@ -21,8 +16,10 @@ export default function RootLayout({
       ${aeonikRegular.variable} 
       ${aeonikRegularItalic.variable}
     `}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <GoogleAnalytics gaId="G-GGBKYMDYL1" />
+      </body>
     </html>
   )
 }
-

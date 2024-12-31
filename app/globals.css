@@ -19,3 +19,8 @@ body {
   background: var(--background);
   font-family: "aeonikRegular", Arial, Helvetica, sans-serif;
 }
+
+/* Global bold styles */
+b, strong {
+  font-family: "aeonikBold", Arial, Helvetica, sans-serif;
+}
