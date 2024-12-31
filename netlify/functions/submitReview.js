@@ -31,11 +31,13 @@ exports.handler = async (event) => {
       };
     }
 
-    // Remove captchaToken from the data object
-    const { captchaToken: _, ...reviewData } = data;
+    // Determine collection based on reviewType
+    const { reviewType, ...reviewData } = data;
+    const collectionName =
+      reviewType === 'broadband' ? 'broadband_review' : 'mobileplan_review';
 
     // Save review to Firestore
-    const docRef = await db.collection('reviews').add({
+    const docRef = await db.collection(collectionName).add({
       ...reviewData,
       createdAt: new Date().toISOString(),
     });

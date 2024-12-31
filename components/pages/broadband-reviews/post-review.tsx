@@ -8,14 +8,15 @@ import RatingField from './review/RatingField';
 
 const ReviewForm = () => {
   const [formData, setFormData] = useState({
-    overallRating: 1,
-    serviceRating: 1,
-    pricingRating: 1,
-    speedRating: 1,
+    overallRating: 5,
+    serviceRating: 5,
+    pricingRating: 5,
+    speedRating: 5,
     feedback: '',
     recommend: 'Yes',
     name: '',
     city: '',
+    zipcode: '',
     email: '',
   });
   const [status, setStatus] = useState('');
@@ -47,7 +48,11 @@ const ReviewForm = () => {
       const response = await fetch('/.netlify/functions/submitReview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, captchaToken }),
+        body: JSON.stringify({
+          ...formData,
+          captchaToken,
+          reviewType: 'broadband', // Specify the type of review
+        }),
       });
 
       const result = await response.json();
@@ -62,6 +67,7 @@ const ReviewForm = () => {
           recommend: 'Yes',
           name: '',
           city: '',
+          zipcode: '',
           email: '',
         });
         setCaptchaToken(null);
@@ -75,110 +81,137 @@ const ReviewForm = () => {
   };
 
   return (
-    <div className="container mx-auto py-12 px-6">
+    <div className="container mx-auto py-10 px-6">
       {/* Two-Column Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
         {/* Column 1 */}
-        <div className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-white mb-4">Review World Mobile Broadband</h2>
-          <p className="text-white mb-6">
+        <div className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-8 rounded-lg shadow-lg">
+          <h2 className="text-3xl font-aeonik-bold text-white mb-6">
+            Review World Mobile Broadband
+          </h2>
+          <p className="text-lg font-aeonik-regular text-white mb-4">
             Help people make smarter choices with their internet provider service. Your honest
             feedback can guide others to make informed decisions.
           </p>
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
-              <FontAwesomeIcon
-                icon={faInfoCircle}
-                className="text-white text-xl bg-[#5A2FBA] rounded-full p-2"
-              />
-              <div>
-                <h3 className="text-lg font-semibold text-white">Information</h3>
-                <p className="text-gray-200">State your claim and give an example.</p>
-              </div>
+              <FontAwesomeIcon icon={faInfoCircle} className="text-white text-xl" />
+              <p className="text-base text-gray-200">
+                <strong>Information:</strong> State your claim and give an example.
+              </p>
             </div>
             <div className="flex items-center space-x-3">
-              <FontAwesomeIcon
-                icon={faBullhorn}
-                className="text-white text-xl bg-[#5A2FBA] rounded-full p-2"
-              />
-              <div>
-                <h3 className="text-lg font-semibold text-white">Facts</h3>
-                <p className="text-gray-200">Slanderous rants aren&#39;t helpful.</p>
-              </div>
+              <FontAwesomeIcon icon={faBullhorn} className="text-white text-xl" />
+              <p className="text-base text-gray-200">
+                <strong>Facts:</strong> Slanderous rants aren&#39;t helpful.
+              </p>
             </div>
             <div className="flex items-center space-x-3">
-              <FontAwesomeIcon
-                icon={faCheckCircle}
-                className="text-white text-xl bg-[#5A2FBA] rounded-full p-2"
-              />
-              <div>
-                <h3 className="text-lg font-semibold text-white">Relevance</h3>
-                <p className="text-gray-200">Leave out prices; they vary by location.</p>
-              </div>
+              <FontAwesomeIcon icon={faCheckCircle} className="text-white text-xl" />
+              <p className="text-base text-gray-200">
+                <strong>Relevance:</strong> Leave out prices; they vary by location.
+              </p>
             </div>
           </div>
         </div>
 
         {/* Column 2 */}
         <div className="bg-gray-900 bg-opacity-90 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-white mb-4">Post a Review</h2>
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-6"
-          >
+          <h2 className="text-2xl font-aeonik-bold text-white mb-4">Post a Review</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Ratings Section */}
-            <div className="grid grid-cols-2 gap-4">
-              <RatingField
-                label="Your Overall Rating"
-                name="overallRating"
-                value={formData.overallRating}
-                onChange={handleRatingChange}
-              />
-              <RatingField
-                label="Service"
-                name="serviceRating"
-                value={formData.serviceRating}
-                onChange={handleRatingChange}
-              />
-              <RatingField
-                label="Pricing"
-                name="pricingRating"
-                value={formData.pricingRating}
-                onChange={handleRatingChange}
-              />
-              <RatingField
-                label="Speed"
-                name="speedRating"
-                value={formData.speedRating}
-                onChange={handleRatingChange}
-              />
-            </div>
+            <div className="grid grid-cols-2 gap-y-6">
+  {/* First Row */}
+  <div className="grid grid-cols-2 items-center gap-x-4">
+    <span className="text-sm text-white w-32 text-right">Overall Rating</span>
+    <div className="rating flex">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <input
+          key={`overall-${star}`}
+          type="radio"
+          name="overallRating"
+          className="mask mask-star-2 bg-[#F6642D]"
+          value={star}
+          checked={formData.overallRating === star}
+          onChange={() => handleRatingChange('overallRating', star)}
+        />
+      ))}
+    </div>
+  </div>
+
+  <div className="grid grid-cols-2 items-center gap-x-4">
+    <span className="text-sm text-white w-32 text-right">Pricing</span>
+    <div className="rating flex">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <input
+          key={`pricing-${star}`}
+          type="radio"
+          name="pricingRating"
+          className="mask mask-star-2 bg-[#F6642D]"
+          value={star}
+          checked={formData.pricingRating === star}
+          onChange={() => handleRatingChange('pricingRating', star)}
+        />
+      ))}
+    </div>
+  </div>
+
+  {/* Second Row */}
+  <div className="grid grid-cols-2 items-center gap-x-4">
+    <span className="text-sm text-white w-32 text-right">Service</span>
+    <div className="rating flex">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <input
+          key={`service-${star}`}
+          type="radio"
+          name="serviceRating"
+          className="mask mask-star-2 bg-[#F6642D]"
+          value={star}
+          checked={formData.serviceRating === star}
+          onChange={() => handleRatingChange('serviceRating', star)}
+        />
+      ))}
+    </div>
+  </div>
+
+  <div className="grid grid-cols-2 items-center gap-x-4">
+    <span className="text-sm text-white w-32 text-right">Speed</span>
+    <div className="rating flex">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <input
+          key={`speed-${star}`}
+          type="radio"
+          name="speedRating"
+          className="mask mask-star-2 bg-[#F6642D]"
+          value={star}
+          checked={formData.speedRating === star}
+          onChange={() => handleRatingChange('speedRating', star)}
+        />
+      ))}
+    </div>
+  </div>
+</div>
+
+            <textarea
+              id="feedback"
+              name="feedback"
+              placeholder="Write your feedback here..."
+              value={formData.feedback}
+              onChange={handleInputChange}
+              required
+              className="textarea textarea-bordered w-full h-28 bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
+            />
 
             <div>
-              <label htmlFor="feedback" className="block text-lg font-semibold text-white mb-2">
-                Feedback <span className="text-[#D42E58]">*</span>
-              </label>
-              <textarea
-                id="feedback"
-                name="feedback"
-                placeholder="Write your feedback here"
-                value={formData.feedback}
-                onChange={handleInputChange}
-                required
-                className="textarea textarea-bordered w-full h-40 bg-gray-800 text-white border-[#5A2FBA] focus:ring-[#5A2FBA]"
-              />
-            </div>
-
-            <div>
-              <label className="block text-lg font-semibold text-white mb-2">
-                Would you recommend World Mobile? <span className="text-[#D42E58]">*</span>
-              </label>
+              <p className="text-sm font-semibold text-white mb-2">
+                Would you recommend World Mobile?
+              </p>
               <div className="flex space-x-4">
                 <button
                   type="button"
                   className={`btn ${
                     formData.recommend === 'Yes' ? 'bg-[#F6642D] text-white' : 'btn-outline'
-                  } hover:bg-[#F6642D]`}
+                  } hover:bg-[#F6642D] w-32`}
                   onClick={() => setFormData({ ...formData, recommend: 'Yes' })}
                 >
                   Yes
@@ -187,7 +220,7 @@ const ReviewForm = () => {
                   type="button"
                   className={`btn ${
                     formData.recommend === 'No' ? 'bg-[#F6642D] text-white' : 'btn-outline'
-                  } hover:bg-[#F6642D]`}
+                  } hover:bg-[#F6642D] w-32`}
                   onClick={() => setFormData({ ...formData, recommend: 'No' })}
                 >
                   No
@@ -195,27 +228,54 @@ const ReviewForm = () => {
               </div>
             </div>
 
-            {['name', 'city', 'email'].map((field) => (
-              <div key={field}>
-                <label
-                  htmlFor={field}
-                  className="block text-lg font-semibold text-white mb-2"
-                >
-                  {field.charAt(0).toUpperCase() + field.slice(1)}{' '}
-                  {field !== 'email' && <span className="text-[#D42E58]">*</span>}
-                </label>
-                <input
-                  type={field === 'email' ? 'email' : 'text'}
-                  id={field}
-                  name={field}
-                  placeholder={`Enter your ${field}`}
-                  value={formData[field as keyof typeof formData]}
-                  onChange={handleInputChange}
-                  className="input input-bordered w-full bg-gray-800 text-white border-[#5A2FBA] focus:ring-[#5A2FBA]"
-                  required={field !== 'email'}
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="What's your name?"
+              value={formData.name}
+              onChange={handleInputChange}
+              className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
+            />
+
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="City"
+                value={formData.city}
+                onChange={handleInputChange}
+                className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
+              />
+              <input
+                type="text"
+                id="zipcode"
+                name="zipcode"
+                placeholder="Zip Code"
+                value={formData.zipcode}
+                onChange={handleInputChange}
+                className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
+              />
+            </div>
+
+            <div className="relative">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Your email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
+              />
+              <div className="absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-400 cursor-pointer">
+                <FontAwesomeIcon
+                  icon={faInfoCircle}
+                  title="It will never be published. We will never email you."
                 />
               </div>
-            ))}
+            </div>
 
             <ReCAPTCHA
               sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi"
@@ -234,7 +294,7 @@ const ReviewForm = () => {
 
       {/* Status Message */}
       {status && (
-        <p className="mt-6 text-center text-lg font-semibold">
+        <p className="mt-4 text-center text-sm font-semibold">
           {status.startsWith('Error') ? (
             <span className="text-[#D42E58]">{status}</span>
           ) : (
