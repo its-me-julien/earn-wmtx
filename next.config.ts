@@ -1,13 +1,10 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
-  output: 'export', // For static export
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true, // Ensures strict React mode for better debugging
   images: {
-    unoptimized: true, // Static hosting
+    unoptimized: true, // Still allows for static hosting of images
   },
-  trailingSlash: true, // Ensures compatibility with GitHub Pages
-  basePath: '', // No basePath since it's a single repository
-  assetPrefix: '', // No custom domain or asset prefix
+  trailingSlash: true, // Optional, depends on your routing preference
 };
 
 export default nextConfig;
