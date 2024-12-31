@@ -2,51 +2,43 @@
 
 import { useState } from 'react';
 
-const CreateDiscoursePost = () => {
+const CreateReviewForm = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [status, setStatus] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('Submitting...');
 
     try {
-      const response = await fetch('/api/createPost', {
+      const response = await fetch('/.netlify/functions/submitReview', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, content }),
       });
 
       const result = await response.json();
       if (response.ok) {
-        setStatus('Post created successfully!');
+        setStatus('Review submitted successfully!');
         setTitle('');
         setContent('');
       } else {
         setStatus(`Error: ${result.error}`);
       }
     } catch (error) {
-      if (error instanceof Error) {
-        setStatus(`Error: ${error.message}`);
-      } else {
-        setStatus('An unexpected error occurred.');
-      }
+      console.error('Submission error:', error);
+      setStatus('An unexpected error occurred.');
     }
   };
 
   return (
     <div className="container mx-auto py-12 px-6 text-white">
-      <h1 className="text-4xl font-bold text-center mb-8">
-        Create a New Review
-      </h1>
+      <h1 className="text-4xl font-bold text-center mb-8">Create a New Review</h1>
       <form
         onSubmit={handleSubmit}
         className="bg-[rgba(255,255,255,0.1)] rounded-lg shadow-lg p-8 max-w-xl mx-auto space-y-6"
       >
-        {/* Title Input */}
         <div>
           <label htmlFor="title" className="block text-lg font-semibold mb-2">
             Title
@@ -62,7 +54,6 @@ const CreateDiscoursePost = () => {
           />
         </div>
 
-        {/* Content Textarea */}
         <div>
           <label htmlFor="content" className="block text-lg font-semibold mb-2">
             Content
@@ -77,7 +68,6 @@ const CreateDiscoursePost = () => {
           ></textarea>
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
           className="btn btn-primary w-full bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] hover:brightness-125 text-white"
@@ -85,8 +75,6 @@ const CreateDiscoursePost = () => {
           Submit Review
         </button>
       </form>
-
-      {/* Status Message */}
       {status && (
         <p className="mt-4 text-center font-semibold">
           {status.startsWith('Error') ? (
@@ -100,4 +88,4 @@ const CreateDiscoursePost = () => {
   );
 };
 
-export default CreateDiscoursePost;
+export default CreateReviewForm;
