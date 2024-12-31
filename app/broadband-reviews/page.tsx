@@ -5,9 +5,9 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import JoinDiscussion from "../../components/pages/broadband-reviews/discussions";
 import MetaFields from "../../components/pages/broadband-reviews/metafields";
-import PostReview from "../../components/pages/broadband-reviews/post-review";
+  {/*import PostReview from "../../components/pages/broadband-reviews/post-review";*/}
 import Latestreviews from "../../components/pages/broadband-reviews/latestreviews";
-{/*import ReviewSummary from "../../components/pages/broadband-reviews/ReviewSummary";*/}
+import ReviewSummary from "../../components/pages/broadband-reviews/ReviewSummary";
 
 const BroadbandReviewsPage = () => {
   const [summaryData, setSummaryData] = useState({
@@ -80,7 +80,7 @@ const BroadbandReviewsPage = () => {
           </header>
 
           {/* Review Summary */}
-         {/* <section id="review-summary" aria-labelledby="review-summary-title">
+          <section id="review-summary" aria-labelledby="review-summary-title">
             <h2 id="review-summary-title" className="sr-only">
               Customer Review Summary
             </h2>
@@ -93,8 +93,7 @@ const BroadbandReviewsPage = () => {
                 ratingsBreakdown={summaryData.ratingsBreakdown}
               />
             )}
-          </section>*/}
-
+          </section>
 
           {/* Latest Reviews */}
           <section id="latest-reviews" aria-labelledby="latest-reviews-title">
@@ -104,13 +103,13 @@ const BroadbandReviewsPage = () => {
             <Latestreviews />
           </section>
 
-          {/* Post New Review */}
+          {/* Post New Review 
           <section id="post-review" aria-labelledby="post-review-title">
             <h2 id="post-review-title" className="sr-only">
               Post a New Review
             </h2>
             <PostReview />
-          </section>
+          </section>*/}
 
           {/* Join Discussion Section */}
           <section id="join-discussion" aria-labelledby="join-discussion-title" className="space-y-8">
