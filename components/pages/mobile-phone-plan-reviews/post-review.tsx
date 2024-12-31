@@ -52,7 +52,7 @@ const ReviewForm = () => {
         body: JSON.stringify({
           ...formData,
           captchaToken,
-          reviewType: "broadband", // Specify the type of review
+          reviewType: "mobile_plan", // Specify the type of review
         }),
       });
 
@@ -87,7 +87,7 @@ const ReviewForm = () => {
     "@type": "Review",
     "itemReviewed": {
       "@type": "Service",
-      "name": "World Mobile Broadband",
+      "name": "World Mobile Phone Plans",
     },
     "author": {
       "@type": "Person",
@@ -139,58 +139,51 @@ const ReviewForm = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
         {/* Column 1 */}
         <div className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-8 rounded-lg shadow-lg space-y-6">
-  {/* Introduction */}
-  <h2 className="text-3xl font-aeonik-bold text-white">
-  Share Your Experience with{" "}
-  <span className="text-[#FFFFFF]">World Mobile Broadband</span>
-</h2>
-<p className="text-lg font-aeonik-regular text-gray-200 leading-relaxed">
-  Your feedback is invaluable. It empowers others to make confident, informed decisions about their internet provider. 
-  By sharing your experience, you contribute to a trusted and reliable community of World Mobile users.
-</p>
+          <h2 className="text-3xl font-aeonik-bold text-white">
+            Share Your Experience with{" "}
+            <span className="text-[#FFFFFF]">World Mobile Phone Plans</span>
+          </h2>
+          <p className="text-lg font-aeonik-regular text-gray-200 leading-relaxed">
+            Your feedback is invaluable. It empowers others to make confident, informed decisions about their mobile plans. 
+            By sharing your experience, you contribute to a trusted and reliable community of World Mobile users.
+          </p>
+          <div className="space-y-4">
+            <h3 className="text-2xl font-aeonik-bold text-white">Why Leave a Review Here?</h3>
+            <p className="text-base text-gray-200 leading-relaxed">
+              At World Mobile Club, reviews are written by actual customers and presented without bias. 
+              Our independent, community-driven platform provides transparency by showcasing both positive and negative experiences. 
+              This means you’ll get an honest glimpse into what it’s really like to be a World Mobile customer.
+            </p>
+          </div>
 
-{/* Why Leave a Review */}
-<div className="space-y-4">
-  <h3 className="text-2xl font-aeonik-bold text-white">Why Leave a Review Here?</h3>
-  <p className="text-base text-gray-200 leading-relaxed">
-    At World Mobile Club, reviews are written by actual customers and presented without bias. 
-    Our independent, community-driven platform provides transparency by showcasing both positive and negative experiences. 
-    This means you’ll get an honest glimpse into what it’s really like to be a World Mobile customer.
-  </p>
-</div>
-
-  {/* Tips for Writing a Great Review */}
-  <div className="space-y-4">
-    <h3 className="text-2xl font-aeonik-bold text-white">Tips for Writing a Great Review</h3>
-    <div className="space-y-4">
-      {/* Tip 1 */}
-      <div className="flex items-center space-x-4">
-        <FontAwesomeIcon icon={faInfoCircle} className="text-white text-2xl" />
-        <p className="text-base text-gray-200">
-          <strong className="text-white">Be Specific:</strong> Include details like speed, reliability, and customer service. 
-          Specific examples help others understand your experience.
-        </p>
-      </div>
-      {/* Tip 2 */}
-      <div className="flex items-center space-x-4">
-        <FontAwesomeIcon icon={faBullhorn} className="text-white text-2xl" />
-        <p className="text-base text-gray-200">
-          <strong className="text-white">Stay Honest:</strong> Share truthful feedback about what you liked 
-          and where improvements could be made.
-        </p>
-      </div>
-      {/* Tip 3 */}
-      <div className="flex items-center space-x-4">
-        <FontAwesomeIcon icon={faCheckCircle} className="text-white text-2xl" />
-        <p className="text-base text-gray-200">
-          <strong className="text-white">Talk About Your Journey:</strong> Describe your experience from start to finish, 
-          from setup to usage. Clear and detailed reviews are the most helpful.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
+          {/* Tips for Writing a Great Review */}
+          <div className="space-y-4">
+            <h3 className="text-2xl font-aeonik-bold text-white">Tips for Writing a Great Review</h3>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-4">
+                <FontAwesomeIcon icon={faInfoCircle} className="text-white text-2xl" />
+                <p className="text-base text-gray-200">
+                  <strong className="text-white">Be Specific:</strong> Include details like plan features, customer service, and pricing. 
+                  Clear examples help others understand your experience.
+                </p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <FontAwesomeIcon icon={faBullhorn} className="text-white text-2xl" />
+                <p className="text-base text-gray-200">
+                  <strong className="text-white">Stay Honest:</strong> Share truthful feedback about what you liked 
+                  and where improvements could be made.
+                </p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <FontAwesomeIcon icon={faCheckCircle} className="text-white text-2xl" />
+                <p className="text-base text-gray-200">
+                  <strong className="text-white">Talk About Your Journey:</strong> Describe your experience from start to finish, 
+                  including activation, customer service, and usage. Clear and detailed reviews are the most helpful.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* Column 2 */}
         <div className="bg-[rgba(68,61,72,0.19)] bg-opacity-90 p-6 rounded-lg shadow-lg">
@@ -242,24 +235,24 @@ const ReviewForm = () => {
               </p>
               <div className="flex space-x-4">
                 <button
-                    type="button"
-                    className={`btn border-0 ${
+                  type="button"
+                  className={`btn border-0 ${
                     formData.recommend === "Yes" ? "bg-[#F6642D] text-white" : "btn-outline"
-                    } hover:bg-[#F6642D] w-32`}
-                    onClick={() => setFormData({ ...formData, recommend: "Yes" })}
+                  } hover:bg-[#F6642D] w-32`}
+                  onClick={() => setFormData({ ...formData, recommend: "Yes" })}
                 >
-                    Yes
+                  Yes
                 </button>
                 <button
-                    type="button"
-                    className={`btn border-0 ${
+                  type="button"
+                  className={`btn border-0 ${
                     formData.recommend === "No" ? "bg-[#F6642D] text-white" : "btn-outline"
-                    } hover:bg-[#F6642D] w-32`}
-                    onClick={() => setFormData({ ...formData, recommend: "No" })}
+                  } hover:bg-[#F6642D] w-32`}
+                  onClick={() => setFormData({ ...formData, recommend: "No" })}
                 >
-                    No
+                  No
                 </button>
-                </div>
+              </div>
             </div>
 
             {/* Name, City, Zipcode */}
