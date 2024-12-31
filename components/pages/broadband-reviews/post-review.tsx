@@ -121,77 +121,78 @@ const ReviewForm = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Ratings Section */}
             <div className="grid grid-cols-2 gap-y-6">
-  {/* First Row */}
-  <div className="grid grid-cols-2 items-center gap-x-4">
-    <span className="text-sm text-white w-32 text-right">Overall Rating</span>
-    <div className="rating flex">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <input
-          key={`overall-${star}`}
-          type="radio"
-          name="overallRating"
-          className="mask mask-star-2 bg-[#F6642D]"
-          value={star}
-          checked={formData.overallRating === star}
-          onChange={() => handleRatingChange('overallRating', star)}
-        />
-      ))}
-    </div>
-  </div>
+                {/* First Row */}
+                <div className="grid grid-cols-2 items-center gap-x-4">
+                    <span className="text-sm text-white w-32 text-right">Overall Rating</span>
+                    <div className="rating flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                        <input
+                        key={`overall-${star}`}
+                        type="radio"
+                        name="overallRating"
+                        className="mask mask-star-2 bg-[#F6642D]"
+                        value={star}
+                        checked={formData.overallRating === star}
+                        onChange={() => handleRatingChange('overallRating', star)}
+                        />
+                    ))}
+                    </div>
+                </div>
 
-  <div className="grid grid-cols-2 items-center gap-x-4">
-    <span className="text-sm text-white w-32 text-right">Pricing</span>
-    <div className="rating flex">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <input
-          key={`pricing-${star}`}
-          type="radio"
-          name="pricingRating"
-          className="mask mask-star-2 bg-[#F6642D]"
-          value={star}
-          checked={formData.pricingRating === star}
-          onChange={() => handleRatingChange('pricingRating', star)}
-        />
-      ))}
-    </div>
-  </div>
+                <div className="grid grid-cols-2 items-center gap-x-4">
+                    <span className="text-sm text-white w-32 text-right">Pricing</span>
+                    <div className="rating flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                        <input
+                        key={`pricing-${star}`}
+                        type="radio"
+                        name="pricingRating"
+                        className="mask mask-star-2 bg-[#F6642D]"
+                        value={star}
+                        checked={formData.pricingRating === star}
+                        onChange={() => handleRatingChange('pricingRating', star)}
+                        />
+                    ))}
+                    </div>
+                </div>
 
-  {/* Second Row */}
-  <div className="grid grid-cols-2 items-center gap-x-4">
-    <span className="text-sm text-white w-32 text-right">Service</span>
-    <div className="rating flex">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <input
-          key={`service-${star}`}
-          type="radio"
-          name="serviceRating"
-          className="mask mask-star-2 bg-[#F6642D]"
-          value={star}
-          checked={formData.serviceRating === star}
-          onChange={() => handleRatingChange('serviceRating', star)}
-        />
-      ))}
-    </div>
-  </div>
+                {/* Second Row */}
+                <div className="grid grid-cols-2 items-center gap-x-4">
+                    <span className="text-sm text-white w-32 text-right">Service</span>
+                    <div className="rating flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                        <input
+                        key={`service-${star}`}
+                        type="radio"
+                        name="serviceRating"
+                        className="mask mask-star-2 bg-[#F6642D]"
+                        value={star}
+                        checked={formData.serviceRating === star}
+                        onChange={() => handleRatingChange('serviceRating', star)}
+                        />
+                    ))}
+                    </div>
+                </div>
 
-  <div className="grid grid-cols-2 items-center gap-x-4">
-    <span className="text-sm text-white w-32 text-right">Speed</span>
-    <div className="rating flex">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <input
-          key={`speed-${star}`}
-          type="radio"
-          name="speedRating"
-          className="mask mask-star-2 bg-[#F6642D]"
-          value={star}
-          checked={formData.speedRating === star}
-          onChange={() => handleRatingChange('speedRating', star)}
-        />
-      ))}
-    </div>
-  </div>
-</div>
+                <div className="grid grid-cols-2 items-center gap-x-4">
+                    <span className="text-sm text-white w-32 text-right">Speed</span>
+                    <div className="rating flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                        <input
+                        key={`speed-${star}`}
+                        type="radio"
+                        name="speedRating"
+                        className="mask mask-star-2 bg-[#F6642D]"
+                        value={star}
+                        checked={formData.speedRating === star}
+                        onChange={() => handleRatingChange('speedRating', star)}
+                        />
+                    ))}
+                    </div>
+                </div>
+                </div>
 
+            {/* Feedback Section */}
             <textarea
               id="feedback"
               name="feedback"
@@ -202,6 +203,7 @@ const ReviewForm = () => {
               className="textarea textarea-bordered w-full h-28 bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
             />
 
+            {/* Recommendation Section */}
             <div>
               <p className="text-sm font-semibold text-white mb-2">
                 Would you recommend World Mobile?
@@ -228,23 +230,14 @@ const ReviewForm = () => {
               </div>
             </div>
 
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="What's your name?"
-              value={formData.name}
-              onChange={handleInputChange}
-              className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
-            />
-
+            {/* Name, City, Zipcode */}
             <div className="grid grid-cols-2 gap-3">
               <input
                 type="text"
-                id="city"
-                name="city"
-                placeholder="City"
-                value={formData.city}
+                id="name"
+                name="name"
+                placeholder="Your Name"
+                value={formData.name}
                 onChange={handleInputChange}
                 className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
               />
@@ -259,12 +252,24 @@ const ReviewForm = () => {
               />
             </div>
 
+            {/* City */}
+            <input
+              type="text"
+              id="city"
+              name="city"
+              placeholder="City"
+              value={formData.city}
+              onChange={handleInputChange}
+              className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
+            />
+
+            {/* Email */}
             <div className="relative">
               <input
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Your email"
+                placeholder="Your email (optional)"
                 value={formData.email}
                 onChange={handleInputChange}
                 className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
@@ -272,16 +277,18 @@ const ReviewForm = () => {
               <div className="absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-400 cursor-pointer">
                 <FontAwesomeIcon
                   icon={faInfoCircle}
-                  title="It will never be published. We will never email you."
+                  title="Your email will not be published or used to contact you."
                 />
               </div>
             </div>
 
+            {/* CAPTCHA */}
             <ReCAPTCHA
               sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi"
               onChange={handleCaptchaChange}
             />
 
+            {/* Submit Button */}
             <button
               type="submit"
               className="btn w-full bg-gradient-to-r from-[#F6642D] to-[#D42E58] text-white hover:brightness-125"
