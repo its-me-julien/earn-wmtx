@@ -138,35 +138,63 @@ const ReviewForm = () => {
       {/* Two-Column Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
         {/* Column 1 */}
-        <div className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-8 rounded-lg shadow-lg">
-          <h2 className="text-3xl font-aeonik-bold text-white mb-6">
-            Review <span className="text-[#FFFFFF]">World Mobile Broadband</span>
-          </h2>
-          <p className="text-lg font-aeonik-regular text-white mb-4">
-            Help people make smarter choices with their internet provider service. Your honest
-            feedback can guide others to make informed decisions.
-          </p>
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3">
-              <FontAwesomeIcon icon={faInfoCircle} className="text-white text-xl" />
-              <p className="text-base text-gray-200">
-                <strong>Information:</strong> State your claim and give an example.
-              </p>
-            </div>
-            <div className="flex items-center space-x-3">
-              <FontAwesomeIcon icon={faBullhorn} className="text-white text-xl" />
-              <p className="text-base text-gray-200">
-                <strong>Facts:</strong> Slanderous rants aren&#39;t helpful.
-              </p>
-            </div>
-            <div className="flex items-center space-x-3">
-              <FontAwesomeIcon icon={faCheckCircle} className="text-white text-xl" />
-              <p className="text-base text-gray-200">
-                <strong>Relevance:</strong> Leave out prices; they vary by location.
-              </p>
-            </div>
-          </div>
-        </div>
+        <div className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-8 rounded-lg shadow-lg space-y-6">
+  {/* Introduction */}
+  <h2 className="text-3xl font-aeonik-bold text-white">
+    Share Your Experience with{" "}
+    <span className="text-[#FFFFFF]">World Mobile Broadband</span>
+  </h2>
+  <p className="text-lg font-aeonik-regular text-gray-200 leading-relaxed">
+    Your feedback matters. It helps others make smarter decisions when choosing an internet provider. 
+    Share your honest experience and help us build a trusted community of World Mobile users.
+  </p>
+
+  {/* Why Leave a Review */}
+  <div className="space-y-4">
+    <h3 className="text-2xl font-aeonik-bold text-white">Why Leave a Review?</h3>
+    <p className="text-base text-gray-200 leading-relaxed">
+      Reviews provide valuable insights into what kind of customer experience people can expect from 
+      World Mobile. Every review is written by real customers and hosted independently on World Mobile Club. 
+      Our community-powered platform ensures transparency and fairness.
+    </p>
+    <p className="text-base text-gray-200 leading-relaxed">
+      Many users visit World Mobile Club to research brands before making a purchase. Your detailed and 
+      truthful feedback can guide others in making an informed decision about their internet provider.
+    </p>
+  </div>
+
+  {/* Tips for Writing a Great Review */}
+  <div className="space-y-4">
+    <h3 className="text-2xl font-aeonik-bold text-white">Tips for Writing a Great Review</h3>
+    <div className="space-y-4">
+      {/* Tip 1 */}
+      <div className="flex items-center space-x-4">
+        <FontAwesomeIcon icon={faInfoCircle} className="text-white text-2xl" />
+        <p className="text-base text-gray-200">
+          <strong className="text-white">Be Specific:</strong> Include details like speed, reliability, and customer service. 
+          Specific examples help others understand your experience.
+        </p>
+      </div>
+      {/* Tip 2 */}
+      <div className="flex items-center space-x-4">
+        <FontAwesomeIcon icon={faBullhorn} className="text-white text-2xl" />
+        <p className="text-base text-gray-200">
+          <strong className="text-white">Stay Honest:</strong> Share truthful feedback about what you liked 
+          and where improvements could be made.
+        </p>
+      </div>
+      {/* Tip 3 */}
+      <div className="flex items-center space-x-4">
+        <FontAwesomeIcon icon={faCheckCircle} className="text-white text-2xl" />
+        <p className="text-base text-gray-200">
+          <strong className="text-white">Talk About Your Journey:</strong> Describe your experience from start to finish, 
+          from setup to usage. Clear and detailed reviews are the most helpful.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 
         {/* Column 2 */}
         <div className="bg-[rgba(68,61,72,0.19)] bg-opacity-90 p-6 rounded-lg shadow-lg">
@@ -218,24 +246,24 @@ const ReviewForm = () => {
               </p>
               <div className="flex space-x-4">
                 <button
-                  type="button"
-                  className={`btn ${
+                    type="button"
+                    className={`btn border-0 ${
                     formData.recommend === "Yes" ? "bg-[#F6642D] text-white" : "btn-outline"
-                  } hover:bg-[#F6642D] w-32`}
-                  onClick={() => setFormData({ ...formData, recommend: "Yes" })}
+                    } hover:bg-[#F6642D] w-32`}
+                    onClick={() => setFormData({ ...formData, recommend: "Yes" })}
                 >
-                  Yes
+                    Yes
                 </button>
                 <button
-                  type="button"
-                  className={`btn ${
+                    type="button"
+                    className={`btn border-0 ${
                     formData.recommend === "No" ? "bg-[#F6642D] text-white" : "btn-outline"
-                  } hover:bg-[#F6642D] w-32`}
-                  onClick={() => setFormData({ ...formData, recommend: "No" })}
+                    } hover:bg-[#F6642D] w-32`}
+                    onClick={() => setFormData({ ...formData, recommend: "No" })}
                 >
-                  No
+                    No
                 </button>
-              </div>
+                </div>
             </div>
 
             {/* Name, City, Zipcode */}
@@ -297,7 +325,7 @@ const ReviewForm = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="btn w-full bg-gradient-to-r from-[#F6642D] to-[#D42E58] text-white hover:brightness-125"
+              className="btn w-full bg-gradient-to-r from-[#F6642D] to-[#D42E58] text-white hover:brightness-125 border-0"
             >
               Post Review
             </button>

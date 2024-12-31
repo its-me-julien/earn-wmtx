@@ -71,15 +71,16 @@ const BroadbandReviewsPage = () => {
         <div className="container mx-auto space-y-16">
           {/* Page Header */}
           <header className="text-center max-w-3xl mx-auto px-4 space-y-6">
-            <h1
-              id="world-mobile-reviews-header"
-              className="text-5xl font-aeonik-bold text-white leading-tight"
-            >
-              Real Reviews from{" "}
-              <span className="bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] bg-clip-text text-transparent">
-                World Mobile Broadband Customers
-              </span>
-            </h1>
+          <h1
+            id="world-mobile-reviews-header"
+            className="text-5xl font-aeonik-bold text-white leading-tight"
+          >
+            Real Reviews from{" "}
+            <span className="text-transparent bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] bg-clip-text">
+              World Mobile Broadband
+            </span>{" "}
+            Customers
+          </h1>
             <p className="text-lg text-gray-300">
               Wondering if World Mobile Broadband is right for you? Explore real customer reviews and read honest opinions about speeds, reliability, and value to make the best choice for your internet needs.
             </p>
