@@ -7,17 +7,17 @@ const CreateReviewForm = () => {
   const [content, setContent] = useState('');
   const [status, setStatus] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('Submitting...');
-
+  
     try {
       const response = await fetch('/.netlify/functions/submitReview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, content }),
       });
-
+  
       const result = await response.json();
       if (response.ok) {
         setStatus('Review submitted successfully!');
@@ -31,6 +31,7 @@ const CreateReviewForm = () => {
       setStatus('An unexpected error occurred.');
     }
   };
+  
 
   return (
     <div className="container mx-auto py-12 px-6 text-white">
