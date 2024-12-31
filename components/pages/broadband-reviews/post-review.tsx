@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import RatingField from '../../review/RatingField';
+import RatingField from './review/RatingField';
 
 const ReviewForm = () => {
   const [formData, setFormData] = useState({
