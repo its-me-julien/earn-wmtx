@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 
 interface Review {
   id: string;
@@ -22,78 +22,63 @@ interface GetReviewsResponse {
 const LatestBroadbandReviews: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
-  const [totalReviews, setTotalReviews] = useState(0);
   const [expandedReviewIds, setExpandedReviewIds] = useState<string[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
   const reviewsPerBatch = 30; // Fetch 30 reviews per API call
-  const prefetchBatchCount = 2; // Number of additional batches to prefetch
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const fetchReviews = async (offset: number) => {
-    setLoading(true);
-    setError(null);
+  const fetchReviews = useCallback(
+    async (offset: number) => {
+      setLoading(true);
 
-    try {
-      const response = await fetch("/.netlify/functions/getReviews", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          collection: "broadband_review",
-          limit: reviewsPerBatch,
-          offset: offset,
-        }),
-      });
+      try {
+        const response = await fetch("/.netlify/functions/getReviews", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            collection: "broadband_review",
+            limit: reviewsPerBatch,
+            offset,
+          }),
+        });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch reviews");
-      }
-
-      const data: GetReviewsResponse = await response.json();
-
-      if (!Array.isArray(data.reviews)) {
-        throw new Error("Invalid API response: reviews should be an array");
-      }
-
-      const sanitizedReviews = data.reviews.map((review) => ({
-        id: review.id || "",
-        overallRating: review.overallRating || 0,
-        serviceRating: review.serviceRating || 0,
-        pricingRating: review.pricingRating || 0,
-        speedRating: review.speedRating || 0,
-        feedback: review.feedback || "",
-        name: review.name || "Anonymous",
-        city: review.city || "Unknown",
-        createdAt: review.createdAt || "",
-      }));
-
-      if (sanitizedReviews.length < reviewsPerBatch) {
-        setHasMore(false);
-      }
-
-      setReviews((prev) => [...prev, ...sanitizedReviews]);
-      setTotalReviews(data.total || 0);
-
-      // Prefetch additional batches if applicable
-      for (let i = 1; i <= prefetchBatchCount; i++) {
-        const nextOffset = offset + i * reviewsPerBatch;
-        if (nextOffset < data.total) {
-          fetchReviews(nextOffset);
+        if (!response.ok) {
+          throw new Error("Failed to fetch reviews");
         }
+
+        const data: GetReviewsResponse = await response.json();
+
+        if (!Array.isArray(data.reviews)) {
+          throw new Error("Invalid API response: reviews should be an array");
+        }
+
+        const sanitizedReviews = data.reviews.map((review) => ({
+          id: review.id || "",
+          overallRating: review.overallRating || 0,
+          serviceRating: review.serviceRating || 0,
+          pricingRating: review.pricingRating || 0,
+          speedRating: review.speedRating || 0,
+          feedback: review.feedback || "",
+          name: review.name || "Anonymous",
+          city: review.city || "Unknown",
+          createdAt: review.createdAt || "",
+        }));
+
+        setReviews((prev) => [...prev, ...sanitizedReviews]);
+        setHasMore(sanitizedReviews.length === reviewsPerBatch);
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-      setError("Failed to load reviews. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [reviewsPerBatch]
+  );
 
   useEffect(() => {
     fetchReviews(0);
-  }, []);
+  }, [fetchReviews]);
 
   const lastReviewRef = (node: HTMLDivElement) => {
     if (loading) return;
@@ -145,7 +130,8 @@ const LatestBroadbandReviews: React.FC = () => {
                 ))}
               </div>
               <p className="text-sm font-aeonik-bold text-white">
-                {review.name} <span className="font-aeonik-regular text-gray-300">(City: {review.city})</span>
+                {review.name}{" "}
+                <span className="font-aeonik-regular text-gray-300">(City: {review.city})</span>
               </p>
             </div>
             <blockquote className="mt-4 text-sm font-aeonik-regular text-gray-300 italic border-l-4 pl-4 border-[#F6642D]">
@@ -167,20 +153,22 @@ const LatestBroadbandReviews: React.FC = () => {
             </blockquote>
             <div className="mt-6 space-y-2">
               <p className="text-sm font-aeonik-regular text-gray-300">
-                <span className="font-aeonik-bold text-white">Service:</span> {review.serviceRating.toFixed(1)}/5
+                <span className="font-aeonik-bold text-white">Service:</span>{" "}
+                {review.serviceRating.toFixed(1)}/5
               </p>
               <p className="text-sm font-aeonik-regular text-gray-300">
-                <span className="font-aeonik-bold text-white">Pricing:</span> {review.pricingRating.toFixed(1)}/5
+                <span className="font-aeonik-bold text-white">Pricing:</span>{" "}
+                {review.pricingRating.toFixed(1)}/5
               </p>
               <p className="text-sm font-aeonik-regular text-gray-300">
-                <span className="font-aeonik-bold text-white">Speed:</span> {review.speedRating.toFixed(1)}/5
+                <span className="font-aeonik-bold text-white">Speed:</span>{" "}
+                {review.speedRating.toFixed(1)}/5
               </p>
             </div>
           </div>
         ))}
 
         {loading && <p className="text-center text-white">Loading more reviews...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
       </div>
     </div>
   );
