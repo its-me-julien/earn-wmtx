@@ -6,6 +6,7 @@ import sanitizeHtml from "sanitize-html";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faBullhorn, faCheckCircle, faExclamationCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
 import RatingField from "./review/RatingField";
+import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
 const ReviewForm = () => {
   const [formData, setFormData] = useState({
@@ -21,11 +22,59 @@ const ReviewForm = () => {
     email: "",
   });
   const [status, setStatus] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({
+    name: "",
+    city: "",
+    zipcode: "",
+    email: "",
+    feedback: "",
+  });
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+
+  const validateName = (name: string) => {
+    return /^[a-zA-Z\s'\-,.áéíóúÁÉÍÓÚüÜñÑãõÃÕâêôÂÊÔçÇ]+$/.test(name) && name.length <= 50;
+  };
+  
+
+  const validateCity = (city: string) => {
+    return /^[a-zA-Z0-9\s'\-,.áéíóúÁÉÍÓÚüÜñÑãõÃÕâêôÂÊÔçÇ]+$/.test(city) && city.length <= 60;
+  };  
+
+  const validateZipcode = (zipcode: string) => {
+    return /^[\w\s-]{1,20}$/.test(zipcode);
+  };
+
+  const validateEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const validateFeedback = (feedback: string) => {
+    return feedback.length <= 3500;
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: sanitizeHtml(value) });
+    const sanitizedValue = sanitizeHtml(value);
+
+    const fieldKey = name as keyof typeof fieldErrors;
+    const errors = { ...fieldErrors };
+
+    if (fieldKey === "name" && !validateName(sanitizedValue)) {
+      errors[fieldKey] = "Invalid name. Ensure it meets the validation rules.";
+    } else if (fieldKey === "city" && !validateCity(sanitizedValue)) {
+      errors[fieldKey] = "Invalid city. Ensure it meets the validation rules.";
+    } else if (fieldKey === "zipcode" && !validateZipcode(sanitizedValue)) {
+      errors[fieldKey] = "Invalid postcode. Ensure it is correctly formatted and no more than 20 characters.";
+    } else if (fieldKey === "email" && sanitizedValue && !validateEmail(sanitizedValue)) {
+      errors[fieldKey] = "Invalid email format.";
+    } else if (fieldKey === "feedback" && !validateFeedback(sanitizedValue)) {
+      errors[fieldKey] = "Feedback cannot exceed 3500 characters.";
+    } else {
+      errors[fieldKey] = "";
+    }
+
+    setFieldErrors(errors);
+    setFormData({ ...formData, [fieldKey]: sanitizedValue });
   };
 
   const handleRatingChange = (name: string, value: number) => {
@@ -42,6 +91,31 @@ const ReviewForm = () => {
 
     if (!captchaToken) {
       setStatus("Please complete the CAPTCHA");
+      return;
+    }
+
+    if (!validateName(formData.name)) {
+      setStatus("Invalid name. Please correct it before submitting.");
+      return;
+    }
+
+    if (!validateCity(formData.city)) {
+      setStatus("Invalid city. Please correct it before submitting.");
+      return;
+    }
+
+    if (!validateZipcode(formData.zipcode)) {
+      setStatus("Invalid postcode. Please correct it before submitting.");
+      return;
+    }
+
+    if (formData.email && !validateEmail(formData.email)) {
+      setStatus("Invalid email. Please correct it before submitting.");
+      return;
+    }
+
+    if (!validateFeedback(formData.feedback)) {
+      setStatus("Feedback cannot exceed 3500 characters.");
       return;
     }
 
@@ -81,60 +155,8 @@ const ReviewForm = () => {
     }
   };
 
-  // Generate structured data
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Review",
-    "itemReviewed": {
-      "@type": "Service",
-      "name": "World Mobile Phone Plans",
-    },
-    "author": {
-      "@type": "Person",
-      "name": formData.name || "Anonymous",
-    },
-    "reviewBody": formData.feedback,
-    "reviewRating": {
-      "@type": "Rating",
-      "ratingValue": formData.overallRating,
-      "bestRating": 5,
-    },
-    "additionalProperty": [
-      {
-        "@type": "PropertyValue",
-        "name": "Service",
-        "value": formData.serviceRating,
-      },
-      {
-        "@type": "PropertyValue",
-        "name": "Pricing",
-        "value": formData.pricingRating,
-      },
-      {
-        "@type": "PropertyValue",
-        "name": "Speed",
-        "value": formData.speedRating,
-      },
-    ],
-    "location": {
-      "@type": "Place",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": formData.city || "Unknown",
-        "postalCode": formData.zipcode || "Unknown",
-      },
-    },
-    "recommendation": formData.recommend,
-  };
-
   return (
     <div className="container mx-auto py-10 px-6">
-      {/* Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
-
       {/* Two-Column Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
         {/* Column 1 */}
@@ -144,7 +166,7 @@ const ReviewForm = () => {
             <span className="text-[#FFFFFF]">World Mobile Phone Plans</span>
           </h2>
           <p className="text-lg font-aeonik-regular text-gray-200 leading-relaxed">
-            Your feedback is invaluable. It empowers others to make confident, informed decisions about their mobile plans. 
+            Your feedback helps others to make confident, informed decisions about their mobile plans. 
             By sharing your experience, you contribute to a trusted and reliable community of World Mobile users.
           </p>
           <div className="space-y-4">
@@ -184,6 +206,7 @@ const ReviewForm = () => {
             </div>
           </div>
         </div>
+
 
         {/* Column 2 */}
         <div className="bg-[rgba(68,61,72,0.19)] bg-opacity-90 p-6 rounded-lg shadow-lg">
@@ -227,6 +250,7 @@ const ReviewForm = () => {
               required
               className="textarea textarea-bordered w-full h-28 bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
             />
+            {fieldErrors.feedback && <p className="text-sm text-red-500">{fieldErrors.feedback}</p>}
 
             {/* Recommendation Section */}
             <div>
@@ -234,25 +258,32 @@ const ReviewForm = () => {
                 Would you recommend World Mobile?
               </p>
               <div className="flex space-x-4">
-                <button
-                  type="button"
-                  className={`btn border-0 ${
-                    formData.recommend === "Yes" ? "bg-[#F6642D] text-white" : "btn-outline"
-                  } hover:bg-[#F6642D] w-32`}
-                  onClick={() => setFormData({ ...formData, recommend: "Yes" })}
-                >
-                  Yes
-                </button>
-                <button
-                  type="button"
-                  className={`btn border-0 ${
-                    formData.recommend === "No" ? "bg-[#F6642D] text-white" : "btn-outline"
-                  } hover:bg-[#F6642D] w-32`}
-                  onClick={() => setFormData({ ...formData, recommend: "No" })}
-                >
-                  No
-                </button>
-              </div>
+              <button
+                type="button"
+                className={`btn border-0 w-32 flex items-center justify-center space-x-2 ${
+                  formData.recommend === "Yes"
+                    ? "bg-[#F6642D] text-white" // Active state
+                    : "bg-gray-800 text-white" // Inactive state
+                } hover:bg-[#F6642D]`}
+                onClick={() => setFormData({ ...formData, recommend: "Yes" })}
+              >
+                <FontAwesomeIcon icon={faThumbsUp} />
+                <span>Yes</span>
+              </button>
+              <button
+                type="button"
+                className={`btn border-0 w-32 flex items-center justify-center space-x-2 ${
+                  formData.recommend === "No"
+                    ? "bg-[#F6642D] text-white" // Active state
+                    : "bg-gray-800 text-white" // Inactive state
+                } hover:bg-[#F6642D]`}
+                onClick={() => setFormData({ ...formData, recommend: "No" })}
+              >
+                <FontAwesomeIcon icon={faThumbsDown} />
+                <span>No</span>
+              </button>
+            </div>
+
             </div>
 
             {/* Name, City, Zipcode */}
@@ -266,24 +297,34 @@ const ReviewForm = () => {
                 onChange={handleInputChange}
                 className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
               />
-              <input
-                type="text"
-                id="zipcode"
-                name="zipcode"
-                placeholder="Zip Code"
-                value={formData.zipcode}
-                onChange={handleInputChange}
-                className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
-              />
-              <input
-                type="text"
-                id="city"
-                name="city"
-                placeholder="City"
-                value={formData.city}
-                onChange={handleInputChange}
-                className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
-              />
+              {fieldErrors.name && <p className="text-sm text-red-500">{fieldErrors.name}</p>}
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    placeholder="City"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
+                  />
+                  {fieldErrors.city && <p className="text-sm text-red-500">{fieldErrors.city}</p>}
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    id="zipcode"
+                    name="zipcode"
+                    placeholder="Zip Code"
+                    value={formData.zipcode}
+                    onChange={handleInputChange}
+                    className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
+                  />
+                  {fieldErrors.zipcode && <p className="text-sm text-red-500">{fieldErrors.zipcode}</p>}
+                </div>
+              </div>
             </div>
 
             {/* Email */}
@@ -297,6 +338,8 @@ const ReviewForm = () => {
                 onChange={handleInputChange}
                 className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
               />
+              {fieldErrors.email && <p className="text-sm text-red-500">{fieldErrors.email}</p>}
+
               <div className="absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-400 cursor-pointer">
                 <FontAwesomeIcon
                   icon={faInfoCircle}

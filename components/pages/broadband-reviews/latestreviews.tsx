@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface Review {
   id: string;
@@ -25,158 +25,162 @@ const LatestBroadbandReviews: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalReviews, setTotalReviews] = useState(0);
+  const [expandedReviewIds, setExpandedReviewIds] = useState<string[]>([]);
+  const [hasMore, setHasMore] = useState(true);
 
-  const reviewsPerPage = 10;
+  const reviewsPerBatch = 30; // Fetch 30 reviews per API call
+  const prefetchBatchCount = 2; // Number of additional batches to prefetch
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const fetchReviews = async (offset: number) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch("/.netlify/functions/getReviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          collection: "broadband_review",
+          limit: reviewsPerBatch,
+          offset: offset,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch reviews");
+      }
+
+      const data: GetReviewsResponse = await response.json();
+
+      if (!Array.isArray(data.reviews)) {
+        throw new Error("Invalid API response: reviews should be an array");
+      }
+
+      const sanitizedReviews = data.reviews.map((review) => ({
+        id: review.id || "",
+        overallRating: review.overallRating || 0,
+        serviceRating: review.serviceRating || 0,
+        pricingRating: review.pricingRating || 0,
+        speedRating: review.speedRating || 0,
+        feedback: review.feedback || "",
+        name: review.name || "Anonymous",
+        city: review.city || "Unknown",
+        createdAt: review.createdAt || "",
+      }));
+
+      if (sanitizedReviews.length < reviewsPerBatch) {
+        setHasMore(false);
+      }
+
+      setReviews((prev) => [...prev, ...sanitizedReviews]);
+      setTotalReviews(data.total || 0);
+
+      // Prefetch additional batches if applicable
+      for (let i = 1; i <= prefetchBatchCount; i++) {
+        const nextOffset = offset + i * reviewsPerBatch;
+        if (nextOffset < data.total) {
+          fetchReviews(nextOffset);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      setError("Failed to load reviews. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchReviews = async () => {
-      setLoading(true);
-      setError(null); // Reset error state
-      try {
-        const response = await fetch("/.netlify/functions/getReviews", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            collection: "broadband_review",
-            limit: reviewsPerPage,
-            offset: (page - 1) * reviewsPerPage,
-          }),
-        });
+    fetchReviews(0);
+  }, []);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch reviews");
-        }
+  const lastReviewRef = (node: HTMLDivElement) => {
+    if (loading) return;
 
-        const data: GetReviewsResponse = await response.json();
+    if (observer.current) observer.current.disconnect();
 
-        if (!Array.isArray(data.reviews)) {
-          throw new Error("Invalid API response: reviews should be an array");
-        }
-
-        const sanitizedReviews = data.reviews.map((review) => ({
-          id: review.id || "",
-          overallRating: review.overallRating || 0,
-          serviceRating: review.serviceRating || 0,
-          pricingRating: review.pricingRating || 0,
-          speedRating: review.speedRating || 0,
-          feedback: review.feedback || "",
-          name: review.name || "Anonymous",
-          city: review.city || "Unknown",
-          createdAt: review.createdAt || "",
-        }));
-
-        setReviews(sanitizedReviews);
-        setTotalReviews(data.total || 0);
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-        setError("Failed to load reviews. Please try again later.");
-        setReviews([]);
-        setTotalReviews(0);
-      } finally {
-        setLoading(false);
+    observer.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasMore) {
+        fetchReviews(reviews.length);
       }
-    };
+    });
 
-    fetchReviews();
-  }, [page]);
+    if (node) observer.current.observe(node);
+  };
 
-  const totalPages = Math.ceil((totalReviews || 0) / reviewsPerPage);
+  const toggleExpandReview = (id: string) => {
+    setExpandedReviewIds((prev) =>
+      prev.includes(id) ? prev.filter((reviewId) => reviewId !== id) : [...prev, id]
+    );
+  };
 
   return (
     <div className="flex justify-center py-10 px-4">
       <div className="w-full max-w-3xl space-y-8">
         <h2 className="text-xl font-aeonik-bold text-white text-center">
-          Latest Broadband Reviews
+          World Mobile Broadband Reviews
         </h2>
 
-        {loading ? (
-          <p className="text-center text-white">Loading reviews...</p>
-        ) : error ? (
-          <p className="text-center text-red-500">{error}</p>
-        ) : reviews.length === 0 ? (
-          <p className="text-center text-white">No reviews available yet.</p>
-        ) : (
-          <>
-            <div className="space-y-6">
-              {reviews.map((review) => (
-                <div
-                  key={review.id}
-                  className="p-6 rounded-lg shadow-lg"
-                  style={{ background: "rgba(55,10,81,.19)" }}
-                >
-                  <div className="flex flex-col items-start space-y-2">
-                    {/* DaisyUI Rating Component */}
-                    <div className="rating">
-                      {[...Array(5)].map((_, i) => (
-                        <input
-                          key={i}
-                          type="radio"
-                          name={`rating-${review.id}`}
-                          className={`mask mask-star-2 ${
-                            i < review.overallRating ? "bg-[#F6642D]" : "bg-gray-500"
-                          }`}
-                          checked={i === Math.floor(review.overallRating) - 1}
-                          readOnly
-                        />
-                      ))}
-                    </div>
-                    <p className="text-sm font-aeonik-bold text-white">
-                      {review.name}{" "}
-                      <span className="font-aeonik-regular text-gray-300">
-                        (City: {review.city})
-                      </span>
-                    </p>
-                  </div>
-                  <blockquote className="mt-4 text-sm font-aeonik-regular text-gray-300 italic border-l-4 pl-4 border-[#F6642D]">
-                    {review.feedback.length > 200
-                      ? `${review.feedback.slice(0, 200)}...`
-                      : review.feedback}
-                  </blockquote>
-                  <div className="mt-6 space-y-2">
-                    <p className="text-sm font-aeonik-regular text-gray-300">
-                      <span className="font-aeonik-bold text-white">Service:</span> {review.serviceRating.toFixed(1)}/5
-                    </p>
-                    <p className="text-sm font-aeonik-regular text-gray-300">
-                      <span className="font-aeonik-bold text-white">Pricing:</span> {review.pricingRating.toFixed(1)}/5
-                    </p>
-                    <p className="text-sm font-aeonik-regular text-gray-300">
-                      <span className="font-aeonik-bold text-white">Speed:</span> {review.speedRating.toFixed(1)}/5
-                    </p>
-                  </div>
-                </div>
-              ))}
+        {reviews.map((review, index) => (
+          <div
+            key={review.id}
+            className="p-6 rounded-lg shadow-lg"
+            style={{ background: "rgba(55,10,81,.19)" }}
+            ref={index === reviews.length - 1 ? lastReviewRef : null}
+          >
+            <div className="flex flex-col items-start space-y-2">
+              <div className="rating">
+                {[...Array(5)].map((_, i) => (
+                  <input
+                    key={i}
+                    type="radio"
+                    name={`rating-${review.id}`}
+                    className={`mask mask-star-2 ${
+                      i < review.overallRating ? "bg-[#F6642D]" : "bg-gray-500"
+                    }`}
+                    checked={i === Math.floor(review.overallRating) - 1}
+                    readOnly
+                  />
+                ))}
+              </div>
+              <p className="text-sm font-aeonik-bold text-white">
+                {review.name} <span className="font-aeonik-regular text-gray-300">(City: {review.city})</span>
+              </p>
             </div>
+            <blockquote className="mt-4 text-sm font-aeonik-regular text-gray-300 italic border-l-4 pl-4 border-[#F6642D]">
+              {expandedReviewIds.includes(review.id) ? (
+                review.feedback
+              ) : review.feedback.length > 200 ? (
+                <>
+                  {review.feedback.slice(0, 200)}...
+                  <button
+                    onClick={() => toggleExpandReview(review.id)}
+                    className="text-[#F6642D] underline ml-1"
+                  >
+                    Read more
+                  </button>
+                </>
+              ) : (
+                review.feedback
+              )}
+            </blockquote>
+            <div className="mt-6 space-y-2">
+              <p className="text-sm font-aeonik-regular text-gray-300">
+                <span className="font-aeonik-bold text-white">Service:</span> {review.serviceRating.toFixed(1)}/5
+              </p>
+              <p className="text-sm font-aeonik-regular text-gray-300">
+                <span className="font-aeonik-bold text-white">Pricing:</span> {review.pricingRating.toFixed(1)}/5
+              </p>
+              <p className="text-sm font-aeonik-regular text-gray-300">
+                <span className="font-aeonik-bold text-white">Speed:</span> {review.speedRating.toFixed(1)}/5
+              </p>
+            </div>
+          </div>
+        ))}
 
-            <div className="flex justify-center mt-6 space-x-2">
-              <button
-                className="btn btn-primary btn-sm"
-                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                disabled={page === 1}
-                aria-label="Previous Page"
-              >
-                Previous
-              </button>
-              {Array.from({ length: totalPages }, (_, i) => (
-                <button
-                  key={i + 1}
-                  className={`btn btn-sm ${page === i + 1 ? "btn-active" : ""}`}
-                  onClick={() => setPage(i + 1)}
-                  aria-label={`Page ${i + 1}`}
-                >
-                  {i + 1}
-                </button>
-              ))}
-              <button
-                className="btn btn-primary btn-sm"
-                onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-                disabled={page === totalPages}
-                aria-label="Next Page"
-              >
-                Next
-              </button>
-            </div>
-          </>
-        )}
+        {loading && <p className="text-center text-white">Loading more reviews...</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
       </div>
     </div>
   );
