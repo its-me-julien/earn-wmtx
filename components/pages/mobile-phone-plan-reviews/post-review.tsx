@@ -2,11 +2,25 @@
 
 import React, { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
+import { z } from "zod";
 import sanitizeHtml from "sanitize-html";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faBullhorn, faCheckCircle, faExclamationCircle, faCheck } from "@fortawesome/free-solid-svg-icons";
 import RatingField from "./review/RatingField";
 import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+
+const ReviewSchema = z.object({
+  overallRating: z.number().min(1).max(5),
+  serviceRating: z.number().min(1).max(5),
+  pricingRating: z.number().min(1).max(5),
+  speedRating: z.number().min(1).max(5),
+  feedback: z.string().max(3500),
+  recommend: z.enum(["Yes", "No"]),
+  name: z.string().max(50),
+  city: z.string().max(60),
+  zipcode: z.string().max(20),
+  email: z.string().email().optional(),
+});
 
 const ReviewForm = () => {
   const [formData, setFormData] = useState({
@@ -31,47 +45,12 @@ const ReviewForm = () => {
   });
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
-  const validateName = (name: string) => {
-    return /^[a-zA-Z\s'\-,.áéíóúÁÉÍÓÚüÜñÑãõÃÕâêôÂÊÔçÇ]+$/.test(name) && name.length <= 50;
-  };
-  
-
-  const validateCity = (city: string) => {
-    return /^[a-zA-Z0-9\s'\-,.áéíóúÁÉÍÓÚüÜñÑãõÃÕâêôÂÊÔçÇ]+$/.test(city) && city.length <= 60;
-  };  
-
-  const validateZipcode = (zipcode: string) => {
-    return /^[\w\s-]{1,20}$/.test(zipcode);
-  };
-
-  const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-
-  const validateFeedback = (feedback: string) => {
-    return feedback.length <= 3500;
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     const sanitizedValue = sanitizeHtml(value);
 
     const fieldKey = name as keyof typeof fieldErrors;
     const errors = { ...fieldErrors };
-
-    if (fieldKey === "name" && !validateName(sanitizedValue)) {
-      errors[fieldKey] = "Invalid name. Ensure it meets the validation rules.";
-    } else if (fieldKey === "city" && !validateCity(sanitizedValue)) {
-      errors[fieldKey] = "Invalid city. Ensure it meets the validation rules.";
-    } else if (fieldKey === "zipcode" && !validateZipcode(sanitizedValue)) {
-      errors[fieldKey] = "Invalid postcode. Ensure it is correctly formatted and no more than 20 characters.";
-    } else if (fieldKey === "email" && sanitizedValue && !validateEmail(sanitizedValue)) {
-      errors[fieldKey] = "Invalid email format.";
-    } else if (fieldKey === "feedback" && !validateFeedback(sanitizedValue)) {
-      errors[fieldKey] = "Feedback cannot exceed 3500 characters.";
-    } else {
-      errors[fieldKey] = "";
-    }
 
     setFieldErrors(errors);
     setFormData({ ...formData, [fieldKey]: sanitizedValue });
@@ -89,33 +68,16 @@ const ReviewForm = () => {
     e.preventDefault();
     setStatus("Submitting...");
 
+    const parseResult = ReviewSchema.safeParse(formData);
+
+    if (!parseResult.success) {
+      setStatus("Validation failed. Please check your input.");
+      console.error(parseResult.error.issues);
+      return;
+    }
+
     if (!captchaToken) {
       setStatus("Please complete the CAPTCHA");
-      return;
-    }
-
-    if (!validateName(formData.name)) {
-      setStatus("Invalid name. Please correct it before submitting.");
-      return;
-    }
-
-    if (!validateCity(formData.city)) {
-      setStatus("Invalid city. Please correct it before submitting.");
-      return;
-    }
-
-    if (!validateZipcode(formData.zipcode)) {
-      setStatus("Invalid postcode. Please correct it before submitting.");
-      return;
-    }
-
-    if (formData.email && !validateEmail(formData.email)) {
-      setStatus("Invalid email. Please correct it before submitting.");
-      return;
-    }
-
-    if (!validateFeedback(formData.feedback)) {
-      setStatus("Feedback cannot exceed 3500 characters.");
       return;
     }
 
@@ -124,9 +86,9 @@ const ReviewForm = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formData,
+          ...parseResult.data,
           captchaToken,
-          reviewType: "mobile_plan", // Specify the type of review
+          reviewType: "mobile_plan",
         }),
       });
 
@@ -134,10 +96,10 @@ const ReviewForm = () => {
       if (response.ok) {
         setStatus("Review submitted successfully!");
         setFormData({
-          overallRating: 1,
-          serviceRating: 1,
-          pricingRating: 1,
-          speedRating: 1,
+          overallRating: 5,
+          serviceRating: 5,
+          pricingRating: 5,
+          speedRating: 5,
           feedback: "",
           recommend: "Yes",
           name: "",
@@ -157,10 +119,8 @@ const ReviewForm = () => {
 
   return (
     <div className="container mx-auto py-10 px-6">
-      {/* Two-Column Section */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-        {/* Column 1 */}
-        <div className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-8 rounded-lg shadow-lg space-y-6">
+      <div className="bg-gradient-to-r from-[#5A2FBA] to-[#F6642D] p-8 rounded-lg shadow-lg space-y-6">
           <h2 className="text-3xl font-aeonik-bold text-white">
             Share Your Experience with{" "}
             <span className="text-[#FFFFFF]">World Mobile Phone Plans</span>
@@ -207,12 +167,9 @@ const ReviewForm = () => {
           </div>
         </div>
 
-
-        {/* Column 2 */}
         <div className="bg-[rgba(68,61,72,0.19)] bg-opacity-90 p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-aeonik-bold text-white mb-4">Post a Review</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Ratings Section */}
             <div className="space-y-4">
               <RatingField
                 label="Overall Rating"
@@ -239,8 +196,6 @@ const ReviewForm = () => {
                 onChange={handleRatingChange}
               />
             </div>
-
-            {/* Feedback Section */}
             <textarea
               id="feedback"
               name="feedback"
@@ -250,43 +205,37 @@ const ReviewForm = () => {
               required
               className="textarea textarea-bordered w-full h-28 bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
             />
-            {fieldErrors.feedback && <p className="text-sm text-red-500">{fieldErrors.feedback}</p>}
-
-            {/* Recommendation Section */}
             <div>
               <p className="text-sm font-semibold text-white mb-2">
                 Would you recommend World Mobile?
               </p>
               <div className="flex space-x-4">
-              <button
-                type="button"
-                className={`btn border-0 w-32 flex items-center justify-center space-x-2 ${
-                  formData.recommend === "Yes"
-                    ? "bg-[#F6642D] text-white" // Active state
-                    : "bg-gray-800 text-white" // Inactive state
-                } hover:bg-[#F6642D]`}
-                onClick={() => setFormData({ ...formData, recommend: "Yes" })}
-              >
-                <FontAwesomeIcon icon={faThumbsUp} />
-                <span>Yes</span>
-              </button>
-              <button
-                type="button"
-                className={`btn border-0 w-32 flex items-center justify-center space-x-2 ${
-                  formData.recommend === "No"
-                    ? "bg-[#F6642D] text-white" // Active state
-                    : "bg-gray-800 text-white" // Inactive state
-                } hover:bg-[#F6642D]`}
-                onClick={() => setFormData({ ...formData, recommend: "No" })}
-              >
-                <FontAwesomeIcon icon={faThumbsDown} />
-                <span>No</span>
-              </button>
+                <button
+                  type="button"
+                  className={`btn border-0 w-32 flex items-center justify-center space-x-2 ${
+                    formData.recommend === "Yes"
+                      ? "bg-[#F6642D] text-white" // Active state
+                      : "bg-gray-800 text-white" // Inactive state
+                  } hover:bg-[#F6642D]`}
+                  onClick={() => setFormData({ ...formData, recommend: "Yes" })}
+                >
+                  <FontAwesomeIcon icon={faThumbsUp} />
+                  <span>Yes</span>
+                </button>
+                <button
+                  type="button"
+                  className={`btn border-0 w-32 flex items-center justify-center space-x-2 ${
+                    formData.recommend === "No"
+                      ? "bg-[#F6642D] text-white" // Active state
+                      : "bg-gray-800 text-white" // Inactive state
+                  } hover:bg-[#F6642D]`}
+                  onClick={() => setFormData({ ...formData, recommend: "No" })}
+                >
+                  <FontAwesomeIcon icon={faThumbsDown} />
+                  <span>No</span>
+                </button>
+              </div>
             </div>
-
-            </div>
-
-            {/* Name, City, Zipcode */}
             <div className="space-y-3">
               <input
                 type="text"
@@ -326,8 +275,6 @@ const ReviewForm = () => {
                 </div>
               </div>
             </div>
-
-           {/* Email */}
             <div className="relative">
               <input
                 type="email"
@@ -341,8 +288,6 @@ const ReviewForm = () => {
               {fieldErrors.email && (
                 <p className="text-sm text-red-500">{fieldErrors.email}</p>
               )}
-
-              {/* DaisyUI Tooltip */}
               <div
                 className="absolute top-1/2 transform -translate-y-1/2 right-2 tooltip tooltip-left"
                 data-tip="Your email will not be published or used to contact you."
@@ -350,13 +295,10 @@ const ReviewForm = () => {
                 <FontAwesomeIcon icon={faInfoCircle} className="text-gray-400 cursor-pointer" />
               </div>
             </div>
-            {/* CAPTCHA */}
             <ReCAPTCHA
               sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi"
               onChange={handleCaptchaChange}
             />
-
-            {/* Submit Button */}
             <button
               type="submit"
               className="btn w-full bg-gradient-to-r from-[#F6642D] to-[#D42E58] text-white hover:brightness-125 border-0"
@@ -367,13 +309,10 @@ const ReviewForm = () => {
         </div>
       </div>
 
-      {/* Status Message */}
       {status && (
         <div
           className={`mt-4 text-center text-sm font-semibold p-4 rounded-lg ${
-            status.startsWith("Error")
-              ? "bg-[#D42E58] text-white"
-              : "bg-green-500 text-white"
+            status.startsWith("Error") ? "bg-[#D42E58] text-white" : "bg-green-500 text-white"
           }`}
         >
           {status.startsWith("Error") ? (
