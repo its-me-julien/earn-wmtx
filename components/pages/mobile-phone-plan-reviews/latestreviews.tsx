@@ -21,15 +21,17 @@ interface GetReviewsResponse {
 
 const Reviews: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [expandedReviewIds, setExpandedReviewIds] = useState<string[]>([]);
   const [hasMore, setHasMore] = useState(true);
+  const [loadMode, setLoadMode] = useState<'auto' | 'manual'>('auto');
 
-  const reviewsPerBatch = 30; // Fetch 30 reviews per API call
-  const observer = useRef<IntersectionObserver | null>(null);
+  const reviewsPerBatch = 10; // Initial auto-load limit
+  const manualLoadBatch = 20; // Batch size for manual load
+  const observer = useRef<IntersectionObserver | null>(null); // Persist the observer instance
 
   const fetchReviews = useCallback(
-    async (offset: number) => {
+    async (offset: number, limit: number) => {
       setLoading(true);
 
       try {
@@ -38,7 +40,7 @@ const Reviews: React.FC = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             collection: "mobileplan_review",
-            limit: reviewsPerBatch,
+            limit,
             offset,
           }),
         });
@@ -66,32 +68,36 @@ const Reviews: React.FC = () => {
         }));
 
         setReviews((prev) => [...prev, ...sanitizedReviews]);
-        setHasMore(sanitizedReviews.length === reviewsPerBatch);
+        setHasMore(sanitizedReviews.length === limit);
       } catch (error) {
         console.error("Error fetching reviews:", error);
       } finally {
         setLoading(false);
       }
     },
-    [reviewsPerBatch]
+    []
   );
 
   useEffect(() => {
-    fetchReviews(0);
+    fetchReviews(0, reviewsPerBatch);
   }, [fetchReviews]);
 
   const lastReviewRef = (node: HTMLDivElement) => {
-    if (loading) return;
+    if (loading || loadMode === 'manual') return;
 
     if (observer.current) observer.current.disconnect();
 
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && hasMore) {
-        fetchReviews(reviews.length);
+        setLoadMode('manual'); // Switch to manual mode after auto-loading 10
       }
     });
 
     if (node) observer.current.observe(node);
+  };
+
+  const handleLoadMore = () => {
+    fetchReviews(reviews.length, manualLoadBatch);
   };
 
   const toggleExpandReview = (id: string) => {
@@ -112,7 +118,7 @@ const Reviews: React.FC = () => {
             key={review.id}
             className="p-6 rounded-lg shadow-lg"
             style={{ background: "rgba(55,10,81,.19)" }}
-            ref={index === reviews.length - 1 ? lastReviewRef : null}
+            ref={index === reviews.length - 1 && loadMode === 'auto' ? lastReviewRef : null}
           >
             <div className="flex flex-col items-start space-y-2">
               <div className="rating">
@@ -130,7 +136,7 @@ const Reviews: React.FC = () => {
                 ))}
               </div>
               <p className="text-sm font-aeonik-bold text-white">
-                {review.name}{" "}
+                {review.name} {" "}
                 <span className="font-aeonik-regular text-gray-300">(City: {review.city})</span>
               </p>
             </div>
@@ -169,6 +175,17 @@ const Reviews: React.FC = () => {
         ))}
 
         {loading && <p className="text-center text-white">Loading more reviews...</p>}
+
+        {loadMode === 'manual' && hasMore && !loading && (
+          <div className="text-center">
+            <button
+              onClick={handleLoadMore}
+              className="px-6 py-2 text-white bg-[#F6642D] rounded hover:bg-[#d65529]"
+            >
+              Load More Reviews
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

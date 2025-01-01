@@ -327,7 +327,7 @@ const ReviewForm = () => {
               </div>
             </div>
 
-            {/* Email */}
+           {/* Email */}
             <div className="relative">
               <input
                 type="email"
@@ -338,16 +338,18 @@ const ReviewForm = () => {
                 onChange={handleInputChange}
                 className="input input-bordered w-full bg-gray-800 text-white text-sm focus:ring-[#5A2FBA] focus:border-[#5A2FBA]"
               />
-              {fieldErrors.email && <p className="text-sm text-red-500">{fieldErrors.email}</p>}
+              {fieldErrors.email && (
+                <p className="text-sm text-red-500">{fieldErrors.email}</p>
+              )}
 
-              <div className="absolute top-1/2 transform -translate-y-1/2 right-2 text-gray-400 cursor-pointer">
-                <FontAwesomeIcon
-                  icon={faInfoCircle}
-                  title="Your email will not be published or used to contact you."
-                />
+              {/* DaisyUI Tooltip */}
+              <div
+                className="absolute top-1/2 transform -translate-y-1/2 right-2 tooltip tooltip-left"
+                data-tip="Your email will not be published or used to contact you."
+              >
+                <FontAwesomeIcon icon={faInfoCircle} className="text-gray-400 cursor-pointer" />
               </div>
             </div>
-
             {/* CAPTCHA */}
             <ReCAPTCHA
               sitekey="6LfrRqoqAAAAAB5QBGNidW0WHHZIgocAHTibFnLi"
