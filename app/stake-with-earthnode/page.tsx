@@ -4,6 +4,7 @@ import Footer from '../../components/footer/Footer';
 import JoinDiscussion from '../../components/pages/stake-with-earthnode/discussions'; 
 import MetaFields from '../../components/pages/stake-with-earthnode/metafields';
 import Info from '../../components/pages/stake-with-earthnode/Info';
+import EarthNodeSelection from '../../components/pages/stake-with-earthnode/EarthNodeSelection';
 
 export default function EarthNodeOperatorPage() {
   return (
@@ -35,7 +36,7 @@ export default function EarthNodeOperatorPage() {
           {/* Info Section */}
           <Info />
 
-         
+         <EarthNodeSelection />
 
           {/* Join Discussion Section */}
           <JoinDiscussion />

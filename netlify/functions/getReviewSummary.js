@@ -1,4 +1,5 @@
 const admin = require("firebase-admin");
+const { z } = require("zod");
 
 // Initialize Firebase Admin SDK
 const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT
@@ -17,18 +18,23 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
+// Zod schema to validate incoming collection name
+const collectionSchema = z.string().regex(/^[a-zA-Z0-9_-]+$/, "Invalid collection name.");
+
+// Zod schema for review object validation
+const reviewSchema = z.object({
+  overallRating: z.number().min(1).max(5),
+  serviceRating: z.number().min(1).max(5),
+  pricingRating: z.number().min(1).max(5),
+  speedRating: z.number().min(1).max(5),
+});
+
 exports.handler = async (event) => {
   try {
+    // Parse and validate input
     const { collection } = JSON.parse(event.body);
-
-    // Validate input
-    if (!collection || typeof collection !== "string" || !/^[a-zA-Z0-9_-]+$/.test(collection)) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: "Invalid collection name." }),
-      };
-    }
-
+    collectionSchema.parse(collection);  // This will throw if invalid
+    
     // Fetch all reviews
     const snapshot = await db.collection(collection).get();
 
@@ -59,17 +65,18 @@ exports.handler = async (event) => {
     // Aggregate data
     snapshot.forEach((doc) => {
       const review = doc.data();
-      if (
-        typeof review.overallRating === "number" &&
-        typeof review.serviceRating === "number" &&
-        typeof review.pricingRating === "number" &&
-        typeof review.speedRating === "number"
-      ) {
+
+      try {
+        // Validate review data using Zod
+        reviewSchema.parse(review);
+
         totalReviews++;
         sumOverallRating += review.overallRating;
         sumServiceRating += review.serviceRating;
         sumPricingRating += review.pricingRating;
         sumSpeedRating += review.speedRating;
+      } catch (validationError) {
+        console.warn("Skipping invalid review:", validationError.errors);
       }
     });
 

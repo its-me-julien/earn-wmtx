@@ -15,9 +15,7 @@ export const metadata: Metadata = {
     description: 'Connecting everyone, everywhere with the first blockchain-powered mobile network World Mobile Chain.',
     images: [
       {
-        url: '/images/world_mobile_club.png', // Updated image path
-        width: 800,
-        height: 600,
+        url: '/images/world_mobile_club.png', 
         alt: 'World Mobile Club Logo',
         type: 'image/png',
       },

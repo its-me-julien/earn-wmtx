@@ -3,14 +3,14 @@ import React from 'react';
 const MetaFields = () => {
   return (
     <>
-      <title>Operate an EarthNode | World Mobile Club</title>
+      <title>Earn WMTx: 11 Ways to Earn More WMTx | World Mobile Club</title>
       <meta 
         name="description" 
-        content="Operate an EarthNode with World Mobile to secure the blockchain-powered network, validate transactions, and earn rewards. Be part of the decentralized connectivity revolution today." 
+        content="Discover 11 ways to earn more WMTx tokens with World Mobile. From EarthNode operations to hosting AirNodes and more, start contributing to decentralized connectivity and earn rewards." 
       />
       <meta 
         name="keywords" 
-        content="EarthNode Operator, Decentralized Connectivity, World Mobile, Blockchain, Earn Rewards, WMTx, Validate Transactions, Secure Network" 
+        content="Earn WMTx, World Mobile, Decentralized Connectivity, AirNode, EarthNode, WMTx Tokens, Earn Rewards" 
       />
       <meta name="author" content="World Mobile Club" />
 
@@ -19,19 +19,19 @@ const MetaFields = () => {
       <meta property="og:site_name" content="World Mobile Club" />
       <meta 
         property="og:title" 
-        content="Operate an EarthNode | World Mobile Club" 
+        content="Earn WMTx: 11 Ways to Earn More WMTx | World Mobile Club" 
       />
       <meta 
         property="og:description" 
-        content="Operate an EarthNode with World Mobile to secure the blockchain-powered network, validate transactions, and earn rewards. Be part of the decentralized connectivity revolution today." 
+        content="Discover 11 ways to earn more WMTx tokens with World Mobile. From EarthNode operations to hosting AirNodes and more, start contributing to decentralized connectivity and earn rewards." 
       />
       <meta 
         property="og:url" 
-        content="https://wmtx.worldmobile.club/earthnode-operator/" 
+        content="https://wmtx.worldmobile.club/earn-wmtx" 
       />
       <meta 
         property="og:image" 
-        content="/images/operate-an-earthnode.png" 
+        content="/images/earn_more_wmtx.png" 
       />
       <meta property="og:logo" content="/images/club_logo.png" />
 
@@ -39,15 +39,15 @@ const MetaFields = () => {
       <meta name="twitter:card" content="summary_large_image" />
       <meta 
         name="twitter:title" 
-        content="Operate an EarthNode | World Mobile Club" 
+        content="Earn WMTx: 11 Ways to Earn More WMTx | World Mobile Club" 
       />
       <meta 
         name="twitter:description" 
-        content="Operate an EarthNode with World Mobile to secure the blockchain-powered network, validate transactions, and earn rewards. Be part of the decentralized connectivity revolution today." 
+        content="Discover 11 ways to earn more WMTx tokens with World Mobile. From EarthNode operations to hosting AirNodes and more, start contributing to decentralized connectivity and earn rewards." 
       />
       <meta 
         name="twitter:image" 
-        content="/images/operate-an-earthnode.png" 
+        content="/images/earn_more_wmtx.png" 
       />
     </>
   );

@@ -1,4 +1,5 @@
 const admin = require('firebase-admin');
+const { z } = require('zod');
 
 // Initialize Firebase Admin SDK
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
@@ -11,39 +12,17 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
+// Define Zod schema for input validation
+const querySchema = z.object({
+  collection: z.string().regex(/^[a-zA-Z0-9_-]+$/, 'Invalid collection name'), // Validates collection name
+  limit: z.number().min(1).max(100, 'Limit must be between 1 and 100'), // Validates limit
+  offset: z.number().min(0, 'Offset must be zero or greater'), // Validates offset
+});
+
 exports.handler = async (event) => {
   try {
-    const { collection, limit, offset } = JSON.parse(event.body);
-
-    // Validate input parameters
-    if (
-      !collection ||
-      typeof collection !== 'string' ||
-      !/^[a-zA-Z0-9_-]+$/.test(collection) // Collection name validation
-    ) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid collection name.' }),
-      };
-    }
-
-    if (
-      typeof limit !== 'number' ||
-      limit <= 0 ||
-      limit > 100 // Enforce a reasonable limit
-    ) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid limit value. Must be between 1 and 100.' }),
-      };
-    }
-
-    if (typeof offset !== 'number' || offset < 0) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ error: 'Invalid offset value. Must be zero or greater.' }),
-      };
-    }
+    // Parse and validate input parameters using Zod
+    const { collection, limit, offset } = querySchema.parse(JSON.parse(event.body));
 
     // Query Firestore with pagination
     const snapshot = await db
@@ -67,6 +46,15 @@ exports.handler = async (event) => {
       body: JSON.stringify({ reviews, total }),
     };
   } catch (error) {
+    // Handle Zod validation errors
+    if (error instanceof z.ZodError) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: error.errors[0].message }), // Return Zod validation error message
+      };
+    }
+
+    // Handle other errors
     console.error('Error fetching reviews:', {
       body: event.body,
       error: error.message,
