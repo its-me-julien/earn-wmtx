@@ -1,15 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Favicons from './Favicons';
-import RichSchemaOrganization from './RichSchemaOrganization';
 
 export default function Header() {
   return (
     <header className="navbar bg-black text-white shadow-lg sticky top-0 z-50">
-      <Favicons />
-      <RichSchemaOrganization />
-
       <div className="flex-1 flex items-center space-x-4">
         <Link href="/" className="flex items-center">
           <Image
@@ -53,7 +48,6 @@ export default function Header() {
                 Getting Started
               </Link>
             </li>
-            
             <li>
               <Link href="https://wmtx.worldmobile.club/earn-wmtx/" className="hover:bg-white hover:bg-opacity-20">
                 Earn WMTx
@@ -69,14 +63,13 @@ export default function Header() {
                 Stake
               </Link>
             </li>
-            
           </ul>
         </div>
       </div>
 
       {/* Desktop Navigation */}
       <nav className="hidden lg:flex space-x-4">
-      <Link href="https://wmtx.worldmobile.club/getting-started-with-world-mobile/" className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white">
+        <Link href="https://wmtx.worldmobile.club/getting-started-with-world-mobile/" className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white">
           Getting Started
         </Link>
         <Link href="https://wmtx.worldmobile.club/earn-wmtx/" className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white">
