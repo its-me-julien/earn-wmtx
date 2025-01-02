@@ -10,7 +10,7 @@
 package = "@netlify/plugin-sitemap"
 
 [plugins.inputs]
-buildDir = "public"
+buildDir = ".next"
 
 [[plugins]]
 package = "netlify-plugin-submit-sitemap"
