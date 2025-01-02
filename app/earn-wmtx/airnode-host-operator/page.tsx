@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from '../../components/header/Header';
-import Footer from '../../components/footer/Footer';
-import JoinDiscussion from '../../components/pages/airnode-host-operate/discussions';
-import AirNodeInfo from '../../components/pages/airnode-host-operate/airnode-info';
-import AirNodeInvestmentTiers from '../../components/pages/airnode-host-operate/AirNodeInvestmentTiers';
-import GettingStartedSection from '../../components/pages/airnode-host-operate/GettingStartedSection';
-import FAQSection from '../../components/pages/airnode-host-operate/FAQ';
-import MetaFields from '../../components/pages/airnode-host-operate/metafields';
+import Header from '../../../components/header/Header';
+import Footer from '../../../components/footer/Footer';
+import JoinDiscussion from '../../../components/pages/earn-wmtx/airnode-host-operate/discussions';
+import AirNodeInfo from '../../../components/pages/earn-wmtx/airnode-host-operate/airnode-info';
+import AirNodeInvestmentTiers from '../../../components/pages/earn-wmtx/airnode-host-operate/AirNodeInvestmentTiers';
+import GettingStartedSection from '../../../components/pages/earn-wmtx/airnode-host-operate/GettingStartedSection';
+import FAQSection from '../../../components/pages/earn-wmtx/airnode-host-operate/FAQ';
+import MetaFields from '../../../components/pages/earn-wmtx/airnode-host-operate/metafields';
 
 export default function AirNodeHostOperatorPage() {
   return (

@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from '../../components/header/Header';
-import Footer from '../../components/footer/Footer';
-import JoinDiscussion from '../../components/pages/unity-node/discussions';
-import MetaFields from '../../components/pages/unity-node/metafields';
-import Info from '../../components/pages/unity-node/Info';
+import Header from '../../../components/header/Header';
+import Footer from '../../../components/footer/Footer';
+import JoinDiscussion from '../../../components/pages/earn-wmtx/unity-node/discussions';
+import MetaFields from '../../../components/pages/earn-wmtx/unity-node/metafields';
+import Info from '../../../components/pages/earn-wmtx/unity-node/Info';
 
 export default function SimStakingPage() {
   return (

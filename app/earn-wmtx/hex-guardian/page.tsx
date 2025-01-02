@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from '../../components/header/Header';
-import Footer from '../../components/footer/Footer';
-import JoinDiscussion from '../../components/pages/hex-guardian/discussions';
-import MetaFields from '../../components/pages/hex-guardian/metafields';
-import FAQSection from '../../components/pages/hex-guardian/FAQ';
-import Hexinfo from '../../components/pages/hex-guardian/hex-info';
+import Header from '../../../components/header/Header';
+import Footer from '../../../components/footer/Footer';
+import JoinDiscussion from '../../../components/pages/earn-wmtx/hex-guardian/discussions';
+import MetaFields from '../../../components/pages/earn-wmtx/hex-guardian/metafields';
+import FAQSection from '../../../components/pages/earn-wmtx/hex-guardian/FAQ';
+import Hexinfo from '../../../components/pages/earn-wmtx/hex-guardian/hex-info';
 
 export default function HexGuardianPage() {
   return (

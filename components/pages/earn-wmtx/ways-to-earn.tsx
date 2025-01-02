@@ -7,7 +7,7 @@ const waysToEarnData = [
     description:
       "Power the World Mobile Chain by operating an EarthNode, earning rewards while validating network transactions and offering data services.",
     image: "/images/earn-wmtx/EarthNode.png",
-    link: "https://wmtx.worldmobile.club/earthnode-operator",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/earthnode-operator",
     cta: "Operate an EarthNode",
   },
   {
@@ -15,7 +15,7 @@ const waysToEarnData = [
     description:
       "By managing AirNodes, you'll help bring WiFi and cellular connectivity to communities worldwide while earning rewards for growing the network.",
     image: "/images/earn-wmtx/airnode_operator.png",
-    link: "https://wmtx.worldmobile.club/airnode-operator",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/airnode-operator",
     cta: "Operate an AirNode",
   },
   {
@@ -23,7 +23,7 @@ const waysToEarnData = [
     description:
       "Transform your property into a community connectivity hub by hosting an AirNode, bringing internet access to your neighbors while earning passive rewards.",
     image: "/images/earn-wmtx/airnode_host.png",
-    link: "https://wmtx.worldmobile.club/airnode-host",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/airnode-host",
     cta: "Host an AirNode",
   },
   {
@@ -31,14 +31,14 @@ const waysToEarnData = [
     description:
       "Operate and host an AirNode from your own property and start earning while connecting your local community.",
     image: "/images/earn-wmtx/host-operator-airnode.png",
-    link: "https://wmtx.worldmobile.club/airnode-host-operator",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/airnode-host-operator",
     cta: "Host & Operate an AirNode",
   },
   {
     title: "5 - Run a Unity Node",
     description: "Generate crypto using your unused telephone minutes.",
     image: "/images/earn-wmtx/unity-node.png",
-    link: "https://wmtx.worldmobile.club/unity-node",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/unity-node",
     cta: "Run a Unity Node",
   },
   {
@@ -46,7 +46,7 @@ const waysToEarnData = [
     description:
       "Own and manage a World Mobile HEX, helping promote World Mobile & optimize coverage while earning rewards for successful network growth.",
     image: "/images/earn-wmtx/hex_guardian.png",
-    link: "https://wmtx.worldmobile.club/hex-guardian/",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/hex-guardian/",
     cta: "Manage a World Mobile HEX",
   },
   {
@@ -54,7 +54,7 @@ const waysToEarnData = [
     description:
       "Contribute to network improvement by scanning local connectivity quality. Earn loyalty points redeemable for network services and exclusive benefits.",
     image: "/images/earn-wmtx/scan_for_points.png",
-    link: "https://wmtx.worldmobile.club/scan-for-points/",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/scan-for-points/",
     cta: "Scan Connectivity",
   },
   {
@@ -62,7 +62,7 @@ const waysToEarnData = [
     description:
       "Stake your $WMTx tokens to an EarthNode to support the network and earn regular staking rewards.",
     image: "/images/earn-wmtx/Stake_to_EN.png",
-    link: "https://wmtx.worldmobile.club/stake-with-earthnode",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/stake-with-earthnode",
     cta: "Stake to an EarthNode",
   },
   {
@@ -70,7 +70,7 @@ const waysToEarnData = [
     description:
       "Support local connectivity by staking your $WMTx tokens to an AirNode, earning rewards while helping expand network coverage.",
     image: "/images/earn-wmtx/stake_to_airnode.png",
-    link: "https://wmtx.worldmobile.club/stake-with-airnode",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/stake-with-airnode",
     cta: "Stake to an AirNode",
   },
   {
@@ -78,7 +78,7 @@ const waysToEarnData = [
     description:
       "Enhance your World Mobile experience by staking $WMTx tokens to your SIM card, unlocking premium benefits and network privileges.",
     image: "/images/earn-wmtx/Esim_staking.png",
-    link: "https://wmtx.worldmobile.club/stake-with-sim",
+    link: "https://wmtx.worldmobile.club/earn-wmtx/stake-with-sim",
     cta: "Stake to Your SIM Card",
   },
   {

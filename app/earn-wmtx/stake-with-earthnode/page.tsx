@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from '../../components/header/Header';
-import Footer from '../../components/footer/Footer';
-import JoinDiscussion from '../../components/pages/stake-with-earthnode/discussions'; 
-import MetaFields from '../../components/pages/stake-with-earthnode/metafields';
-import Info from '../../components/pages/stake-with-earthnode/Info';
-import EarthNodeSelection from '../../components/pages/stake-with-earthnode/EarthNodeSelection';
+import Header from '../../../components/header/Header';
+import Footer from '../../../components/footer/Footer';
+import JoinDiscussion from '../../../components/pages/earn-wmtx/stake-with-earthnode/discussions'; 
+import MetaFields from '../../../components/pages/earn-wmtx/stake-with-earthnode/metafields';
+import Info from '../../../components/pages/earn-wmtx/stake-with-earthnode/Info';
+import EarthNodeSelection from '../../../components/pages/earn-wmtx/stake-with-earthnode/EarthNodeSelection';
 
 export default function EarthNodeOperatorPage() {
   return (

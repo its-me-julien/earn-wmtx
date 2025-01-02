@@ -1,16 +1,14 @@
 import React from 'react';
-import Header from '../../components/header/Header';
-import Footer from '../../components/footer/Footer';
-import JoinDiscussion from '../../components/pages/airnode-hosting/discussions';
-import AirNodeInfo from '../../components/pages/airnode-hosting/airnode-info';
-import AirNodeEarnings from '../../components/pages/airnode-hosting/AirNodeEarnings';
-import GettingStartedSection from '../../components/pages/airnode-hosting/GettingStartedSection';
-import FAQSection from '../../components/pages/airnode-hosting/FAQ';
-import Image from 'next/image';
-import airnodeHostingImg from '/public/images/airnode/airnode_hosting-min.jpg';
-import MetaFields from '../../components/pages/airnode-hosting/metafields';
+import Header from '../../../components/header/Header';
+import Footer from '../../../components/footer/Footer';
+import JoinDiscussion from '../../../components/pages/earn-wmtx/airnode-operation/discussions';
+import AirNodeInfo from '../../../components/pages/earn-wmtx/airnode-operation/airnode-info';
+import AirNodeInvestmentTiers from '../../../components/pages/earn-wmtx/airnode-operation/AirNodeInvestmentTiers';
+import GettingStartedSection from '../../../components/pages/earn-wmtx/airnode-operation/GettingStartedSection';
+import FAQSection from '../../../components/pages/earn-wmtx/airnode-operation/FAQ';
+import MetaFields from '../../../components/pages/earn-wmtx/airnode-operation/metafields';
 
-export default function HostAnAirNode() {
+export default function OperateAnAirNode() {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-black via-[#150a2c] to-[#000000]">
       {/* Metadata */}
@@ -25,13 +23,13 @@ export default function HostAnAirNode() {
           {/* Page Header */}
           <header className="grid grid-cols-1 gap-6 max-w-3xl mx-auto px-4">
             <h1 className="text-5xl font-aeonik-bold mb-6 text-white text-center px-4 md:px-6">
-              Host an{' '}
+              Become an{' '}
               <span className="bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] bg-clip-text text-transparent">
-                AirNode
+                AirNode Operator
               </span>
             </h1>
             <p className="mb-6 leading-relaxed text-lg text-gray-300 text-center px-4 md:px-6">
-              Bring connectivity to your community, earn rewards, and grow the World Mobile network—no equipment or technical expertise required.
+              Operate an AirNode to power the World Mobile network. Bring reliable connectivity to underserved areas while earning rewards in your local currency.
             </p>
           </header>
 
@@ -40,25 +38,12 @@ export default function HostAnAirNode() {
             <AirNodeInfo />
           </section>
 
-          {/* Image Section */}
-          <section className="w-full max-w-lg mx-auto px-4 mt-16">
-            <figure className="rounded-lg shadow-lg">
-              <Image
-                src={airnodeHostingImg}
-                alt="Hosting an AirNode to expand connectivity"
-                className="rounded-lg"
-                width={600}
-                height={400}
-              />
-            </figure>
-          </section>
-
           {/* Earnings Section */}
           <section>
-            <AirNodeEarnings />
+            <AirNodeInvestmentTiers />
           </section>
 
-          {/* Call to Action */}
+          {/* Call to Action Button */}
           <section className="flex justify-center mt-16">
             <a
               href="https://airnode.worldmobile.net/"
@@ -66,7 +51,7 @@ export default function HostAnAirNode() {
               rel="noopener noreferrer"
               className="btn bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] text-white hover:brightness-125 border-none px-12 py-3 rounded-full"
             >
-              Apply to become an AirNode Host
+              Apply to become an AirNode Operator
             </a>
           </section>
 
@@ -75,7 +60,7 @@ export default function HostAnAirNode() {
             <GettingStartedSection />
           </section>
 
-          {/* FAQ Section */}
+          {/* Frequently Asked Questions */}
           <section>
             <FAQSection />
           </section>

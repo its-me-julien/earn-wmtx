@@ -1,13 +1,13 @@
 import React from 'react';
-import Header from '../../components/header/Header';
-import Footer from '../../components/footer/Footer';
-import JoinDiscussion from '../../components/pages/scan-for-points/discussions';
-import MetaFields from '../../components/pages/scan-for-points/metafields';
-import Info from '../../components/pages/scan-for-points/Info';
-import Faq from '../../components/pages/scan-for-points/FAQ';
-import Map from '../../components/pages/scan-for-points/map';
-import App from '../../components/pages/scan-for-points/app';
-import Leaderboard from '../../components/pages/scan-for-points/leaderboard';
+import Header from '../../../components/header/Header';
+import Footer from '../../../components/footer/Footer';
+import JoinDiscussion from '../../../components/pages/earn-wmtx/scan-for-points/discussions';
+import MetaFields from '../../../components/pages/earn-wmtx/scan-for-points/metafields';
+import Info from '../../../components/pages/earn-wmtx/scan-for-points/Info';
+import Faq from '../../../components/pages/earn-wmtx/scan-for-points/FAQ';
+import Map from '../../../components/pages/earn-wmtx/scan-for-points/map';
+import App from '../../../components/pages/earn-wmtx/scan-for-points/app';
+import Leaderboard from '../../../components/pages/earn-wmtx/scan-for-points/leaderboard';
 
 export default function ScanForPointsPage() {
   return (

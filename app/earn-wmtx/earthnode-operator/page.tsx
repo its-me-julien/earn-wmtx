@@ -1,13 +1,13 @@
 import React from 'react';
-import Header from '../../components/header/Header';
-import Footer from '../../components/footer/Footer';
-import JoinDiscussion from '../../components/pages/earthnode-operator/discussions';
-import FAQSection from '../../components/pages/earthnode-operator/FAQ';
-import EarthNodeSetupGuide from '../../components/pages/earthnode-operator/EarthNodeSetupGuide';
-import EarthNodeExplainer from '../../components/pages/earthnode-operator/EarthNodeExplainer';
-import PurchaseEarthNodeNFT from '../../components/pages/earthnode-operator/PurchaseEarthNodeNFT';
-import MetaFields from '../../components/pages/earthnode-operator/metafields';
-import EarthNodeInfo from '../../components/pages/earthnode-operator/earthNodeInfo';
+import Header from '../../../components/header/Header';
+import Footer from '../../../components/footer/Footer';
+import JoinDiscussion from '../../../components/pages/earn-wmtx/earthnode-operator/discussions';
+import FAQSection from '../../../components/pages/earn-wmtx/earthnode-operator/FAQ';
+import EarthNodeSetupGuide from '../../../components/pages/earn-wmtx/earthnode-operator/EarthNodeSetupGuide';
+import EarthNodeExplainer from '../../../components/pages/earn-wmtx/earthnode-operator/EarthNodeExplainer';
+import PurchaseEarthNodeNFT from '../../../components/pages/earn-wmtx/earthnode-operator/PurchaseEarthNodeNFT';
+import MetaFields from '../../../components/pages/earn-wmtx/earthnode-operator/metafields';
+import EarthNodeInfo from '../../../components/pages/earn-wmtx/earthnode-operator/earthNodeInfo';
 
 export default function EarthNodeOperatorPage() {
   return (

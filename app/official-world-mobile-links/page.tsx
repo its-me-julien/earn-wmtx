@@ -28,13 +28,41 @@ const linksData: LinkCategory[] = [
   {
     category: 'Official Links',
     links: [
-      { name: 'World Mobile eSIM', description: 'Roam freely, stay connected with the World Mobile eSIM.', url: 'http://esim.worldmobile.io/?utm_source=linktr.ee&utm_medium=referral&utm_campaign=linktree' },
-      { name: 'World Mobile App', description: 'Download from the Google Play Store.', url: 'https://play.google.com/store/apps/details?id=io.worldmobile.app' },
-      { name: 'WorldMobile.io', description: 'The first global web3 wireless network.', url: 'https://worldmobile.io/?utm_source=linktr.ee&utm_medium=referral&utm_campaign=linktree' },
-      { name: 'AirNode Portal', description: 'Manage AirNodes and grow the decentralized network.', url: 'https://airnode.worldmobile.net/' },
-      { name: 'World Mobile Token', description: 'Discover the token powering the World Mobile ecosystem.', url: 'https://worldmobiletoken.com/' },
-      { name: 'Blog', description: 'Brush up on your knowledge.', url: 'https://worldmobile.io/blog/?utm_source=linktr.ee&utm_medium=referral&utm_campaign=linktree' },
-      { name: 'Press', description: 'See what people are saying about World Mobile.', url: 'https://worldmobile.io/blog/press/?utm_source=linktr.ee&utm_medium=referral&utm_campaign=linktree' },
+      {
+        name: 'World Mobile eSIM',
+        description: 'Roam freely, stay connected with the World Mobile eSIM.',
+        url: 'http://esim.worldmobile.io/?utm_source=linktr.ee&utm_medium=referral&utm_campaign=linktree',
+      },
+      {
+        name: 'World Mobile App',
+        description: 'Download from the Google Play Store.',
+        url: 'https://play.google.com/store/apps/details?id=io.worldmobile.app',
+      },
+      {
+        name: 'WorldMobile.io',
+        description: 'The first global web3 wireless network.',
+        url: 'https://worldmobile.io/?utm_source=linktr.ee&utm_medium=referral&utm_campaign=linktree',
+      },
+      {
+        name: 'AirNode Portal',
+        description: 'Manage AirNodes and grow the decentralized network.',
+        url: 'https://airnode.worldmobile.net/',
+      },
+      {
+        name: 'World Mobile Token',
+        description: 'Discover the token powering the World Mobile ecosystem.',
+        url: 'https://worldmobiletoken.com/',
+      },
+      {
+        name: 'Blog',
+        description: 'Brush up on your knowledge.',
+        url: 'https://worldmobile.io/blog/?utm_source=linktr.ee&utm_medium=referral&utm_campaign=linktree',
+      },
+      {
+        name: 'Press',
+        description: 'See what people are saying about World Mobile.',
+        url: 'https://worldmobile.io/blog/press/?utm_source=linktr.ee&utm_medium=referral&utm_campaign=linktree',
+      },
     ],
     emails: [
       { email: 'support@worldmobiletoken.com', description: 'World Mobile Support' },
@@ -45,19 +73,55 @@ const linksData: LinkCategory[] = [
   {
     category: 'Social Links',
     links: [
-      { name: 'Twitter', description: 'Stay up to date.', url: 'https://twitter.com/WorldMobileTeam', icon: faTwitter },
-      { name: 'YouTube', description: 'Like and subscribe.', url: 'https://www.youtube.com/channel/UCw8cjqZEfYIs1I-bMocfXAg?sub_confirmation=1', icon: faYoutube },
-      { name: 'Discord', description: 'Join the conversation.', url: 'http://discord.gg/worldmobile', icon: faDiscord },
-      { name: 'Telegram', description: 'Join the conversation.', url: 'https://bit.ly/wmjoinus', icon: faTelegram },
+      {
+        name: 'Twitter',
+        description: 'Stay up to date.',
+        url: 'https://twitter.com/WorldMobileTeam',
+        icon: faTwitter,
+      },
+      {
+        name: 'YouTube',
+        description: 'Like and subscribe.',
+        url: 'https://www.youtube.com/channel/UCw8cjqZEfYIs1I-bMocfXAg?sub_confirmation=1',
+        icon: faYoutube,
+      },
+      {
+        name: 'Discord',
+        description: 'Join the conversation.',
+        url: 'http://discord.gg/worldmobile',
+        icon: faDiscord,
+      },
+      {
+        name: 'Telegram',
+        description: 'Join the conversation.',
+        url: 'https://bit.ly/wmjoinus',
+        icon: faTelegram,
+      },
     ],
   },
   {
     category: 'Unofficial Links',
     links: [
-      { name: 'The Club - Community Powered Forum', description: 'Connect with a community-driven forum for discussions on all things World Mobile.', url: '#' },
-      { name: 'Earth Node Alliance', description: 'Support for EarthNode Operators.', url: 'https://www.earthnodealliance.io' },
-      { name: 'EarthNode Marketplace on JPG.store', description: 'Buy & sell EarthNode NFTs.', url: 'https://www.jpg.store/collection/earthnode?tab=activity' },
-      { name: 'World Mobile Token on CoinGecko', description: 'Track WMTx prices and stats.', url: 'https://www.coingecko.com/en/coins/world-mobile-token' },
+      {
+        name: 'The Club - Community Powered Forum',
+        description: 'Connect with a community-driven forum for discussions on all things World Mobile.',
+        url: '#',
+      },
+      {
+        name: 'Earth Node Alliance',
+        description: 'Support for EarthNode Operators.',
+        url: 'https://www.earthnodealliance.io',
+      },
+      {
+        name: 'EarthNode Marketplace on JPG.store',
+        description: 'Buy & sell EarthNode NFTs.',
+        url: 'https://www.jpg.store/collection/earthnode?tab=activity',
+      },
+      {
+        name: 'World Mobile Token on CoinGecko',
+        description: 'Track WMTx prices and stats.',
+        url: 'https://www.coingecko.com/en/coins/world-mobile-token',
+      },
     ],
   },
 ];
@@ -70,17 +134,22 @@ const OfficialLinksPage = () => {
       <main className="flex-grow w-full py-12 px-4">
         <div className="container mx-auto text-white space-y-16">
           {/* Page Header */}
-          <header className="text-center mb-12">
-            <h1 className="text-5xl font-extrabold mb-4">
+          <header className="grid grid-cols-1 gap-6 max-w-3xl mx-auto text-center">
+            <h1 className="text-6xl font-extrabold text-white mb-6 px-4">
               Official{' '}
               <span className="bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] bg-clip-text text-transparent">
                 World Mobile
               </span>{' '}
               Links
             </h1>
-            <p className="text-lg text-gray-300">
+            <p className="mb-8 leading-relaxed text-lg text-gray-300">
               Explore resources and community links to stay connected and engaged with World Mobile.
             </p>
+            <div className="flex justify-center">
+              <span className="text-2xl text-gray-300 animate-bounce" aria-label="Scroll down arrow">
+                ↓
+              </span>
+            </div>
           </header>
 
           {/* Links Section */}
@@ -88,8 +157,7 @@ const OfficialLinksPage = () => {
             {linksData.map((category, index) => (
               <div
                 key={index}
-                className="card p-6 rounded-lg shadow-lg border border-[rgba(255,255,255,0.1)]"
-                style={{ backgroundColor: 'rgba(55,10,81,0.19)' }}
+                className="card p-6 rounded-lg shadow-lg border border-[rgba(255,255,255,0.1)] bg-[rgba(55,10,81,0.19)]"
               >
                 <h2 className="text-2xl font-extrabold mb-4">{category.category}</h2>
                 <ul className="space-y-4">
