@@ -7,17 +7,11 @@
   package = "@netlify/plugin-nextjs"
 
 [[plugins]]
-package = "@netlify/plugin-sitemap"
+  package = "netlify-plugin-submit-sitemap"
 
-[plugins.inputs]
-baseUrl = "https://wmtx.worldmobile.club"
-
-[[plugins]]
-package = "netlify-plugin-submit-sitemap"
-
-[plugins.inputs]
-baseUrl = "https://wmtx.worldmobile.club"
-providers = [
-  "google",
-  "yandex"
-]
+  [plugins.inputs]
+  baseUrl = "https://wmtx.worldmobile.club"
+  providers = [
+    "google",
+    "yandex"
+  ]
