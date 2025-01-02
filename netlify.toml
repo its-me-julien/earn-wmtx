@@ -5,3 +5,19 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[plugins]]
+package = "@netlify/plugin-sitemap"
+
+[plugins.inputs]
+buildDir = "public"
+
+[[plugins]]
+package = "netlify-plugin-submit-sitemap"
+
+[plugins.inputs]
+baseUrl = "https://wmtx.worldmobile.club"
+providers = [
+  "google",
+  "yandex"
+]
