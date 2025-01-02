@@ -11,6 +11,7 @@ package = "@netlify/plugin-sitemap"
 
 [plugins.inputs]
 buildDir = ".next"
+baseUrl = "https://wmtx.worldmobile.club"
 prettyURLs = true
 trailingSlash = false
 
