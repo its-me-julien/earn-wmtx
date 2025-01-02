@@ -36,8 +36,7 @@ const waysToEarnData = [
   },
   {
     title: "5 - Run a Unity Node",
-    description:
-      "Generate crypto using your unused telephone minutes.",
+    description: "Generate crypto using your unused telephone minutes.",
     image: "/images/earn-wmtx/unity-node.png",
     link: "https://wmtx.worldmobile.club/unity-node",
     cta: "Run a Unity Node",
@@ -98,25 +97,30 @@ export default function WaysToEarn() {
       {waysToEarnData.map((block, index) => (
         <div
           key={index}
-          className="card card-compact w-96 min-h-[350px] shadow-xl backdrop-blur-md bg-[hsl(277.79deg_78.75%_17.79%_/_19%)] hover:shadow-2xl transition-shadow duration-300 rounded-lg overflow-hidden text-center border border-[rgba(255,255,255,0.1)]"
+          className="card card-compact w-96 min-h-[400px] shadow-xl bg-[hsl(277.79deg_78.75%_17.79%_/_19%)] hover:shadow-2xl transition-shadow duration-300 rounded-lg overflow-hidden text-center border border-[rgba(255,255,255,0.1)]"
         >
           <figure className="pt-6">
             <Image
               src={block.image}
               alt={block.title}
-              width={100}
-              height={100}
+              layout="intrinsic"
+              width={120}
+              height={120}
               className="mx-auto rounded-md"
+              loading="lazy"
             />
           </figure>
           <div className="card-body flex flex-col items-center px-6 md:px-8 py-4 md:py-6">
             <h2 className="card-title font-extrabold text-white text-lg mb-3">
               {block.title}
             </h2>
-            <p className="text-white/80 text-sm mb-4 text-center">
+            <p className="text-white/80 text-base leading-loose mb-6 text-center">
               {block.description}
             </p>
-            <a href={block.link} className="btn mt-auto bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] text-white hover:brightness-125 border-none px-12 py-3 rounded-full">
+            <a
+              href={block.link}
+              className="btn mt-auto bg-gradient-to-r from-[#5A2FBA] to-[#D42E58] text-white hover:scale-105 hover:brightness-125 transition-transform border-none px-10 py-2 rounded-full"
+            >
               {block.cta}
             </a>
           </div>

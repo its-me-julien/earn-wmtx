@@ -27,22 +27,25 @@ export default function GettingStartedPage() {
       <main className="flex-grow w-full py-12 px-4">
         <div className="container mx-auto text-white space-y-16">
           {/* Page Header */}
-          <header className="grid grid-cols-1 gap-6 max-w-3xl mx-auto px-4 text-center">
-            <h1 className="text-5xl font-aeonik-bold mb-6 px-4 md:px-6">
-              Getting Started with<br />
-              <span className="bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] bg-clip-text text-transparent">
-                World Mobile
-              </span>
-            </h1>
-            <p className="mb-6 leading-relaxed text-lg text-gray-300">
-              Reshaping connectivity worldwide.
-            </p>
-            <div className="flex justify-center mt-6">
-              <span className="text-2xl text-gray-300 animate-bounce" aria-label="Scroll down arrow">
-                ↓
-              </span>
-            </div>
-          </header>
+          <header className="grid grid-cols-1 gap-6 max-w-3xl mx-auto text-center">
+  <h1 className="text-6xl font-extrabold text-white mb-6 px-4">
+    Getting Started with <br />
+    <span className="bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] bg-clip-text text-transparent">
+      World Mobile
+    </span>
+  </h1>
+  <p className="mb-8 leading-relaxed text-lg text-gray-300">
+    Reshaping connectivity worldwide with innovative blockchain-powered telecom solutions.
+  </p>
+  <div className="flex justify-center">
+    <span
+      className="text-2xl text-gray-300 animate-bounce"
+      aria-label="Scroll down arrow"
+    >
+      ↓
+    </span>
+  </div>
+</header>
 
           {/* Problem Section */}
           <section id="the-problem" className="py-4">

@@ -5,6 +5,7 @@ import Link from 'next/link';
 export default function Header() {
   return (
     <header className="navbar bg-black text-white shadow-lg sticky top-0 z-50">
+      {/* Logo and Branding */}
       <div className="flex-1 flex items-center space-x-4">
         <Link href="/" className="flex items-center">
           <Image
@@ -14,7 +15,7 @@ export default function Header() {
             height={48}
             className="h-12 w-12"
           />
-          <span className="text-xl font-extrabold tracking-wide">
+          <span className="text-2xl font-extrabold tracking-wide">
             World Mobile Club
           </span>
         </Link>
@@ -23,7 +24,11 @@ export default function Header() {
       {/* Mobile Menu */}
       <div className="lg:hidden">
         <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-ghost btn-circle">
+          <label
+            tabIndex={0}
+            className="btn btn-ghost btn-circle"
+            aria-label="Open menu"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -44,22 +49,34 @@ export default function Header() {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow-lg bg-gradient-to-br from-[#F6642D] via-[#D42E58] to-[#5A2FBA] text-white rounded-box w-56"
           >
             <li>
-              <Link href="https://wmtx.worldmobile.club/getting-started-with-world-mobile/" className="hover:bg-white hover:bg-opacity-20">
+              <Link
+                href="https://wmtx.worldmobile.club/getting-started-with-world-mobile/"
+                className="hover:bg-white hover:bg-opacity-20"
+              >
                 Getting Started
               </Link>
             </li>
             <li>
-              <Link href="https://wmtx.worldmobile.club/earn-wmtx/" className="hover:bg-white hover:bg-opacity-20">
+              <Link
+                href="https://wmtx.worldmobile.club/earn-wmtx/"
+                className="hover:bg-white hover:bg-opacity-20"
+              >
                 Earn WMTx
               </Link>
             </li>
             <li>
-              <Link href="https://worldmobile.club/" className="hover:bg-white hover:bg-opacity-20">
-                The Club
+              <Link
+                href="https://worldmobile.club/"
+                className="hover:bg-white hover:bg-opacity-20"
+              >
+                Community
               </Link>
             </li>
             <li>
-              <Link href="https://coffee.worldmobile.club/" className="hover:bg-white hover:bg-opacity-20">
+              <Link
+                href="https://coffee.worldmobile.club/"
+                className="hover:bg-white hover:bg-opacity-20"
+              >
                 Stake
               </Link>
             </li>
@@ -68,17 +85,29 @@ export default function Header() {
       </div>
 
       {/* Desktop Navigation */}
-      <nav className="hidden lg:flex space-x-4">
-        <Link href="https://wmtx.worldmobile.club/getting-started-with-world-mobile/" className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white">
+      <nav className="hidden lg:flex space-x-6">
+        <Link
+          href="https://wmtx.worldmobile.club/getting-started-with-world-mobile/"
+          className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
+        >
           Getting Started
         </Link>
-        <Link href="https://wmtx.worldmobile.club/earn-wmtx/" className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white">
+        <Link
+          href="https://wmtx.worldmobile.club/earn-wmtx/"
+          className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
+        >
           Earn WMTx
         </Link>
-        <Link href="https://worldmobile.club/" className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white">
+        <Link
+          href="https://worldmobile.club/"
+          className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
+        >
           Community
         </Link>
-        <Link href="https://coffee.worldmobile.club/" className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white">
+        <Link
+          href="https://coffee.worldmobile.club/"
+          className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
+        >
           Stake
         </Link>
       </nav>
