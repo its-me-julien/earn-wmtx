@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -15,7 +15,7 @@ export default function Header() {
             height={48}
             className="h-12 w-12"
           />
-          <span className="text-2xl font-extrabold tracking-wide">
+          <span className="text-xl md:text-2xl font-bold tracking-tight leading-snug">
             World Mobile Club
           </span>
         </Link>
@@ -88,25 +88,25 @@ export default function Header() {
       <nav className="hidden lg:flex space-x-6">
         <Link
           href="https://wmtx.worldmobile.club/getting-started-with-world-mobile/"
-          className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
+          className="py-2 px-4 text-lg font-medium rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
         >
           Getting Started
         </Link>
         <Link
           href="https://wmtx.worldmobile.club/earn-wmtx/"
-          className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
+          className="py-2 px-4 text-lg font-medium rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
         >
           Earn WMTx
         </Link>
         <Link
           href="https://worldmobile.club/"
-          className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
+          className="py-2 px-4 text-lg font-medium rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
         >
           Community
         </Link>
         <Link
           href="https://coffee.worldmobile.club/"
-          className="py-2 px-4 rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
+          className="py-2 px-4 text-lg font-medium rounded-md transition-all hover:bg-gradient-to-r from-[#F6642D] via-[#D42E58] to-[#5A2FBA] hover:text-white"
         >
           Stake
         </Link>
